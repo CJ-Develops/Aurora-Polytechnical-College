@@ -8,100 +8,111 @@
 </head>
 <body>
     <div>
-        <div>
+        <!-- APPLICANT -->
+        <form action="add" method="post">
+            @csrf
             <h1>Personal Information</h1>
-            <input type="text" placeholder="Name" />
+            <input name="applicantName" type="text" placeholder="Name" />
             <select name="gender" id="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
             </select>
                         
-            <input placeholder="Religion" />
-            <input type="date" placeholder="Date of birth" />
-            <input type="number" placeholder="Age" />
+            <input name="religion" placeholder="Religion" />
+            <input name="dateOfBirth" type="date" placeholder="Date of birth" />
+            <input name="age" type="number" placeholder="Age" />
             
-            <select name="cvl_stus" id="cvl_stus">
-                <option value="male">Single</option>
-                <option value="female">Married</option>
-                <option value="female">Divorced</option>
-                <option value="female">Widowed</option>
-                <option value="female">Separated</option>
+            <select name="civilStatus" id="cvl_stus">
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Separated">Separated</option>
             </select>
 
-            <input type="text" placeholder="Place of Birth" />
-            <input type="text" placeholder="Citizenship" />
-            <input type="text" placeholder="Permanent address" />
-            <input type="tel" placeholder="Place of Birth" />
-            <input type="email" placeholder="Email address" />
-            <input type="text" placeholder="Facebook account" />
+            <input name="placeOfBirth" type="text" placeholder="Place of Birth" />
+            <input name="applicantCitizenship" type="text" placeholder="Citizenship" />
+            <input name="permanentAddress" type="text" placeholder="Permanent address" />
+            <input name="telephone" type="tel" placeholder="Telephone" />
+            <input name="emailAddress" type="email" placeholder="Email address" />
+            <input name="fbAccount" type="text" placeholder="Facebook account" />
             
-            <input type="text" placeholder="High school name" />
-            <input type="text" placeholder="High school address" />
-            <input type="number" placeholder="General average" />
-            <input type="number" placeholder="Year of completion" />
+            <input name="hsName" type="text" placeholder="High school name" />
+            <input name="hsAddress" type="text" placeholder="High school address" />
+            <input name="generalAverage" type="number" placeholder="General average" />
+            <input name="yearOfCompletion" type="number" placeholder="Year of completion" />
 
-        </div>
 
         <br>
         <br>
 
-        <div>
             <h1>Guardian</h1>
-             
+            
 
             <h2>Mother</h2>
-            <input type="Text" placeholder="Name" />
-            <input type="text" placeholder="Citizenship" />
 
-            <select name="Mthr_cvl_stus" id="Mthr_cvl_stus">
-                <option value="male">Single</option>
-                <option value="female">Married</option>
-                <option value="female">Divorced</option>
-                <option value="female">Widowed</option>
-                <option value="female">Separated</option>
+            <input type="hidden" name="guardianType[]" value="Mother">
+
+            <input name="guardianName[]" type="Text" placeholder="Name" />
+            <input name="citizenship[]" type="text" placeholder="Citizenship" />
+
+            <select name="martialStatus[]" id="Mthr_cvl_stus">
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Separated">Separated</option>
             </select>
 
-            <input type="text" placeholder="Highest Education Attain" />
-            <input type="text" placeholder="Present Occupation" />
-            <input type="number" placeholder="Monthly Income" />
+            <input name="highestEducAttain[]" type="text" placeholder="Highest Education Attain" />
+            <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
+            <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
 
             <br>
 
             <h2>Father</h2>
-            <input type="Text" placeholder="Name" />
-            <input type="text" placeholder="Citizenship" />
 
-            <select name="fth_cvl_stus" id="fth_cvl_stus">
-                <option value="male">Single</option>
-                <option value="female">Married</option>
-                <option value="female">Divorced</option>
-                <option value="female">Widowed</option>
-                <option value="female">Separated</option>
+            <input type="hidden" name="guardianType[]" value="Father">
+
+            <input name="guardianName[]" type="Text" placeholder="Name" />
+            <input name="citizenship[]" type="text" placeholder="Citizenship" />
+
+            <select name="martialStatus[]" id="fth_cvl_stus">
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Separated">Separated</option>
             </select>
 
-            <input type="text" placeholder="Highest Education Attain" />
-            <input type="text" placeholder="Present Occupation" />
-            <input type="number" placeholder="Monthly Income" />
+            <input name="highestEducAttain[]" type="text" placeholder="Highest Education Attain" />
+            <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
+            <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
 
             <br>
 
             <h2>Legal Guardian</h2>
-            <input type="Text" placeholder="Name" />
-            <input type="text" placeholder="Citizenship" />
 
-            <select name="lgl_grdn_cvl_stus" id="lgl_grdn_cvl_stus">
-                <option value="male">Single</option>
-                <option value="female">Married</option>
-                <option value="female">Divorced</option>
-                <option value="female">Widowed</option>
-                <option value="female">Separated</option>
+            <input type="hidden" name="guardianType[]" value="Legal Guardian">
+
+
+            <input name="guardianName[]" type="Text" placeholder="Name" />
+            <input name="citizenship[]" type="text" placeholder="Citizenship" />
+
+            <select name="martialStatus[]" id="lgl_grdn_cvl_stus">
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Separated">Separated</option>
             </select>
 
-            <input type="text" placeholder="Highest Education Attain" />
-            <input type="text" placeholder="Present Occupation" />
-            <input type="number" placeholder="Monthly Income" />
+            <input name="highestEducAttain[]" type="text" placeholder="Highest Education Attain" />
+            <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
+            <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
             
-        </div>
+            <button>Submit</button>
+        </form>
 
         <br>
         <br>
