@@ -10,11 +10,9 @@
 
 <body>
     <div>
-        <!-- APPLICANT -->
-        <form action="add" method="post">
+        <form action="/addFullEnrollment" method="POST">
             @csrf
             <div>
-
                 <h1>Personal Information</h1>
                 <input name="applicantName" type="text" placeholder="Name" />
                 <select name="gender" id="gender">
@@ -52,12 +50,9 @@
             <br>
 
             <div>
-
                 <h1>Guardian</h1>
 
-
                 <h2>Mother</h2>
-
                 <input type="hidden" name="guardianType[]" value="Mother">
 
                 <input name="guardianName[]" type="Text" placeholder="Name" />
@@ -78,7 +73,6 @@
                 <br>
 
                 <h2>Father</h2>
-
                 <input type="hidden" name="guardianType[]" value="Father">
 
                 <input name="guardianName[]" type="Text" placeholder="Name" />
@@ -99,9 +93,7 @@
                 <br>
 
                 <h2>Legal Guardian</h2>
-
                 <input type="hidden" name="guardianType[]" value="Legal Guardian">
-
 
                 <input name="guardianName[]" type="Text" placeholder="Name" />
                 <input name="citizenship[]" type="text" placeholder="Citizenship" />
@@ -118,7 +110,7 @@
                 <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
                 <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
 
-                <button>Submit</button>
+                <button type="submit">Submit</button>
 
             </div>
         </form>
