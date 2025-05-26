@@ -1,111 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Enrollment</title>
 </head>
+
 <body>
     <div>
-        <div>
-            <h1>Personal Information</h1>
-            <input type="text" placeholder="Name" />
-            <select name="gender" id="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
-                        
-            <input placeholder="Religion" />
-            <input type="date" placeholder="Date of birth" />
-            <input type="number" placeholder="Age" />
-            
-            <select name="cvl_stus" id="cvl_stus">
-                <option value="male">Single</option>
-                <option value="female">Married</option>
-                <option value="female">Divorced</option>
-                <option value="female">Widowed</option>
-                <option value="female">Separated</option>
-            </select>
+        <!-- APPLICANT -->
+        <form action="add" method="post">
+            @csrf
+            <div>
 
-            <input type="text" placeholder="Place of Birth" />
-            <input type="text" placeholder="Citizenship" />
-            <input type="text" placeholder="Permanent address" />
-            <input type="tel" placeholder="Place of Birth" />
-            <input type="email" placeholder="Email address" />
-            <input type="text" placeholder="Facebook account" />
-            
-            <input type="text" placeholder="High school name" />
-            <input type="text" placeholder="High school address" />
-            <input type="number" placeholder="General average" />
-            <input type="number" placeholder="Year of completion" />
+                <h1>Personal Information</h1>
+                <input name="applicantName" type="text" placeholder="Name" />
+                <select name="gender" id="gender">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </select>
 
-        </div>
+                <input name="religion" placeholder="Religion" />
+                <input name="dateOfBirth" type="date" placeholder="Date of birth" />
+                <input name="age" type="number" placeholder="Age" />
 
-        <br>
-        <br>
+                <select name="civilStatus" id="cvl_stus">
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Separated">Separated</option>
+                </select>
 
-        <div>
-            <h1>Guardian</h1>
-             
+                <input name="placeOfBirth" type="text" placeholder="Place of Birth" />
+                <input name="applicantCitizenship" type="text" placeholder="Citizenship" />
+                <input name="permanentAddress" type="text" placeholder="Permanent address" />
+                <input name="telephone" type="tel" placeholder="Telephone" />
+                <input name="emailAddress" type="email" placeholder="Email address" />
+                <input name="fbAccount" type="text" placeholder="Facebook account" />
 
-            <h2>Mother</h2>
-            <input type="Text" placeholder="Name" />
-            <input type="text" placeholder="Citizenship" />
+                <input name="hsName" type="text" placeholder="High school name" />
+                <input name="hsAddress" type="text" placeholder="High school address" />
+                <input name="generalAverage" type="number" placeholder="General average" />
+                <input name="yearOfCompletion" type="number" placeholder="Year of completion" />
 
-            <select name="Mthr_cvl_stus" id="Mthr_cvl_stus">
-                <option value="male">Single</option>
-                <option value="female">Married</option>
-                <option value="female">Divorced</option>
-                <option value="female">Widowed</option>
-                <option value="female">Separated</option>
-            </select>
-
-            <input type="text" placeholder="Highest Education Attain" />
-            <input type="text" placeholder="Present Occupation" />
-            <input type="number" placeholder="Monthly Income" />
+            </div>
 
             <br>
-
-            <h2>Father</h2>
-            <input type="Text" placeholder="Name" />
-            <input type="text" placeholder="Citizenship" />
-
-            <select name="fth_cvl_stus" id="fth_cvl_stus">
-                <option value="male">Single</option>
-                <option value="female">Married</option>
-                <option value="female">Divorced</option>
-                <option value="female">Widowed</option>
-                <option value="female">Separated</option>
-            </select>
-
-            <input type="text" placeholder="Highest Education Attain" />
-            <input type="text" placeholder="Present Occupation" />
-            <input type="number" placeholder="Monthly Income" />
-
             <br>
 
-            <h2>Legal Guardian</h2>
-            <input type="Text" placeholder="Name" />
-            <input type="text" placeholder="Citizenship" />
+            <div>
 
-            <select name="lgl_grdn_cvl_stus" id="lgl_grdn_cvl_stus">
-                <option value="male">Single</option>
-                <option value="female">Married</option>
-                <option value="female">Divorced</option>
-                <option value="female">Widowed</option>
-                <option value="female">Separated</option>
-            </select>
+                <h1>Guardian</h1>
 
-            <input type="text" placeholder="Highest Education Attain" />
-            <input type="text" placeholder="Present Occupation" />
-            <input type="number" placeholder="Monthly Income" />
-            
-        </div>
+
+                <h2>Mother</h2>
+
+                <input type="hidden" name="guardianType[]" value="Mother">
+
+                <input name="guardianName[]" type="Text" placeholder="Name" />
+                <input name="citizenship[]" type="text" placeholder="Citizenship" />
+
+                <select name="martialStatus[]" id="Mthr_cvl_stus">
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Separated">Separated</option>
+                </select>
+
+                <input name="highestEducAttain[]" type="text" placeholder="Highest Education Attain" />
+                <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
+                <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
+
+                <br>
+
+                <h2>Father</h2>
+
+                <input type="hidden" name="guardianType[]" value="Father">
+
+                <input name="guardianName[]" type="Text" placeholder="Name" />
+                <input name="citizenship[]" type="text" placeholder="Citizenship" />
+
+                <select name="martialStatus[]" id="fth_cvl_stus">
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Separated">Separated</option>
+                </select>
+
+                <input name="highestEducAttain[]" type="text" placeholder="Highest Education Attain" />
+                <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
+                <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
+
+                <br>
+
+                <h2>Legal Guardian</h2>
+
+                <input type="hidden" name="guardianType[]" value="Legal Guardian">
+
+
+                <input name="guardianName[]" type="Text" placeholder="Name" />
+                <input name="citizenship[]" type="text" placeholder="Citizenship" />
+
+                <select name="martialStatus[]" id="lgl_grdn_cvl_stus">
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Separated">Separated</option>
+                </select>
+
+                <input name="highestEducAttain[]" type="text" placeholder="Highest Education Attain" />
+                <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
+                <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
+
+                <button>Submit</button>
+
+            </div>
+        </form>
 
         <br>
         <br>
- 
+
         <div>
             <h1>Intended Campus and Courses</h1>
             <select name="campus1stchoice" id="campus1stchoice">
@@ -167,7 +187,7 @@
                 <option value="BSA">Bachelor of Science in Accountancy</option>
                 <option value="BSIM">Bachelor of Science in Information Management</option>
             </select>
-            
+
             <select name="2ndcampuscourse2ndchoice" id="2ndcampuscourse2ndchoice">
                 <option value="BSCS">Bachelor of Science in Computer Science</option>
                 <option value="BSEE">Bachelor of Secondary Education major in Special Education</option>
@@ -182,11 +202,12 @@
                 <option value="BSIM">Bachelor of Science in Information Management</option>
             </select>
         </div>
-        
-        
+
+
 
     </div>
 </body>
+
 </html>
 
 
@@ -258,5 +279,4 @@
     updateCampus2Options();
     updateCourse1BOptions();
     updateCourse2Options();
-    
 </script>
