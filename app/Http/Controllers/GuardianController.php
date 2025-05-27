@@ -17,12 +17,12 @@ class GuardianController extends Controller
         $occupations = $request->input('presentOccupation');
         $incomes = $request->input('monthlyIncome');
 
-        $sql = "INSERT INTO guardian 
-            (fk_applicantID, guardianType, guardianName, citizenship, martialStatus, highestEducAttain, presentOccupation, monthlyIncome)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO guardian(fk_applicantID, guardianType, guardianName, citizenship, martialStatus, highestEducAttain, presentOccupation, monthlyIncome) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $insertedCount = 0;
 
         for ($i = 0; $i < count($guardianTypes); $i++) {
-            if (empty($guardianNames[$i])) {
+            if (!isset($guardianNames[$i]) || trim($guardianNames[$i]) === '') {
                 continue;
             }
 
@@ -36,6 +36,10 @@ class GuardianController extends Controller
                 $occupations[$i] ?? null,
                 $incomes[$i] ?? null,
             ]);
+
+            $insertedCount++;
         }
+
+        return $insertedCount;
     }
 }

@@ -21,18 +21,18 @@ class EnrollmentController extends Controller
         DB::beginTransaction();
 
         try {
-            // Save applicant
+            // Save applicant and get new ID
             $newApplicantID = $this->applicantController->add($request);
 
-            // Save guardians, get their IDs
-            $guardianIDs = $this->guardianController->addGuardiansForApplicant($newApplicantID, $request);
+            // Save guardians
+            $guardianCount = $this->guardianController->addGuardiansForApplicant($newApplicantID, $request);
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Saved successfully. Applicant ID: ' . $newApplicantID);
+            return redirect()->back()->with('success', 'Saved successfully. Applicant ID: ' . $newApplicantID . ', Guardians added: ' . $guardianCount);
         } catch (\Exception $e) {
             DB::rollBack();
-
+            dd('Error:', $e->getMessage());
             return redirect()->back()->with('error', 'Failed to save enrollment: ' . $e->getMessage());
         }
     }
