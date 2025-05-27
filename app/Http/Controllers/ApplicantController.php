@@ -15,6 +15,7 @@ class ApplicantController extends Controller
 
         DB::insert(
             "INSERT INTO applicant(applicantID, applicantName, gender, religion, dateOfBirth, age, civilStatus, placeOfBirth, applicantCitizenship, permanentAddress, telephone, emailAddress, fbAccount, hsName, hsAddress, generalAverage, yearOfCompletion)
+            
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 $newApplicantID,
