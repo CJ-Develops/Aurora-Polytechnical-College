@@ -2,50 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Guardian;
+use Illuminate\Support\Facades\DB;
 
 class GuardianController extends Controller
 {
-    public function add(Request $request)
+    public function addGuardiansForApplicant($fk_applicantID, Request $request)
     {
-        $applicantID = $request->input('applicantID');
+        $guardianTypes = $request->input('guardianType');
+        $guardianNames = $request->input('guardianName');
+        $citizenships = $request->input('citizenship');
+        $martialStatuses = $request->input('martialStatus');
+        $educations = $request->input('highestEducAttain');
+        $occupations = $request->input('presentOccupation');
+        $incomes = $request->input('monthlyIncome');
 
-        if (!$applicantID) {
-            return back()->withErrors('Applicant ID is required.');
-        }
+        $sql = "INSERT INTO guardian(fk_applicantID, guardianType, guardianName, citizenship, martialStatus, highestEducAttain, presentOccupation, monthlyIncome) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        // Check if guardianName array exists
-        if (!is_array($request->guardianName) || count($request->guardianName) === 0) {
-            return back()->withErrors('At least one guardian entry is required.');
-        }
+        $insertedCount = 0;
 
-        $count = count($request->guardianName);
-
-        for ($i = 0; $i < $count; $i++) {
-            // Skip if all main fields are empty
-            if (
-                empty($request->guardianName[$i]) &&
-                empty($request->citizenship[$i]) &&
-                empty($request->presentOccupation[$i]) &&
-                empty($request->highestEducAttain[$i])
-            ) {
+        for ($i = 0; $i < count($guardianTypes); $i++) {
+            if (!isset($guardianNames[$i]) || trim($guardianNames[$i]) === '') {
                 continue;
             }
 
-            $guardian = new Guardian();
-            $guardian->fk_applicantID = $applicantID;
-            $guardian->guardianType = $request->guardianType[$i] ?? null;
-            $guardian->guardianName = $request->guardianName[$i];
-            $guardian->citizenship = $request->citizenship[$i] ?? null;
-            $guardian->martialStatus = $request->martialStatus[$i] ?? null;  // fix spelling if needed
-            $guardian->highestEducAttain = $request->highestEducAttain[$i] ?? null;
-            $guardian->presentOccupation = $request->presentOccupation[$i] ?? null;
-            $guardian->monthlyIncome = $request->monthlyIncome[$i] ?? null;
-            $guardian->save();
+            DB::insert($sql, [
+                $fk_applicantID,
+                $guardianTypes[$i],
+                $guardianNames[$i],
+                $citizenships[$i] ?? null,
+                $martialStatuses[$i] ?? null,
+                $educations[$i] ?? null,
+                $occupations[$i] ?? null,
+                $incomes[$i] ?? null,
+            ]);
+
+            $insertedCount++;
         }
 
-        return back()->with('success', 'Guardians added successfully.');
+        return $insertedCount;
     }
 }

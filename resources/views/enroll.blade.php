@@ -10,11 +10,9 @@
 
 <body>
     <div>
-        <!-- APPLICANT -->
-        <form action="add" method="post">
+        <form action="/addFullEnrollment" method="POST">
             @csrf
             <div>
-
                 <h1>Personal Information</h1>
                 <input name="applicantName" type="text" placeholder="Name" />
                 <select name="gender" id="gender">
@@ -52,12 +50,9 @@
             <br>
 
             <div>
-
                 <h1>Guardian</h1>
 
-
                 <h2>Mother</h2>
-
                 <input type="hidden" name="guardianType[]" value="Mother">
 
                 <input name="guardianName[]" type="Text" placeholder="Name" />
@@ -78,7 +73,6 @@
                 <br>
 
                 <h2>Father</h2>
-
                 <input type="hidden" name="guardianType[]" value="Father">
 
                 <input name="guardianName[]" type="Text" placeholder="Name" />
@@ -99,9 +93,7 @@
                 <br>
 
                 <h2>Legal Guardian</h2>
-
                 <input type="hidden" name="guardianType[]" value="Legal Guardian">
-
 
                 <input name="guardianName[]" type="Text" placeholder="Name" />
                 <input name="citizenship[]" type="text" placeholder="Citizenship" />
@@ -118,93 +110,67 @@
                 <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
                 <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
 
-                <button>Submit</button>
+                
 
             </div>
+            
+            <br>
+            <br>
+            
+            <div>
+                <h1>Intended Campus and Courses</h1>
+                <select name="campus[]" id="campus1stchoice">
+                    <option disabled selected>Select Campus</option>
+                    <option value="cainta">Cainta</option>
+                    <option value="angono">Angono</option>
+                    <option value="antipolo">Antipolo</option>
+                    <option value="morong">Morong</option>
+                    <option value="binangonan">Binangonan</option>
+                </select>
+                
+                <select name="courseCode[]" id="1stcampuscourse1stchoice">
+                    <option disabled selected>Select Course</option>
+                    @foreach ($courses as $course)
+                    <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
+                    @endforeach
+                </select>
+                
+                <select name="courseCode[]" id="1stcampuscourse2ndchoice">
+                    <option disabled selected>Select Course</option>
+                    @foreach ($courses as $course)
+                    <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <div>
+                <select name="campus[]" id="campus2ndchoice">
+                    <option disabled selected>Select Campus</option>
+                    <option value="cainta">Cainta</option>
+                    <option value="angono">Angono</option>
+                    <option value="antipolo">Antipolo</option>
+                    <option value="morong">Morong</option>
+                    <option value="binangonan">Binangonan</option>
+                </select>
+                
+                <select name="courseCode[]" id="2ndcampuscourse1stchoice">
+                    <option disabled selected>Select Course</option>
+                    @foreach ($courses as $course)
+                    <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
+                    @endforeach
+                </select>
+                
+                <select name="courseCode[]" id="2ndcampuscourse2ndchoice">
+                    <option disabled selected>Select Course</option>
+                    @foreach ($courses as $course)
+                    <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <button type="submit">Submit</button>
+            
         </form>
-
-        <br>
-        <br>
-
-        <div>
-            <h1>Intended Campus and Courses</h1>
-            <select name="campus1stchoice" id="campus1stchoice">
-                <option value="cainta">Cainta</option>
-                <option value="angono">Angono</option>
-                <option value="antipolo">Antipolo</option>
-                <option value="morong">Morong</option>
-                <option value="binangonan">Binangonan</option>
-            </select>
-
-            <select name="1stcampuscourse1stchoice" id="1stcampuscourse1stchoice">
-                <option value="BSCS">Bachelor of Science in Computer Science</option>
-                <option value="BSEE">Bachelor of Secondary Education major in Special Education</option>
-                <option value="BSIT">Bachelor of Science in Information Technology</option>
-                <option value="BAE">Bachelor of Arts in English</option>
-                <option value="BSBA">Bachelor of Science in Business Administration</option>
-                <option value="BSCE">Bachelor of Science in Civil Engineering</option>
-                <option value="BSM">Bachelor of Science in Mathematics</option>
-                <option value="BSPS">Bachelor of Science in Psychology</option>
-                <option value="BST">Bachelor of Science in Tourism</option>
-                <option value="BSA">Bachelor of Science in Accountancy</option>
-                <option value="BSIM">Bachelor of Science in Information Management</option>
-            </select>
-
-            <select name="1stcampuscourse2ndchoice" id="1stcampuscourse2ndchoice">
-                <option value="BSCS">Bachelor of Science in Computer Science</option>
-                <option value="BSEE">Bachelor of Secondary Education major in Special Education</option>
-                <option value="BSIT">Bachelor of Science in Information Technology</option>
-                <option value="BAE">Bachelor of Arts in English</option>
-                <option value="BSBA">Bachelor of Science in Business Administration</option>
-                <option value="BSCE">Bachelor of Science in Civil Engineering</option>
-                <option value="BSM">Bachelor of Science in Mathematics</option>
-                <option value="BSPS">Bachelor of Science in Psychology</option>
-                <option value="BST">Bachelor of Science in Tourism</option>
-                <option value="BSA">Bachelor of Science in Accountancy</option>
-                <option value="BSIM">Bachelor of Science in Information Management</option>
-            </select>
-        </div>
-
-        <div>
-            <select name="campus2ndchoice" id="campus2ndchoice">
-                <option value="cainta">Cainta</option>
-                <option value="angono">Angono</option>
-                <option value="antipolo">Antipolo</option>
-                <option value="morong">Morong</option>
-                <option value="binangonan">Binangonan</option>
-            </select>
-
-            <select name="2ndcampuscourse1stchoice" id="2ndcampuscourse1stchoice">
-                <option value="BSCS">Bachelor of Science in Computer Science</option>
-                <option value="BSEE">Bachelor of Secondary Education major in Special Education</option>
-                <option value="BSIT">Bachelor of Science in Information Technology</option>
-                <option value="BAE">Bachelor of Arts in English</option>
-                <option value="BSBA">Bachelor of Science in Business Administration</option>
-                <option value="BSCE">Bachelor of Science in Civil Engineering</option>
-                <option value="BSM">Bachelor of Science in Mathematics</option>
-                <option value="BSPS">Bachelor of Science in Psychology</option>
-                <option value="BST">Bachelor of Science in Tourism</option>
-                <option value="BSA">Bachelor of Science in Accountancy</option>
-                <option value="BSIM">Bachelor of Science in Information Management</option>
-            </select>
-
-            <select name="2ndcampuscourse2ndchoice" id="2ndcampuscourse2ndchoice">
-                <option value="BSCS">Bachelor of Science in Computer Science</option>
-                <option value="BSEE">Bachelor of Secondary Education major in Special Education</option>
-                <option value="BSIT">Bachelor of Science in Information Technology</option>
-                <option value="BAE">Bachelor of Arts in English</option>
-                <option value="BSBA">Bachelor of Science in Business Administration</option>
-                <option value="BSCE">Bachelor of Science in Civil Engineering</option>
-                <option value="BSM">Bachelor of Science in Mathematics</option>
-                <option value="BSPS">Bachelor of Science in Psychology</option>
-                <option value="BST">Bachelor of Science in Tourism</option>
-                <option value="BSA">Bachelor of Science in Accountancy</option>
-                <option value="BSIM">Bachelor of Science in Information Management</option>
-            </select>
-        </div>
-
-
-
     </div>
 </body>
 
