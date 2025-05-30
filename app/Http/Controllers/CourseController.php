@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    public function showForm()
+    public function showCourse()
     {
         $courses = DB::select('SELECT courseCode, courseName FROM course');
         return view('enroll', compact('courses'));

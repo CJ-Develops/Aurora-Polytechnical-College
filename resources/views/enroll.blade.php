@@ -10,8 +10,9 @@
 
 <body>
     <div>
-        <form action="/addFullEnrollment" method="POST">
+        <form action="{{ url('/addFullEnrollment') }}" method="POST">
             @csrf
+            
             <div>
                 <h1>Personal Information</h1>
                 <input name="applicantName" type="text" placeholder="Name" />
