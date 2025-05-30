@@ -110,8 +110,6 @@
                 <input name="presentOccupation[]" type="text" placeholder="Present Occupation" />
                 <input name="monthlyIncome[]" type="number" placeholder="Monthly Income" />
 
-                
-
             </div>
             
             <br>
@@ -119,8 +117,8 @@
             
             <div>
                 <h1>Intended Campus and Courses</h1>
-                <select name="campus[]" id="campus1stchoice">
-                    <option disabled selected>Select Campus</option>
+                <select name="campus[]" id="campus1stchoice" required>
+                    <option value="" disabled selected>Select Campus</option>
                     <option value="cainta">Cainta</option>
                     <option value="angono">Angono</option>
                     <option value="antipolo">Antipolo</option>
@@ -128,15 +126,15 @@
                     <option value="binangonan">Binangonan</option>
                 </select>
                 
-                <select name="courseCode[]" id="1stcampuscourse1stchoice">
-                    <option disabled selected>Select Course</option>
+                <select name="courseCode[]" id="1stcampuscourse1stchoice" required>
+                    <option value="" disabled selected>Select Course</option>
                     @foreach ($courses as $course)
                     <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                     @endforeach
                 </select>
                 
-                <select name="courseCode[]" id="1stcampuscourse2ndchoice">
-                    <option disabled selected>Select Course</option>
+                <select name="courseCode[]" id="1stcampuscourse2ndchoice" required>
+                    <option value="" disabled selected>Select Course</option>
                     @foreach ($courses as $course)
                     <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                     @endforeach
@@ -144,8 +142,8 @@
             </div>
             
             <div>
-                <select name="campus[]" id="campus2ndchoice">
-                    <option disabled selected>Select Campus</option>
+                <select name="campus[]" id="campus2ndchoice" required>
+                    <option value="" disabled selected>Select Campus</option>
                     <option value="cainta">Cainta</option>
                     <option value="angono">Angono</option>
                     <option value="antipolo">Antipolo</option>
@@ -153,15 +151,15 @@
                     <option value="binangonan">Binangonan</option>
                 </select>
                 
-                <select name="courseCode[]" id="2ndcampuscourse1stchoice">
-                    <option disabled selected>Select Course</option>
+                <select name="courseCode[]" id="2ndcampuscourse1stchoice" required>
+                    <option value="" disabled selected>Select Course</option>
                     @foreach ($courses as $course)
                     <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                     @endforeach
                 </select>
                 
-                <select name="courseCode[]" id="2ndcampuscourse2ndchoice">
-                    <option disabled selected>Select Course</option>
+                <select name="courseCode[]" id="2ndcampuscourse2ndchoice" required>
+                    <option value="" disabled selected>Select Course</option>
                     @foreach ($courses as $course)
                     <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                     @endforeach
