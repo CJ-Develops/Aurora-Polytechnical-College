@@ -10,7 +10,7 @@
     <div>
         hi this is homepage.
 
-        <a href="/enroll">enroll here</a>
+        <a href="/applicant_login">enroll here</a>
     </div>
 </body>
 </html>

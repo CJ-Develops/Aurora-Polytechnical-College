@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ApplicantController extends Controller
 {
@@ -13,12 +14,15 @@ class ApplicantController extends Controller
         $nextNumber = $latest ? ((int) substr($latest->applicantID, 5)) + 1 : 1;
         $newApplicantID = date('Y') . '-' . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
 
+        $password = Str::random(8);
+
         DB::insert(
-            "INSERT INTO applicant(applicantID, applicantName, gender, religion, dateOfBirth, age, civilStatus, placeOfBirth, applicantCitizenship, permanentAddress, telephone, emailAddress, fbAccount, hsName, hsAddress, generalAverage, yearOfCompletion)
+            "INSERT INTO applicant(applicantID, password, applicantName, gender, religion, dateOfBirth, age, civilStatus, placeOfBirth, applicantCitizenship, permanentAddress, telephone, emailAddress, fbAccount, hsName, hsAddress, generalAverage, yearOfCompletion)
             
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
                 $newApplicantID,
+                $password,
                 $request->input('applicantName'),
                 $request->input('gender'),
                 $request->input('religion'),
@@ -37,7 +41,6 @@ class ApplicantController extends Controller
                 $request->input('yearOfCompletion'),
             ]
         );
-
 
         return $newApplicantID;
     }
