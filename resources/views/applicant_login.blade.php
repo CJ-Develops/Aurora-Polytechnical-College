@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <div class="outer_homepage">
+    <div class="outer_login">
 
     {{-- Navbar --}}
          <div class="nav_bar">
@@ -32,6 +32,7 @@
 
          {{-- Content --}}
          <div class="content_style">
+            <div class="row">
             {{-- <div class="cnt_tlt lemon">
                 AURORA POLYTECHNIC COLLEGE
             </div>
@@ -43,23 +44,25 @@
             <div class="cnt_btnOuter">
                 <button class="cnt_btn unageo"><a href="/enroll">ENROLL</a></button>
             </div> --}}
+            <div class="col-6">
 
-            <div>
-                <h1>Appicant Login</h1>
+            </div>
+            <div class="col-6" style="align-content: center; padding: 0px 200px">
+                <h1 style="text-align: center; color: white" class="lemon">Appicant Login</h1>
 
                 <form action="/login" method="POST">
                     @csrf
 
-                    <label for="">Applicant ID</label>
-                    <input name="applicantID" type="text" placeholder="Applicant ID" required>
+                    <label style="color: white" for="">Applicant ID</label>
+                    <input style="margin-bottom: 20px" type="text" class="form-control" aria-label="Username" name="applicantID" placeholder="Applicant ID" required>
 
-                    <label for="">Password</label>
-                    <input name="password" type="password" placeholder="Password" minlength="8" required>
+                    <label style="color: white" for="">Password</label>
+                    <input name="password" class="form-control" type="password" placeholder="Password" minlength="8" required>
 
-                    <button type="submit">Submit</button>
+                    <button style="margin-top: 20px" class="btn btn-primary" type="submit">Submit</button>
                 </form>
 
-                <a href="/enroll">Enroll here</a>
+                <div style="color: white">still not enrolled? <a href="/enroll">Enroll here</a></div>
             </div>
          </div>
 
@@ -128,21 +131,18 @@ body {
 }
     
 
-.outer_homepage {
+.outer_login {
     width: 100%;
     height: 100vh;  
-    background-image: url("image/DSC_0314.jpg");
+    background-image: url("image/DSC_0323.jpg");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
 .content_style {
-    margin: 0;
-    position: absolute;
-    bottom: 130px;
-    text-align: center;
-    width: 100%;
     animation: 1s ease-out 0s 1 slideInFromTop;
+    height: 70vh;
+    align-content: center
 }
 .cnt_tlt {
     color: white;
