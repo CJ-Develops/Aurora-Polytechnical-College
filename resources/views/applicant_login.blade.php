@@ -4,32 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/lemon-milk" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+
     <title>Appicant Login</title>
 </head>
 
 <body>
-    <h1>Appicant Login</h1>
+    <div class="outer_homepage">
 
-    <form action="/login" method="POST">
-        @csrf
+    {{-- Navbar --}}
+         <div class="nav_bar">
+            <div class="row">
+                <div class="col-6 animation_nav">
+                    <img src="image/logo_white.png" class="navbar_logo"/>
+                </div>
+                <div class="col-6 btns_tabs animation_navTabs">
+                    <button class="btn_navbar unageo"><a href="/">HOME</a></button>
+                    <button class="btn_navbar unageo tab_active"><a href="/applicant_login">LOGIN</a></button>
+                    <button class="btn_navbar unageo"><a href="#">DEVS</a></button>
+                    <button class="btn_navbar unageo"><a href="/enroll">ENROLL NOW</a></button>
+                </div>
+            </div>
+         </div>
+         {{-- End of navbar --}}
 
-        <label for="">Applicant ID</label>
-        <input name="applicantID" type="text" placeholder="Applicant ID" required>
+         {{-- Content --}}
+         <div class="content_style">
+            {{-- <div class="cnt_tlt lemon">
+                AURORA POLYTECHNIC COLLEGE
+            </div>
+            <div class="cnt_dsk">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                Zet dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.
+            </div>
+            <div class="cnt_btnOuter">
+                <button class="cnt_btn unageo"><a href="/enroll">ENROLL</a></button>
+            </div> --}}
 
-        <label for="">Password</label>
-        <input name="password" type="password" placeholder="Password" minlength="8" required>
+            <div>
+                <h1>Appicant Login</h1>
 
-        <button type="submit">Submit</button>
-    </form>
+                <form action="/login" method="POST">
+                    @csrf
 
-    <a href="/enroll">Enroll here</a>
+                    <label for="">Applicant ID</label>
+                    <input name="applicantID" type="text" placeholder="Applicant ID" required>
+
+                    <label for="">Password</label>
+                    <input name="password" type="password" placeholder="Password" minlength="8" required>
+
+                    <button type="submit">Submit</button>
+                </form>
+
+                <a href="/enroll">Enroll here</a>
+            </div>
+         </div>
 
 
-    @if (session('error'))
-    <script>
-        alert("{{ session('error') }}");
-    </script>
-    @endif
+    
+
+
+       
+
+         @if (session('error'))
+        <script>
+            alert("{{ session('error') }}");
+        </script>
+        @endif
+    </div>
 </body>
 
 </html>
+
+
+
+<style>
+body {
+    overflow: hidden;
+}
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animation_nav {
+    animation: 1s ease-out 0s 1 slideInFromLeft;
+}
+
+.animation_navTabs {
+    animation: 1s ease-out 0s 1 slideInFromRight;
+}
+.lemon {
+    font-family: 'Lemon Milk', sans-serif;
+}
+    
+
+.outer_homepage {
+    width: 100%;
+    height: 100vh;  
+    background-image: url("image/DSC_0314.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.content_style {
+    margin: 0;
+    position: absolute;
+    bottom: 130px;
+    text-align: center;
+    width: 100%;
+    animation: 1s ease-out 0s 1 slideInFromTop;
+}
+.cnt_tlt {
+    color: white;
+    font-size: 60px;
+
+}
+.cnt_dsk {
+    color: white;
+    font-size: 12px;
+    width: 480px;
+    margin: 0 auto;
+}
+
+.cnt_btn {
+    background: transparent;
+    border: 0;
+    margin: 0px 20px;
+    padding: 3px 50px 5px 50px;
+    border: 1px solid white;
+}
+.cnt_btnOuter {
+    margin: 30px 0px 0px 0px;
+}
+.cnt_btn a {
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+}
+</style>
