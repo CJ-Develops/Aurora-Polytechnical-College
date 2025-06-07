@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 
 
 Route::get('/', function () {
@@ -15,7 +16,7 @@ Route::view('/enroll', 'enroll');
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/dashboard', [LoginController::class, 'dashboard']);
-Route::get('/admin', [LoginController::class, 'admin']);
+Route::get('/admin', [AdminController::class, 'index']);
 
 
 Route::get('/enroll', [CourseController::class, 'showCourse']);
