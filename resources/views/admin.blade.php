@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +36,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="wrapper">
@@ -53,8 +55,8 @@
 
         <!-- Main Content -->
         <div class="main-content">
-        @if ($table === 'applicant')
-        <h2>List of Applicants</h2>
+            @if ($table === 'applicant')
+            <h2>List of Applicants</h2>
             <div style="overflow-x: auto;">
                 <table class="table table-bordered table-striped" style="min-width: 1200px;">
                     <thead>
@@ -82,34 +84,36 @@
 
                     <tbody>
                         @foreach ($applicants as $applicant)
-                            <tr>
-                                <td>{{ $applicant->applicantID }}</td>
-                                <td>{{ $applicant->applicantName }}</td>
-                                <td>{{ $applicant->gender }}</td>
-                                <td>{{ $applicant->religion }}</td>
-                                <td>{{ $applicant->dateOfBirth }}</td>
-                                <td>{{ $applicant->age }}</td>
-                                <td>{{ $applicant->civilStatus }}</td>
-                                <td>{{ $applicant->placeOfBirth }}</td>
-                                <td>{{ $applicant->applicantCitizenship }}</td>
-                                <td>{{ $applicant->permanentAddress }}</td>
-                                <td>{{ $applicant->telephone }}</td>
-                                <td>{{ $applicant->emailAddress }}</td>
-                                <td>{{ $applicant->fbAccount }}</td>
-                                <td>{{ $applicant->hsName }}</td>
-                                <td>{{ $applicant->hsAddress }}</td>
-                                <td>{{ $applicant->generalAverage }}</td>
-                                <td>{{ $applicant->yearOfCompletion }}</td>
-                                <td>
-                                    <a href="{{ url('update/'.$applicant->applicantID) }}" class="btn btn-sm btn-warning">Update</a>
-                                    <a href="{{ url('delete/'.$applicant->applicantID) }}" class="btn btn-sm btn-danger">Delete</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ $applicant->applicantID }}</td>
+                            <td>{{ $applicant->applicantName }}</td>
+                            <td>{{ $applicant->gender }}</td>
+                            <td>{{ $applicant->religion }}</td>
+                            <td>{{ $applicant->dateOfBirth }}</td>
+                            <td>{{ $applicant->age }}</td>
+                            <td>{{ $applicant->civilStatus }}</td>
+                            <td>{{ $applicant->placeOfBirth }}</td>
+                            <td>{{ $applicant->applicantCitizenship }}</td>
+                            <td>{{ $applicant->permanentAddress }}</td>
+                            <td>{{ $applicant->telephone }}</td>
+                            <td>{{ $applicant->emailAddress }}</td>
+                            <td>{{ $applicant->fbAccount }}</td>
+                            <td>{{ $applicant->hsName }}</td>
+                            <td>{{ $applicant->hsAddress }}</td>
+                            <td>{{ $applicant->generalAverage }}</td>
+                            <td>{{ $applicant->yearOfCompletion }}</td>
+                            <td>
+                                <a href="{{ url('update/'.$applicant->applicantID) }}" class="btn btn-sm btn-warning">Update</a>
+                                <a href="{{ route('applicant.delete', $applicant->applicantID) }}" class="btn btn-sm btn-danger">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        @elseif ($table === 'guardian')
+            @elseif ($table === 'guardian')
             <h2>List of Guardians</h2>
             <div style="overflow-x: auto;">
                 <table class="table table-bordered table-striped" style="min-width: 800px;">
@@ -129,26 +133,26 @@
                     </thead>
                     <tbody>
                         @foreach ($guardians as $guardian)
-                            <tr>
-                                <td>{{ $guardian->guardianID }}</td>
-                                <td>{{ $guardian->fk_applicantID }}</td>
-                                <td>{{ $guardian->guardianType }}</td>
-                                <td>{{ $guardian->guardianName }}</td>
-                                <td>{{ $guardian->citizenship }}</td>
-                                <td>{{ $guardian->martialStatus }}</td>
-                                <td>{{ $guardian->highestEducAttain }}</td>
-                                <td>{{ $guardian->presentOccupation }}</td>
-                                <td>{{ $guardian->monthlyIncome }}</td>
-                                <td>
-                                    <a href="{{ url('guardian/update/'.$guardian->guardianID) }}" class="btn btn-sm btn-warning">Update</a>
-                                    <a href="{{ url('guardian/delete/'.$guardian->guardianID) }}" class="btn btn-sm btn-danger">Delete</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ $guardian->guardianID }}</td>
+                            <td>{{ $guardian->fk_applicantID }}</td>
+                            <td>{{ $guardian->guardianType }}</td>
+                            <td>{{ $guardian->guardianName }}</td>
+                            <td>{{ $guardian->citizenship }}</td>
+                            <td>{{ $guardian->martialStatus }}</td>
+                            <td>{{ $guardian->highestEducAttain }}</td>
+                            <td>{{ $guardian->presentOccupation }}</td>
+                            <td>{{ $guardian->monthlyIncome }}</td>
+                            <td>
+                                <a href="{{ url('guardian/update/'.$guardian->guardianID) }}" class="btn btn-sm btn-warning">Update</a>
+                                <a href="{{ route('guardian.delete', $guardian->guardianID) }}" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        @elseif ($table === 'intended')
+            @elseif ($table === 'intended')
             <h2>Applicant's Intended Courses</h2>
             <div style="overflow-x: auto;">
                 <table class="table table-bordered table-striped" style="min-width: 800px;">
@@ -162,20 +166,21 @@
                     </thead>
                     <tbody>
                         @foreach ($intendeds as $intended)
-                            <tr>
-                                <td>{{ $intended->fk_applicantID }}</td>
-                                <td>{{ $intended->fk_courseCode }}</td>
-                                <td>{{ $intended->campus }}</td>
-                                <td>
-                                    <a href="{{ url('intended/update/'.$intended->fk_applicantID.'/'.$intended->fk_courseCode) }}" class="btn btn-sm btn-warning">Update</a>
-                                    <a href="{{ url('intended/delete/'.$intended->fk_applicantID.'/'.$intended->fk_courseCode) }}" class="btn btn-sm btn-danger">Delete</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ $intended->fk_applicantID }}</td>
+                            <td>{{ $intended->fk_courseCode }}</td>
+                            <td>{{ $intended->campus }}</td>
+                            <td>
+                                <a href="{{ url('intended/edit/'.$intended->fk_applicantID.'/'.$intended->fk_courseCode) }}" class="btn btn-sm btn-warning">Update</a>
+
+                                <a href="{{ route('intended.delete', [$intended->fk_applicantID, $intended->fk_courseCode]) }}" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        @elseif ($table === 'course')
+            @elseif ($table === 'course')
             <h2>List of Courses</h2>
             <div style="overflow-x: auto;">
                 <table class="table table-bordered table-striped" style="min-width: 800px;">
@@ -191,23 +196,33 @@
                     </thead>
                     <tbody>
                         @foreach ($courses as $course)
-                            <tr>
-                                <td>{{ $course->courseCode }}</td>
-                                <td>{{ $course->courseName }}</td>
-                                <td>{{ $course->duration }}</td>
-                                <td>{{ $course->department }}</td>
-                                <td>{{ $course->totalUnits }}</td>
-                                <td>
-                                    <a href="{{ url('course/update/'.$course->courseCode) }}" class="btn btn-sm btn-warning">Update</a>
-                                    <a href="{{ url('course/delete/'.$course->courseCode) }}" class="btn btn-sm btn-danger">Delete</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ $course->courseCode }}</td>
+                            <td>{{ $course->courseName }}</td>
+                            <td>{{ $course->duration }}</td>
+                            <td>{{ $course->department }}</td>
+                            <td>{{ $course->totalUnits }}</td>
+                            <td>
+                                <a href="{{ url('course/update/'.$course->courseCode) }}" class="btn btn-sm btn-warning">Update</a>
+                                <a href="{{ route('course.delete', $course->courseCode) }}" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-        @endif
+            @endif
         </div>
     </div>
+
+    @if($errors->has('delete_error'))
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            alert("{!! addslashes($errors->first('delete_error')) !!}");
+        });
+    </script>
+    @endif
+
 </body>
+
 </html>

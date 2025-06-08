@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DeleteController;
 
 
 Route::get('/', function () {
@@ -40,3 +41,13 @@ Route::get('/logout', function () {
     session()->flush();
     return redirect('/applicant_login')->with('success', 'Logged out successfully.');
 });
+
+
+
+Route::get('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
+
+Route::get('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])->name('guardian.delete');
+
+Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
+
+Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
