@@ -167,7 +167,8 @@
                                 <td>{{ $intended->fk_courseCode }}</td>
                                 <td>{{ $intended->campus }}</td>
                                 <td>
-                                    <a href="{{ url('intended/update/'.$intended->fk_applicantID.'/'.$intended->fk_courseCode) }}" class="btn btn-sm btn-warning">Update</a>
+                                    <a href="{{ url('intended/edit/'.$intended->fk_applicantID.'/'.$intended->fk_courseCode) }}" class="btn btn-sm btn-warning">Update</a>
+
                                     <a href="{{ url('intended/delete/'.$intended->fk_applicantID.'/'.$intended->fk_courseCode) }}" class="btn btn-sm btn-danger">Delete</a>
                                 </td>
                             </tr>
