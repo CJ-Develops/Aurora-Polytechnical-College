@@ -6,6 +6,10 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeleteController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\UpdateController;
+>>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
 
 
 Route::get('/', function () {
@@ -43,11 +47,30 @@ Route::get('/logout', function () {
 });
 
 
+<<<<<<< HEAD
 
+=======
+/* DELETE */
+>>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
 Route::get('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
 
 Route::get('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])->name('guardian.delete');
 
 Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
 
+<<<<<<< HEAD
 Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
+=======
+Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
+
+
+
+/* UPDATE */
+Route::post('/update-raw/{applicantID}', [UpdateController::class, 'applicantUpdate'])->name('applicant.update.raw');
+
+Route::post('/update-raw/{id}', [UpdateController::class, 'guardianUpdate'])->name('guardian.update.raw');
+
+Route::post('/update-raw/{applicantID}/{courseCode}', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
+
+Route::post('/update-raw/{courseCode}', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
+>>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b

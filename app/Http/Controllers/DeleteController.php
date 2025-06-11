@@ -21,6 +21,17 @@ class DeleteController extends Controller
         }
 
         DB::delete('DELETE FROM applicant WHERE applicantID = ?', [$id]);
+        DB::delete("
+            DELETE guardian, applicantcoursecampus
+            FROM applicant
+            LEFT JOIN guardian ON applicant.applicantID = guardian.fk_applicantID
+            LEFT JOIN applicantcoursecampus ON applicant.applicantID = applicantcoursecampus.fk_applicantID
+            WHERE applicant.applicantID = ?
+        ", [$id]);
+
+        DB::delete("DELETE FROM applicant WHERE applicantID = ?", [$id]);
+
+        DB::commit();
 
         return redirect()->back()->with('success', 'Applicant deleted.');
     }
