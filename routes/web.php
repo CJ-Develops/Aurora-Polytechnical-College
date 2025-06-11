@@ -4,6 +4,9 @@ use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DeleteController;
+use App\Http\Controllers\UpdateController;
 
 
 Route::get('/', function () {
@@ -15,7 +18,7 @@ Route::view('/enroll', 'enroll');
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/dashboard', [LoginController::class, 'dashboard']);
-Route::get('/admin', [LoginController::class, 'admin']);
+Route::get('/admin', [AdminController::class, 'index']);
 
 
 Route::get('/enroll', [CourseController::class, 'showCourse']);
@@ -39,3 +42,24 @@ Route::get('/logout', function () {
     session()->flush();
     return redirect('/applicant_login')->with('success', 'Logged out successfully.');
 });
+
+
+/* DELETE */
+Route::get('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
+
+Route::get('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])->name('guardian.delete');
+
+Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
+
+Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
+
+
+
+/* UPDATE */
+Route::post('/update-raw/{applicantID}', [UpdateController::class, 'applicantUpdate'])->name('applicant.update.raw');
+
+Route::post('/update-raw/{id}', [UpdateController::class, 'guardianUpdate'])->name('guardian.update.raw');
+
+Route::post('/update-raw/{applicantID}/{courseCode}', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
+
+Route::post('/update-raw/{courseCode}', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');

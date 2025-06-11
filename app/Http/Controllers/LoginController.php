@@ -31,27 +31,4 @@ class LoginController extends Controller
             return redirect('/applicant_login')->with('error', 'Invalid credentials');
         }
     }
-
-    public function dashboard()
-    {
-        $applicantID = Session::get('applicantID');
-
-        if (!$applicantID) {
-            return redirect('/applicant_login')->with('error', 'Please login first.');
-        }
-
-        $user = DB::select('SELECT applicantName FROM applicant WHERE applicantID = ?', [$applicantID]);
-        $name = $user[0]->applicantName ?? 'Guest';
-
-        return view('dashboard', compact('name'));
-    }
-
-    public function admin()
-    {
-        if (!Session::get('is_admin')) {
-            return redirect('/applicant_login')->with('error', 'Unauthorized access.');
-        }
-
-        return view('admin');
-    }
 }

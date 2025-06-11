@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,15 @@
 
     <title>Homepage</title>
 </head>
+
 <body>
     <div class="outer_homepage">
 
         {{-- Navbar --}}
-         <div class="nav_bar">
+        <div class="nav_bar">
             <div class="row">
                 <div class="col-6 animation_nav">
-                    <img src="image/logo_white.png" class="navbar_logo"/>
+                    <img src="image/logo_white.png" class="navbar_logo" />
                 </div>
                 <div class="col-6 btns_tabs animation_navTabs">
                     <button class="btn_navbar unageo tab_active"><a href="/">HOME</a></button>
@@ -26,12 +28,12 @@
                     <button class="btn_navbar unageo"><a href="/enroll">ENROLL NOW</a></button>
                 </div>
             </div>
-         </div>
-         {{-- End of navbar --}}
+        </div>
+        {{-- End of navbar --}}
 
 
-         {{-- Content --}}
-         <div class="content_style">
+        {{-- Content --}}
+        <div class="content_style">
             <div class="cnt_tlt lemon">
                 AURORA POLYTECHNIC COLLEGE
             </div>
@@ -43,101 +45,114 @@
             <div class="cnt_btnOuter">
                 <button class="cnt_btn unageo"><a href="/enroll">ENROLL</a></button>
             </div>
-         </div>
+        </div>
 
 
     </div>
 </body>
+
 </html>
 
 <style>
-body {
-    overflow: hidden;
-}
-@keyframes slideInFromTop {
-  0% {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-@keyframes slideInFromRight {
-  0% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
+    body {
+        overflow: hidden;
+    }
 
-.animation_nav {
-    animation: 1s ease-out 0s 1 slideInFromLeft;
-}
+    @keyframes slideInFromTop {
+        0% {
+            transform: translateY(100%);
+            opacity: 0;
+        }
 
-.animation_navTabs {
-    animation: 1s ease-out 0s 1 slideInFromRight;
-}
-.lemon {
-    font-family: 'Lemon Milk', sans-serif;
-}
-    
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 
-.outer_homepage {
-    width: 100%;
-    height: 100vh;  
-    background-image: url("image/DSC_0314.jpg");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-.content_style {
-    margin: 0;
-    position: absolute;
-    bottom: 150px;
-    text-align: center;
-    width: 100%;
-    animation: 1s ease-out 0s 1 slideInFromTop;
-}
-.cnt_tlt {
-    color: white;
-    font-size: 60px;
+    @keyframes slideInFromLeft {
+        0% {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
 
-}
-.cnt_dsk {
-    color: white;
-    font-size: 12px;
-    width: 480px;
-    margin: 0 auto;
-}
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
 
-.cnt_btn {
-    background: transparent;
-    border: 0;
-    margin: 0px 20px;
-    padding: 3px 50px 5px 50px;
-    border: 1px solid white;
-}
-.cnt_btnOuter {
-    margin: 30px 0px 0px 0px;
-}
-.cnt_btn a {
-    color: white;
-    text-decoration: none;
-    font-size: 12px;
-}
+    @keyframes slideInFromRight {
+        0% {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .animation_nav {
+        animation: 1s ease-out 0s 1 slideInFromLeft;
+    }
+
+    .animation_navTabs {
+        animation: 1s ease-out 0s 1 slideInFromRight;
+    }
+
+    .lemon {
+        font-family: 'Lemon Milk', sans-serif;
+    }
+
+
+    .outer_homepage {
+        width: 100%;
+        height: 100vh;
+        background-image: url("image/DSC_0314.jpg");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .content_style {
+        margin: 0;
+        position: absolute;
+        bottom: 150px;
+        text-align: center;
+        width: 100%;
+        animation: 1s ease-out 0s 1 slideInFromTop;
+    }
+
+    .cnt_tlt {
+        color: white;
+        font-size: 60px;
+
+    }
+
+    .cnt_dsk {
+        color: white;
+        font-size: 12px;
+        width: 480px;
+        margin: 0 auto;
+    }
+
+    .cnt_btn {
+        background: transparent;
+        border: 0;
+        margin: 0px 20px;
+        padding: 3px 50px 5px 50px;
+        border: 1px solid white;
+    }
+
+    .cnt_btnOuter {
+        margin: 30px 0px 0px 0px;
+    }
+
+    .cnt_btn a {
+        color: white;
+        text-decoration: none;
+        font-size: 12px;
+    }
 </style>
