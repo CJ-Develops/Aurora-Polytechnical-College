@@ -312,7 +312,7 @@ $editingCourse = request('editingCourse');
                             <td>
                                 <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $intended->fk_applicantID }}&editingIntendedCourse={{ $intended->fk_courseCode }}" class="btn btn-sm btn-warning">Update</a>
 
-                                <a href="{{ route('intended.delete', [$intended->fk_applicantID, $intended->fk_courseCode]) }}" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="{{ route('intended.delete', [$intended->fk_applicantID, $intended->fk_courseCode]) }}" class="btn btn-sm btn-danger">Delete</a>    
                             </td>
                         </tr>
                         @endif
