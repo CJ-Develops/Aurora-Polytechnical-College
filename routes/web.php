@@ -18,7 +18,8 @@ Route::view('/enroll', 'enroll');
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/dashboard', [LoginController::class, 'dashboard']);
-Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+
 
 
 Route::get('/enroll', [CourseController::class, 'showCourse']);
@@ -58,8 +59,8 @@ Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCours
 /* UPDATE */
 Route::post('/update-raw/{applicantID}', [UpdateController::class, 'applicantUpdate'])->name('applicant.update.raw');
 
-Route::post('/update-raw/{id}', [UpdateController::class, 'guardianUpdate'])->name('guardian.update.raw');
+Route::post('/update-raw/{guardianID}/{fk_applicantID}', [UpdateController::class, 'guardianUpdate'])->name('guardian.update.raw');
 
-Route::post('/update-raw/{applicantID}/{courseCode}', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
+Route::post('update-raw', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
 
-Route::post('/update-raw/{courseCode}', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
+Route::post('/update-raw', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
