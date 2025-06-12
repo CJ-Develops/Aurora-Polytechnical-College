@@ -117,7 +117,7 @@ $editingCourse = request('editingCourse');
                                 </td>
 
                                 <td><input type="text" name="religion" value="{{ $applicant->religion }}" class="form-inline-input""></td>
-                                <td><input type=" date" name="dateOfBirth" value="{{ $applicant->dateOfBirth }}" class="form-inline-input""></td>
+                                <td><input type="date" name="dateOfBirth" value="{{ $applicant->dateOfBirth }}" class="form-inline-input""></td>
                                 <td><input type=" number" name="age" value="{{ $applicant->age }}" class="form-inline-input""></td>
                                 <td>
                                     <select name=" civilStatus" class="form-inline-input"">
