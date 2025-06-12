@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: aurora-laravel
+    env: php
+    plan: free
+    rootDir: aurora-backend
+    buildCommand: |
+      composer install --no-dev --prefer-dist --optimize-autoloader
+      cp .env.example .env
+      php artisan key:generate
+      php artisan config:cache
+    startCommand: php artisan serve --host 0.0.0.0 --port 10000

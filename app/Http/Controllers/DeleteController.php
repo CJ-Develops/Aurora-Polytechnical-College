@@ -10,17 +10,17 @@ class DeleteController extends Controller
 {
     public function deleteApplicant($id)
     {
-        $guardianExists = DB::table('guardian')->where('fk_applicantID', $id)->exists();
+        DB::delete("
+            DELETE guardian, applicantcoursecampus
+            FROM applicant
+            LEFT JOIN guardian ON applicant.applicantID = guardian.fk_applicantID
+            LEFT JOIN applicantcoursecampus ON applicant.applicantID = applicantcoursecampus.fk_applicantID
+            WHERE applicant.applicantID = ?
+        ", [$id]);
 
-        $courseCampusExists = DB::table('applicantcoursecampus')->where('fk_applicantID', $id)->exists();
+        DB::delete("DELETE FROM applicant WHERE applicantID = ?", [$id]);
 
-        if ($guardianExists || $courseCampusExists) {
-            return redirect()->back()->withErrors([
-                'delete_error' => 'You need to delete the record from Guardian and ApplicantCourseCampus tables first.',
-            ]);
-        }
-
-        DB::delete('DELETE FROM applicant WHERE applicantID = ?', [$id]);
+        DB::commit();
 
         return redirect()->back()->with('success', 'Applicant deleted.');
     }

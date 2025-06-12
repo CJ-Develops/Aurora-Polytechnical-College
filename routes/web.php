@@ -6,6 +6,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeleteController;
+use App\Http\Controllers\UpdateController;
 
 
 Route::get('/', function () {
@@ -17,7 +18,8 @@ Route::view('/enroll', 'enroll');
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/dashboard', [LoginController::class, 'dashboard']);
-Route::get('/admin', [AdminController::class, 'index']);
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+
 
 
 Route::get('/enroll', [CourseController::class, 'showCourse']);
@@ -43,7 +45,7 @@ Route::get('/logout', function () {
 });
 
 
-
+/* DELETE */
 Route::get('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
 
 Route::get('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])->name('guardian.delete');
@@ -51,3 +53,14 @@ Route::get('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])
 Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
 
 Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
+
+
+
+/* UPDATE */
+Route::post('/update-raw/{applicantID}', [UpdateController::class, 'applicantUpdate'])->name('applicant.update.raw');
+
+Route::post('/update-raw/{guardianID}/{fk_applicantID}', [UpdateController::class, 'guardianUpdate'])->name('guardian.update.raw');
+
+Route::post('update-raw', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
+
+Route::post('/update-raw', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
