@@ -61,6 +61,6 @@ Route::post('/update-raw/{applicantID}', [UpdateController::class, 'applicantUpd
 
 Route::post('/update-raw/{guardianID}/{fk_applicantID}', [UpdateController::class, 'guardianUpdate'])->name('guardian.update.raw');
 
-Route::post('update-raw', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
+Route::post('/intended/update-raw', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
 
 Route::post('/update-raw', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
