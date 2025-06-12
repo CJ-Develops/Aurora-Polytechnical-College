@@ -8,7 +8,7 @@
     <link href="https://fonts.cdnfonts.com/css/lemon-milk" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/global.css') }}">
 
-    <title>Appicant Login</title>
+    <title>Applicant Login</title>
 </head>
 
 <body>
