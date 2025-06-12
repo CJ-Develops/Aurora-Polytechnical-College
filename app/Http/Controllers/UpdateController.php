@@ -42,7 +42,7 @@ class UpdateController extends Controller
     public function guardianUpdate(Request $request, $id)
     {
         DB::update(
-            'UPDATE guardian SET 
+        'UPDATE guardian SET 
             guardianType = ?, 
             guardianName = ?, 
             citizenship = ?, 
@@ -50,36 +50,40 @@ class UpdateController extends Controller
             highestEducAttain = ?, 
             presentOccupation = ?, 
             monthlyIncome = ?
-            WHERE guardianID = ?',
-                [
-                    $request->guardianType,
-                    $request->guardianName,
-                    $request->citizenship,
-                    $request->martialStatus,
-                    $request->highestEducAttain,
-                    $request->presentOccupation,
-                    $request->monthlyIncome,
-                    $id
-                ]
-            );
+         WHERE guardianID = ? AND fk_applicantID = ?',
+        [
+            $request->guardianType,
+            $request->guardianName,
+            $request->citizenship,
+            $request->martialStatus,
+            $request->highestEducAttain,
+            $request->presentOccupation,
+            $request->monthlyIncome,
+            $id,
+            $request->fk_applicantID // using the correct request key
+        ]
+    );
 
         return redirect('/admin?table=guardian')->with('success', 'Guardian updated successfully!');
     }
 
-    public function intendedUpdate(Request $request, $applicantID, $courseCode)
+    public function intendedUpdate(Request $request)
     {
-        DB::update('UPDATE applicantcoursecampus SET campus = ? WHERE fk_applicantID = ? AND fk_courseCode = ?', [
-            $request->campus,
-            $applicantID,
-            $courseCode,
-        ]);
+        DB::update(
+            'UPDATE applicantcoursecampus SET campus = ? WHERE fk_applicantID = ? AND fk_courseCode = ?',
+            [
+                $request->campus,
+                $request->fk_applicantID,
+                $request->fk_courseCode,
+            ]
+        );
 
         return redirect('/admin?table=intended')->with('success', 'Campus updated successfully.');
     }
 
     public function courseUpdate(Request $request)
     {
-        DB::update('UPDATE campus SET courseName = ?, duration = ?, department = ?, totalUnits = ? WHERE courseCode = ?', [
+        DB::update('UPDATE course SET courseName = ?, duration = ?, department = ?, totalUnits = ? WHERE courseCode = ?', [
             $request->courseName,
             $request->duration,
             $request->department,
