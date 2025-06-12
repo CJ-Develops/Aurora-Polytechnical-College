@@ -1,8 +1,9 @@
 services:
   - type: web
-    name: laravel-app
+    name: aurora-laravel
     env: php
     plan: free
+    rootDir: aurora-backend
     buildCommand: |
       composer install --no-dev --prefer-dist --optimize-autoloader
       cp .env.example .env
