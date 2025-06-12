@@ -94,8 +94,6 @@ $editingCourse = request('editingCourse');
 
                     <tbody>
                         @foreach ($applicants as $applicant)
-<<<<<<< HEAD
-=======
                         @if ($editingApplicantId == $applicant->applicantID)
                         <form action="{{ route('applicant.update.raw', $applicant->applicantID) }}" method="POST">
                             @csrf
@@ -130,7 +128,6 @@ $editingCourse = request('editingCourse');
                             </tr>
                         </form>
                         @else
->>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
                         <tr>
                             <td>{{ $applicant->applicantID }}</td>
                             <td>{{ $applicant->applicantName }}</td>
@@ -150,20 +147,11 @@ $editingCourse = request('editingCourse');
                             <td>{{ $applicant->generalAverage }}</td>
                             <td>{{ $applicant->yearOfCompletion }}</td>
                             <td>
-<<<<<<< HEAD
-                                <a href="{{ url('update/'.$applicant->applicantID) }}" class="btn btn-sm btn-warning">Update</a>
-                                <a href="{{ route('applicant.delete', $applicant->applicantID) }}" class="btn btn-sm btn-danger">
-                                    Delete
-                                </a>
-                            </td>
-                        </tr>
-=======
                                 <a href="{{ url()->current() . '?editingApplicant=' . $applicant->applicantID }}" class="btn btn-sm btn-warning">Update</a>
                                 <a href="{{ route('applicant.delete', $applicant->applicantID) }}" class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>
                         @endif
->>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
                         @endforeach
                     </tbody>
                 </table>
@@ -188,8 +176,6 @@ $editingCourse = request('editingCourse');
                     </thead>
                     <tbody>
                         @foreach ($guardians as $guardian)
-<<<<<<< HEAD
-=======
                         @if ($editingGuardianId == $guardian->guardianID)
                         <form action="{{ route('guardian.update.raw', $guardian->guardianID) }}" method="POST">
                             @csrf
@@ -216,7 +202,6 @@ $editingCourse = request('editingCourse');
                             </tr>
                         </form>
                         @else
->>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
                         <tr>
                             <td>{{ $guardian->guardianID }}</td>
                             <td>{{ $guardian->fk_applicantID }}</td>
@@ -228,19 +213,12 @@ $editingCourse = request('editingCourse');
                             <td>{{ $guardian->presentOccupation }}</td>
                             <td>{{ $guardian->monthlyIncome }}</td>
                             <td>
-<<<<<<< HEAD
-                                <a href="{{ url('guardian/update/'.$guardian->guardianID) }}" class="btn btn-sm btn-warning">Update</a>
-                                <a href="{{ route('guardian.delete', $guardian->guardianID) }}" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                        </tr>
-=======
                                 <a href="{{ url()->current() }}?table=guardian&editingGuardian={{ $guardian->guardianID }}" class="btn btn-sm btn-warning">Update</a>
 
                                 <a href="{{ route('guardian.delete', $guardian->guardianID) }}" class="btn btn-sm btn-danger">Delete</a>
                             </td>
                         </tr>
                         @endif
->>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
                         @endforeach
                     </tbody>
                 </table>
@@ -260,8 +238,6 @@ $editingCourse = request('editingCourse');
                     <tbody>
                         @foreach ($intendeds as $intended)
                         <tr>
-<<<<<<< HEAD
-=======
                             @if ($editingApplicantID == $intended->fk_applicantID && $editingCourseCode == $intended->fk_courseCode)
                             <form action="{{ route('intended.update.raw', ['applicantID' => $intended->fk_applicantID, 'courseCode' => $intended->fk_courseCode]) }}" method="POST">
                                 @csrf
@@ -274,22 +250,14 @@ $editingCourse = request('editingCourse');
                                 </td>
                             </form>
                             @else
->>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
                             <td>{{ $intended->fk_applicantID }}</td>
                             <td>{{ $intended->fk_courseCode }}</td>
                             <td>{{ $intended->campus }}</td>
                             <td>
-<<<<<<< HEAD
-                                <a href="{{ url('intended/edit/'.$intended->fk_applicantID.'/'.$intended->fk_courseCode) }}" class="btn btn-sm btn-warning">Update</a>
-
-                                <a href="{{ route('intended.delete', [$intended->fk_applicantID, $intended->fk_courseCode]) }}" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-=======
                                 <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $intended->fk_applicantID }}&editingIntendedCourse={{ $intended->fk_courseCode }}" class="btn btn-sm btn-warning">Update</a>
                                 <a href="{{ route('intended.delete', [$intended->fk_applicantID, $intended->fk_courseCode]) }}" class="btn btn-sm btn-danger">Delete</a>
                             </td>
                             @endif
->>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
                         </tr>
                         @endforeach
                     </tbody>
@@ -312,8 +280,6 @@ $editingCourse = request('editingCourse');
                     <tbody>
                         @foreach ($courses as $course)
                         <tr>
-<<<<<<< HEAD
-=======
                             @if ($editingCourse == $course->courseCode)
                             <form action="{{ route('course.update.raw', ['courseCode' => $course->courseCode]) }}" method="POST">
                                 @csrf
@@ -328,24 +294,17 @@ $editingCourse = request('editingCourse');
                                 </td>
                             </form>
                             @else
->>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
                             <td>{{ $course->courseCode }}</td>
                             <td>{{ $course->courseName }}</td>
                             <td>{{ $course->duration }}</td>
                             <td>{{ $course->department }}</td>
                             <td>{{ $course->totalUnits }}</td>
                             <td>
-<<<<<<< HEAD
-                                <a href="{{ url('course/update/'.$course->courseCode) }}" class="btn btn-sm btn-warning">Update</a>
-                                <a href="{{ route('course.delete', $course->courseCode) }}" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-=======
                                 <a href="{{ url()->current() }}?table=course&editingCourse={{ $course->courseCode }}" class="btn btn-sm btn-warning">Update</a>
 
                                 <a href="{{ route('course.delete', $course->courseCode) }}" class="btn btn-sm btn-danger">Delete</a>
                             </td>
                             @endif
->>>>>>> fc3d0a2e663ac570a804ae1ed7a3a5a04a4ef75b
                         </tr>
                         @endforeach
                     </tbody>
