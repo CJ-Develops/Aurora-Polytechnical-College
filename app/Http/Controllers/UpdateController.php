@@ -95,47 +95,50 @@ class UpdateController extends Controller
     }
 
     public function courseUpdate(Request $request)
-{
-    // First, update the course record (or insert if courseCode is changing)
-    if ($request->courseCode !== $request->original_courseCode) {
-        // Insert the new courseCode row first to satisfy the FK constraint
-        DB::insert(
-            'INSERT INTO course (courseCode, courseName, duration, department, totalUnits)
+    {
+        // First, update the course record (or insert if courseCode is changing)
+        if ($request->courseCode !== $request->original_courseCode) {
+            // Insert the new courseCode row first to satisfy the FK constraint
+            DB::insert(
+                'INSERT INTO course (courseCode, courseName, duration, department, totalUnits)
              VALUES (?, ?, ?, ?, ?)',
-            [
-                $request->courseCode,
-                $request->courseName,
-                $request->duration,
-                $request->department,
-                $request->totalUnits,
-            ]
-        );
+                [
+                    $request->courseCode,
+                    $request->courseName,
+                    $request->duration,
+                    $request->department,
+                    $request->totalUnits,
+                ]
+            );
 
-        // Then update all related applicantcoursecampus rows
-        DB::update(
-            'UPDATE applicantcoursecampus SET fk_courseCode = ? WHERE fk_courseCode = ?',
-            [
-                $request->courseCode,
-                $request->original_courseCode
-            ]
-        );
+            // Then update all related applicantcoursecampus rows
+            DB::update(
+                'UPDATE applicantcoursecampus SET fk_courseCode = ? WHERE fk_courseCode = ?',
+                [
+                    $request->courseCode,
+                    $request->original_courseCode
+                ]
+            );
 
-        // Finally, delete the old course entry
-        DB::delete('DELETE FROM course WHERE courseCode = ?', [$request->original_courseCode]);
-    } else {
-        // Simple update if courseCode hasn't changed
-        DB::update(
-            'UPDATE course 
+            // Finally, delete the old course entry
+            DB::delete('DELETE FROM course WHERE courseCode = ?', [$request->original_courseCode]);
+        } else {
+            // Simple update if courseCode hasn't changed
+            DB::update(
+                'UPDATE course 
              SET courseName = ?, duration = ?, department = ?, totalUnits = ?
              WHERE courseCode = ?',
-            [
-                $request->courseName,
-                $request->duration,
-                $request->department,
-                $request->totalUnits,
-                $request->courseCode
-            ]
-        );
+                [
+                    $request->courseName,
+                    $request->duration,
+                    $request->department,
+                    $request->totalUnits,
+                    $request->courseCode
+                ]
+            );
+        }
+
+        return redirect('/admin?table=course')->with('success', 'Course updated successfully.');
     }
 
     return redirect('/admin?table=course')->with('success', 'Course updated successfully.');

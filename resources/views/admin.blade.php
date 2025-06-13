@@ -392,6 +392,14 @@ $editingCourse = request('editingCourse');
     </script>
     @endif
 
+    @if(session('delete_error'))
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            alert("{{ session('delete_error') }}");
+        });
+    </script>
+    @endif
+
     <script>
         function addNewCourseRow() {
             const tbody = document.getElementById('courseTableBody');
