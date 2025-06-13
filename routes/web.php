@@ -45,7 +45,6 @@ Route::get('/logout', function () {
 });
 
 
-
 /* DELETE */
 Route::get('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
 
@@ -64,4 +63,4 @@ Route::post('/update-raw/{guardianID}/{fk_applicantID}', [UpdateController::clas
 
 Route::post('/intended/update-raw', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
 
-Route::post('/update-raw/{courseCode}', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
+Route::post('/update-raw', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
