@@ -63,3 +63,8 @@ Route::post('/update-raw/{guardianID}/{fk_applicantID}', [UpdateController::clas
 Route::post('/intended/update-raw', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
 
 Route::post('/update-raw', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
+
+
+/* INSERT */
+Route::post('/addFullEnrollment', [EnrollmentController::class, 'addFullEnrollment']);
+Route::post('/course/add', [CourseController::class, 'addCourse'])->name('course.add');

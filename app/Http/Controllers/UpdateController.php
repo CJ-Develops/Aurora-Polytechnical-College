@@ -140,9 +140,4 @@ class UpdateController extends Controller
 
         return redirect('/admin?table=course')->with('success', 'Course updated successfully.');
     }
-
-    return redirect('/admin?table=course')->with('success', 'Course updated successfully.');
-}
-
-
 }
