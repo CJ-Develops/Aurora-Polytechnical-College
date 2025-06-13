@@ -33,12 +33,12 @@ class DeleteController extends Controller
         return redirect()->back()->with('success', 'Guardian deleted.');
     }
 
-    public function deleteIntendedCourse($fk_applicantID, $fk_courseCode)
+    /* public function deleteIntendedCourse($fk_applicantID, $fk_courseCode)
     {
         DB::delete('DELETE FROM applicantcoursecampus WHERE fk_applicantID = ? AND fk_courseCode = ?', [$fk_applicantID, $fk_courseCode]);
 
         return redirect()->back()->with('success', 'Applicant course campus record deleted.');
-    }
+    } */
 
     public function deleteCourse($courseCode)
     {
