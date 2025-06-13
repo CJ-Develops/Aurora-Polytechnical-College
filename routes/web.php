@@ -25,7 +25,7 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard')
 Route::get('/enroll', [CourseController::class, 'showCourse']);
 Route::view('add', 'enroll');
 
-Route::post('/addFullEnrollment', [EnrollmentController::class, 'addFullEnrollment']);
+
 
 Route::get('/error', function () {
     $error = session('error') ?? 'Unknown error occurred.';
@@ -53,7 +53,6 @@ Route::get('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])
 Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
 
 Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
-
 
 
 /* UPDATE */
