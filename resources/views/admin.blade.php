@@ -246,6 +246,7 @@ $editingCourse = request('editingCourse');
                     </tbody>
                 </table>
             </div>
+
             @elseif ($table === 'intended')
             <h2>Applicant's Intended Courses</h2>
             <div style="overflow-x: auto;">
@@ -253,42 +254,49 @@ $editingCourse = request('editingCourse');
                     <thead>
                         <tr>
                             <th>Applicant ID</th>
-                            <th>Course Code</th>
                             <th>Campus</th>
+                            <th>1st Course Code</th>
+                            <th>2nd Course Code</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($intendeds as $intended)
-                        @if ($editingIntendedApplicantID == $intended->fk_applicantID && $editingIntendedCourseCode == $intended->fk_courseCode)
+                        @foreach ($groupedIntendeds as $key => $data)
                         @php
-                        $usedCourses = $usedCoursesPerApplicant[$intended->fk_applicantID] ?? [];
+                        $isEditing = request('editingIntendedApplicant') == $data['fk_applicantID']
+                        && request('campus') == $data['campus'];
                         @endphp
+
+                        @if ($isEditing)
                         <tr>
                             <form action="{{ route('intended.update.raw') }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="fk_applicantID" value="{{ $intended->fk_applicantID }}">
-                                <input type="hidden" name="original_courseCode" value="{{ $intended->fk_courseCode }}">
-
-                                <td>{{ $intended->fk_applicantID }}</td>
+                                <input type="hidden" name="fk_applicantID" value="{{ $data['fk_applicantID'] }}">
+                                <input type="hidden" name="original_campus" value="{{ $data['campus'] }}">
+                                <td>{{ $data['fk_applicantID'] }}</td>
                                 <td>
-                                    <select name="fk_courseCode" class="form-inline-input">
-                                        <option value="" disabled {{ is_null($intended->fk_courseCode) ? 'selected' : '' }}>Select Course</option>
+                                    <input type="text" name="campus" class="form-inline-input" value="{{ $data['campus'] }}">
+                                </td>
+
+                                @foreach ($data['courses'] as $index => $selectedCourse)
+                                <td>
+                                    <select name="courses[{{ $index }}]" class="form-inline-input">
                                         @foreach ($courses as $course)
                                         @php
-                                        $isUsed = in_array($course->courseCode, $usedCourses) && $course->courseCode !== $intended->fk_courseCode;
+                                        $courseCode = $course->courseCode;
+                                        $alreadyAssignedInOtherCampus = isset($assignedCourseCampus[$data['fk_applicantID']][$courseCode]) &&
+                                        $assignedCourseCampus[$data['fk_applicantID']][$courseCode] !== $data['campus'];
                                         @endphp
-                                        <option value="{{ $course->courseCode }}"
-                                            {{ $course->courseCode == $intended->fk_courseCode ? 'selected' : '' }}
-                                            {{ $isUsed ? 'disabled' : '' }}>
-                                            {{ $course->courseName }} {{ $isUsed ? '(Already taken)' : '' }}
+                                        <option value="{{ $courseCode }}"
+                                            {{ $courseCode === $selectedCourse ? 'selected' : '' }}
+                                            {{ $alreadyAssignedInOtherCampus ? 'disabled' : '' }}>
+                                            {{ $course->courseName }} {{ $alreadyAssignedInOtherCampus ? '(Taken in another campus)' : '' }}
                                         </option>
                                         @endforeach
                                     </select>
                                 </td>
-                                <td>
-                                    <input type="text" name="campus" value="{{ $intended->campus }}" class="form-inline-input">
-                                </td>
+                                @endforeach
+
                                 <td>
                                     <button type="submit" class="btn btn-sm btn-success">Save</button>
                                     <a href="{{ route('admin.dashboard', ['table' => 'intended']) }}" class="btn btn-sm btn-secondary">Cancel</a>
@@ -297,13 +305,12 @@ $editingCourse = request('editingCourse');
                         </tr>
                         @else
                         <tr>
-                            <td>{{ $intended->fk_applicantID }}</td>
-                            <td>{{ $intended->fk_courseCode }}</td>
-                            <td>{{ $intended->campus }}</td>
+                            <td>{{ $data['fk_applicantID'] }}</td>
+                            <td>{{ $data['campus'] }}</td>
+                            <td>{{ $data['courses'][0] ?? '-' }}</td>
+                            <td>{{ $data['courses'][1] ?? '-' }}</td>
                             <td>
-                                <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $intended->fk_applicantID }}&editingIntendedCourse={{ $intended->fk_courseCode }}" class="btn btn-sm btn-warning">Update</a>
-
-                                <!-- <a href="{{ route('intended.delete', [$intended->fk_applicantID, $intended->fk_courseCode]) }}" class="btn btn-sm btn-danger">Delete</a> -->
+                                <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $data['fk_applicantID'] }}&campus={{ urlencode($data['campus']) }}" class="btn btn-sm btn-warning">Update</a>
                             </td>
                         </tr>
                         @endif
@@ -311,15 +318,6 @@ $editingCourse = request('editingCourse');
                     </tbody>
                 </table>
             </div>
-
-
-
-
-
-
-
-
-
 
             @elseif ($table === 'course')
             <h2>List of Courses</h2>
