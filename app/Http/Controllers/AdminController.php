@@ -34,19 +34,35 @@ class AdminController extends Controller
             case 'intended':
                 $intendeds = DB::select('SELECT * FROM applicantcoursecampus');
                 $courses = DB::select('SELECT courseCode, courseName FROM course');
-                $rows = DB::select('SELECT fk_applicantID, fk_courseCode FROM applicantcoursecampus');
 
                 $usedCoursesPerApplicant = [];
-                foreach ($rows as $row) {
+                foreach ($intendeds as $row) {
                     $usedCoursesPerApplicant[$row->fk_applicantID][] = $row->fk_courseCode;
+                }
+
+                $groupedIntendeds = [];
+                foreach ($intendeds as $row) {
+                    $key = $row->fk_applicantID . '|' . $row->campus;
+                    $groupedIntendeds[$key]['fk_applicantID'] = $row->fk_applicantID;
+                    $groupedIntendeds[$key]['campus'] = $row->campus;
+                    $groupedIntendeds[$key]['courses'][] = $row->fk_courseCode;
+                }
+
+                $allAssigned = DB::select('SELECT fk_applicantID, fk_courseCode, campus FROM applicantcoursecampus');
+                $assignedCourseCampus = [];
+                foreach ($allAssigned as $item) {
+                    $assignedCourseCampus[$item->fk_applicantID][$item->fk_courseCode] = $item->campus;
                 }
 
                 return view('admin', [
                     'table' => 'intended',
                     'intendeds' => $intendeds,
                     'courses' => $courses,
-                    'usedCoursesPerApplicant' => $usedCoursesPerApplicant
+                    'usedCoursesPerApplicant' => $usedCoursesPerApplicant,
+                    'groupedIntendeds' => $groupedIntendeds,
+                    'assignedCourseCampus' => $assignedCourseCampus,
                 ]);
+
 
             case 'applicant':
             default:
