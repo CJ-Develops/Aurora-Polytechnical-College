@@ -69,77 +69,81 @@ class UpdateController extends Controller
 
     public function intendedUpdate(Request $request)
     {
-        $exists = DB::selectOne(
-            'SELECT 1 FROM applicantcoursecampus WHERE fk_applicantID = ? AND fk_courseCode = ?',
-            [
-                $request->fk_applicantID,
-                $request->fk_courseCode
-            ]
-        );
+        $applicantID = $request->input('fk_applicantID');
+        $originalCampus = $request->input('original_campus');
+        $newCampus = $request->input('campus');
+        $courses = $request->input('courses', []);
 
-        if ($exists) {
-            return back()->with('error', 'This applicant is already assigned to that course.');
+        if (count($courses) > 2) {
+            return back()->with('error', 'Only two courses are allowed.');
         }
 
-        DB::update(
-            'UPDATE applicantcoursecampus SET fk_courseCode = ?, campus = ? WHERE fk_applicantID = ? AND fk_courseCode = ?',
-            [
-                $request->fk_courseCode,
-                $request->campus,
-                $request->fk_applicantID,
-                $request->original_courseCode
-            ]
+        foreach ($courses as $courseCode) {
+            $exists = DB::selectOne(
+                'SELECT 1 FROM applicantcoursecampus WHERE fk_applicantID = ? AND fk_courseCode = ? AND campus != ?',
+                [$applicantID, $courseCode, $originalCampus]
+            );
+
+            if ($exists) {
+                return back()->with('error', "Course $courseCode is already assigned to this applicant in another campus.");
+            }
+        }
+
+        DB::delete(
+            'DELETE FROM applicantcoursecampus WHERE fk_applicantID = ? AND campus = ?',
+            [$applicantID, $originalCampus]
         );
 
-        return redirect('/admin?table=intended')->with('success', 'Campus updated successfully.');
+        foreach ($courses as $courseCode) {
+            DB::insert(
+                'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus) VALUES (?, ?, ?)',
+                [$applicantID, $courseCode, $newCampus]
+            );
+        }
+
+        return redirect('/admin?table=intended')->with('success', 'Courses and campus updated successfully.');
     }
+
 
     public function courseUpdate(Request $request)
-{
-    // First, update the course record (or insert if courseCode is changing)
-    if ($request->courseCode !== $request->original_courseCode) {
-        // Insert the new courseCode row first to satisfy the FK constraint
-        DB::insert(
-            'INSERT INTO course (courseCode, courseName, duration, department, totalUnits)
+    {
+        if ($request->courseCode !== $request->original_courseCode) {
+            DB::insert(
+                'INSERT INTO course (courseCode, courseName, duration, department, totalUnits)
              VALUES (?, ?, ?, ?, ?)',
-            [
-                $request->courseCode,
-                $request->courseName,
-                $request->duration,
-                $request->department,
-                $request->totalUnits,
-            ]
-        );
+                [
+                    $request->courseCode,
+                    $request->courseName,
+                    $request->duration,
+                    $request->department,
+                    $request->totalUnits,
+                ]
+            );
 
-        // Then update all related applicantcoursecampus rows
-        DB::update(
-            'UPDATE applicantcoursecampus SET fk_courseCode = ? WHERE fk_courseCode = ?',
-            [
-                $request->courseCode,
-                $request->original_courseCode
-            ]
-        );
+            DB::update(
+                'UPDATE applicantcoursecampus SET fk_courseCode = ? WHERE fk_courseCode = ?',
+                [
+                    $request->courseCode,
+                    $request->original_courseCode
+                ]
+            );
 
-        // Finally, delete the old course entry
-        DB::delete('DELETE FROM course WHERE courseCode = ?', [$request->original_courseCode]);
-    } else {
-        // Simple update if courseCode hasn't changed
-        DB::update(
-            'UPDATE course 
+            DB::delete('DELETE FROM course WHERE courseCode = ?', [$request->original_courseCode]);
+        } else {
+            DB::update(
+                'UPDATE course 
              SET courseName = ?, duration = ?, department = ?, totalUnits = ?
              WHERE courseCode = ?',
-            [
-                $request->courseName,
-                $request->duration,
-                $request->department,
-                $request->totalUnits,
-                $request->courseCode
-            ]
-        );
+                [
+                    $request->courseName,
+                    $request->duration,
+                    $request->department,
+                    $request->totalUnits,
+                    $request->courseCode
+                ]
+            );
+        }
+
+        return redirect('/admin?table=course')->with('success', 'Course updated successfully.');
     }
-
-    return redirect('/admin?table=course')->with('success', 'Course updated successfully.');
-}
-
-
 }
