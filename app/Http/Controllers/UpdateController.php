@@ -74,23 +74,29 @@ class UpdateController extends Controller
         $courses = $request->input('courses', []);
         $priorities = $request->input('priorities', []);
 
+        // Validation: Two course choices and two priorities are required
         if (count($courses) !== 2 || count($priorities) !== 2) {
             return back()->with('error', 'Exactly two courses and two priorities are required.');
         }
 
-        // Delete current two priorities being edited
+        // Validation: Cannot choose the same course twice in the same campus
+        if ($courses[0] === $courses[1]) {
+            return back()->with('error', 'Update not applied: You selected the same course twice for the same campus. Please choose two different courses.');
+        }
+
+        // Delete existing selected priorities for update
         DB::delete(
             'DELETE FROM applicantcoursecampus 
-            WHERE fk_applicantID = ? 
-            AND (priority = ? OR priority = ?)',
+             WHERE fk_applicantID = ? 
+             AND (priority = ? OR priority = ?)',
             [$applicantID, $priorities[0], $priorities[1]]
         );
 
-        // Insert new values (courses can now be the same across campuses)
+        // Insert new course selections
         for ($i = 0; $i < 2; $i++) {
             DB::insert(
                 'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus, priority) 
-                VALUES (?, ?, ?, ?)',
+                 VALUES (?, ?, ?, ?)',
                 [$applicantID, $courses[$i], $newCampus, $priorities[$i]]
             );
         }
@@ -103,7 +109,7 @@ class UpdateController extends Controller
         if ($request->courseCode !== $request->original_courseCode) {
             DB::insert(
                 'INSERT INTO course (courseCode, courseName, duration, department, totalUnits)
-             VALUES (?, ?, ?, ?, ?)',
+                 VALUES (?, ?, ?, ?, ?)',
                 [
                     $request->courseCode,
                     $request->courseName,
@@ -125,8 +131,8 @@ class UpdateController extends Controller
         } else {
             DB::update(
                 'UPDATE course 
-             SET courseName = ?, duration = ?, department = ?, totalUnits = ?
-             WHERE courseCode = ?',
+                 SET courseName = ?, duration = ?, department = ?, totalUnits = ?
+                 WHERE courseCode = ?',
                 [
                     $request->courseName,
                     $request->duration,
