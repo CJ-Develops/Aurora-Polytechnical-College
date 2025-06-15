@@ -11,10 +11,11 @@ class ApplicantCourseController extends Controller
     {
         $campuses = $request->input('campus');
         $courseCodes = $request->input('courseCode');
+        $priorities = $request->input('priority');
 
         $validCourseCodes = DB::table('course')->pluck('courseCode')->toArray();
 
-        $sql = "INSERT INTO applicantcoursecampus(fk_applicantID, fk_courseCode, campus) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO applicantcoursecampus(fk_applicantID, fk_courseCode, campus, priority) VALUES (?, ?, ?, ?)";
 
         DB::beginTransaction();
         $insertedCount = 0;
@@ -22,11 +23,12 @@ class ApplicantCourseController extends Controller
 
         foreach ($campuses as $campus) {
             for ($i = 0; $i < 2; $i++) {
-                if (!isset($courseCodes[$courseIndex])) {
-                    throw new \Exception("Missing course code for index: $courseIndex");
+                if (!isset($courseCodes[$courseIndex]) || !isset($priorities[$courseIndex])) {
+                    throw new \Exception("Missing course code or priority at index: $courseIndex");
                 }
 
                 $courseCode = trim($courseCodes[$courseIndex]);
+                $priority = trim($priorities[$courseIndex]);
 
                 if (!in_array($courseCode, $validCourseCodes)) {
                     throw new \Exception("Invalid course code: $courseCode");
@@ -36,6 +38,7 @@ class ApplicantCourseController extends Controller
                     $fk_applicantID,
                     $courseCode,
                     $campus,
+                    $priority,
                 ]);
 
                 $insertedCount++;

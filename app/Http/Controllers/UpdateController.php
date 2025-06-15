@@ -70,40 +70,33 @@ class UpdateController extends Controller
     public function intendedUpdate(Request $request)
     {
         $applicantID = $request->input('fk_applicantID');
-        $originalCampus = $request->input('original_campus');
         $newCampus = $request->input('campus');
         $courses = $request->input('courses', []);
+        $priorities = $request->input('priorities', []);
 
-        if (count($courses) > 2) {
-            return back()->with('error', 'Only two courses are allowed.');
+        if (count($courses) !== 2 || count($priorities) !== 2) {
+            return back()->with('error', 'Exactly two courses and two priorities are required.');
         }
 
-        foreach ($courses as $courseCode) {
-            $exists = DB::selectOne(
-                'SELECT 1 FROM applicantcoursecampus WHERE fk_applicantID = ? AND fk_courseCode = ? AND campus != ?',
-                [$applicantID, $courseCode, $originalCampus]
-            );
-
-            if ($exists) {
-                return back()->with('error', "Course $courseCode is already assigned to this applicant in another campus.");
-            }
-        }
-
+        // Delete current two priorities being edited
         DB::delete(
-            'DELETE FROM applicantcoursecampus WHERE fk_applicantID = ? AND campus = ?',
-            [$applicantID, $originalCampus]
+            'DELETE FROM applicantcoursecampus 
+            WHERE fk_applicantID = ? 
+            AND (priority = ? OR priority = ?)',
+            [$applicantID, $priorities[0], $priorities[1]]
         );
 
-        foreach ($courses as $courseCode) {
+        // Insert new values (courses can now be the same across campuses)
+        for ($i = 0; $i < 2; $i++) {
             DB::insert(
-                'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus) VALUES (?, ?, ?)',
-                [$applicantID, $courseCode, $newCampus]
+                'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus, priority) 
+                VALUES (?, ?, ?, ?)',
+                [$applicantID, $courses[$i], $newCampus, $priorities[$i]]
             );
         }
 
         return redirect('/admin?table=intended')->with('success', 'Courses and campus updated successfully.');
     }
-
 
     public function courseUpdate(Request $request)
     {
