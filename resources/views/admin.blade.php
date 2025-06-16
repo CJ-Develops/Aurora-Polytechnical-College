@@ -483,7 +483,32 @@ $editingCourse = request('editingCourse');
         }
     </script>
 
-   
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selects = document.querySelectorAll('.course-select');
+
+            function updateDisabledOptions() {
+                const selectedValues = Array.from(selects).map(select => select.value);
+
+                selects.forEach(select => {
+                    const currentValue = select.value;
+
+                    Array.from(select.options).forEach(option => {
+                        if (option.value === "") return;
+
+                        option.disabled = selectedValues.includes(option.value) && option.value !== currentValue;
+                    });
+                });
+            }
+
+            selects.forEach(select => {
+                select.addEventListener('change', updateDisabledOptions);
+            });
+
+            updateDisabledOptions();
+        });
+    </script>
+
 
 </body>
 
