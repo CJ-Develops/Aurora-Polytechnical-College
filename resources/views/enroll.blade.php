@@ -15,7 +15,7 @@
             
             <div>
                 <h1>Personal Information</h1>
-                <input name="applicantName" type="text" placeholder="Name" />
+                <input name="applicantName" type="text" placeholder="Name" required/>
                 <select name="gender" id="gender">
                     <option value="M">Male</option>
                     <option value="F">Female</option>
