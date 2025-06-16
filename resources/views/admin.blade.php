@@ -280,7 +280,11 @@ $editingCourse = request('editingCourse');
 
                                 @foreach ($data['courses'] as $index => $selectedCourse)
                                 <td>
-                                    <select name="courses[{{ $index }}]" class="form-inline-input">
+                                    <select name="courses[{{ $index }}]" class="form-inline-input course-select"
+                                        data-campus="{{ $data['campus'] }}"
+                                        data-applicant="{{ $data['fk_applicantID'] }}"
+                                        data-index="{{ $index }}">
+
                                         @foreach ($courses as $course)
                                         @php
                                         $courseCode = $course->courseCode;
@@ -290,8 +294,9 @@ $editingCourse = request('editingCourse');
                                         <option value="{{ $courseCode }}"
                                             {{ $courseCode === $selectedCourse ? 'selected' : '' }}
                                             {{ $alreadyAssignedInOtherCampus ? 'disabled' : '' }}>
-                                            {{ $course->courseName }} {{ $alreadyAssignedInOtherCampus ? '(Taken in another campus)' : '' }}
+                                            {{ $course->courseName }}
                                         </option>
+
                                         @endforeach
                                     </select>
                                 </td>
@@ -426,3 +431,21 @@ $editingCourse = request('editingCourse');
 </body>
 
 </html>
+
+<script>
+    document.querySelectorAll('.course-select').forEach(select => {
+        select.addEventListener('change', () => {
+            const selects = document.querySelectorAll(`.course-select[data-campus="${select.dataset.campus}"][data-applicant="${select.dataset.applicant}"]`);
+            const selectedValues = Array.from(selects).map(s => s.value);
+
+            selects.forEach(s => {
+                Array.from(s.options).forEach(opt => {
+                    opt.disabled = selectedValues.includes(opt.value) && opt.value !== s.value;
+                });
+            });
+        });
+    });
+
+    // Trigger on page load
+    document.querySelectorAll('.course-select').forEach(select => select.dispatchEvent(new Event('change')));
+</script>

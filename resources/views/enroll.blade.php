@@ -198,50 +198,39 @@
         });
     }
 
-    function updateCourse2Options() {
-        const selected1 = course1a.value;
-        const selected2 = course1b.value;
-        [...course2a.options].forEach(opt => {
-            opt.disabled = (opt.value === selected1 || opt.value === selected2);
-        });
-        [...course2b.options].forEach(opt => {
-            opt.disabled = (opt.value === selected1 || opt.value === selected2);
-        });
-    }
-
-    campus1.addEventListener("change", () => {
-        updateCampus2Options();
-    });
-
-    course1a.addEventListener("change", () => {
-        updateCourse1BOptions();
-        updateCourse2Options();
-    });
-
-    course1b.addEventListener("change", () => {
-        updateCourse2Options();
-    });
-
     function updateCourse2BOptions() {
         const selected = course2a.value;
         [...course2b.options].forEach(opt => {
-            opt.disabled = opt.value === selected || course1a.value === opt.value || course1b.value === opt.value;
+            opt.disabled = opt.value === selected;
         });
     }
 
-    course2a.addEventListener("change", () => {
+    function bindEvents() {
+        campus1.addEventListener("change", updateCampus2Options);
+
+        course1a.addEventListener("change", () => {
+            updateCourse1BOptions();
+        });
+
+        course1b.addEventListener("change", () => {
+            updateCourse1BOptions();
+        });
+
+        course2a.addEventListener("change", () => {
+            updateCourse2BOptions();
+        });
+
+        course2b.addEventListener("change", () => {
+            updateCourse2BOptions();
+        });
+    }
+
+    function initialize() {
+        updateCampus2Options();
+        updateCourse1BOptions();
         updateCourse2BOptions();
-    });
+    }
 
-    course1a.addEventListener("change", updateCourse2BOptions);
-    course1b.addEventListener("change", updateCourse2BOptions);
-
-    // On load
-    updateCourse2BOptions();
-
-
-    // Run on page load
-    updateCampus2Options();
-    updateCourse1BOptions();
-    updateCourse2Options();
+    bindEvents();
+    initialize();
 </script>
