@@ -9,8 +9,15 @@ use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\UpdateController;
 
 
+
+
 Route::get('/', function () {
     return view('home');
+});
+
+
+Route::get('/devs', function () {
+    return view('devs');
 });
 
 Route::view('/applicant_login', 'applicant_login');

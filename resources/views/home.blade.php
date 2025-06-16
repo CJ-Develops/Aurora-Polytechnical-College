@@ -16,20 +16,20 @@
     <div class="outer_homepage">
 
         {{-- Navbar --}}
-        <div class="nav_bar">
-            <div class="row">
-                <div class="col-6 animation_nav">
-                    <img src="image/logo_white.png" class="navbar_logo" />
-                </div>
-                <div class="col-6 btns_tabs animation_navTabs">
-                    <button class="btn_navbar unageo tab_active"><a href="/">HOME</a></button>
-                    <button class="btn_navbar unageo"><a href="/applicant_login">LOGIN</a></button>
-                    <button class="btn_navbar unageo"><a href="#">DEVS</a></button>
-                    <button class="btn_navbar unageo"><a href="/enroll">ENROLL NOW</a></button>
+            <div class="nav_bar">
+                <div class="row">
+                    <div class="col-2 col-xl-6 col-md-5 col-sm-2 animation_nav">
+                        <img src="image/logo_white.png" class="navbar_logo" />
+                    </div>
+                    <div class="col-10 col-xl-6 col-md-7 col-sm-10 btns_tabs animation_navTabs">
+                        <button class="btn_navbar unageo tab_active"><a href="/">HOME</a></button>
+                        <button class="btn_navbar unageo "><a href="/applicant_login">LOGIN</a></button>
+                        <button class="btn_navbar unageo"><a href="/devs">DEVS</a></button>
+                        <button class="btn_navbar unageo"><a href="/enroll">ENROLL NOW</a></button>
+                    </div>
                 </div>
             </div>
-        </div>
-        {{-- End of navbar --}}
+            {{-- End of navbar --}}
 
 
         {{-- Content --}}
@@ -154,5 +154,23 @@
         color: white;
         text-decoration: none;
         font-size: 12px;
+    }
+
+    @media (max-width: 591px) {
+        .cnt_tlt {
+            font-size: 30px;
+        }
+        .cnt_dsk {
+            color: white;
+            font-size: 12px;
+            width: 100%;
+            padding: 10px;
+            margin: 0 auto;
+        }
+        .cnt_btn a {
+            color: white;
+            text-decoration: none;
+            font-size: 10px;
+        }
     }
 </style>
