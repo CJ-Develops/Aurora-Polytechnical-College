@@ -120,11 +120,11 @@
                 <h1>Intended Campus and Courses</h1>
                 <select name="campus[]" id="campus1stchoice" required>
                     <option value="" disabled selected>Select Campus</option>
-                    <option value="cainta">Cainta</option>
-                    <option value="angono">Angono</option>
-                    <option value="antipolo">Antipolo</option>
-                    <option value="morong">Morong</option>
-                    <option value="binangonan">Binangonan</option>
+                    <option value="Cainta">Cainta</option>
+                    <option value="Angono">Angono</option>
+                    <option value="Antipolo">Antipolo</option>
+                    <option value="Morong">Morong</option>
+                    <option value="Binangonan">Binangonan</option>
                 </select>
                 
                 <select name="courseCode[]" id="1stcampuscourse1stchoice" required>
@@ -133,6 +133,7 @@
                     <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                     @endforeach
                 </select>
+                <input type="hidden" name="priority[]" value="campus1_course1">
                 
                 <select name="courseCode[]" id="1stcampuscourse2ndchoice" required>
                     <option value="" disabled selected>Select Course</option>
@@ -140,16 +141,17 @@
                     <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                     @endforeach
                 </select>
+                <input type="hidden" name="priority[]" value="campus1_course2">
             </div>
             
             <div>
                 <select name="campus[]" id="campus2ndchoice" required>
                     <option value="" disabled selected>Select Campus</option>
-                    <option value="cainta">Cainta</option>
-                    <option value="angono">Angono</option>
-                    <option value="antipolo">Antipolo</option>
-                    <option value="morong">Morong</option>
-                    <option value="binangonan">Binangonan</option>
+                    <option value="Cainta">Cainta</option>
+                    <option value="Angono">Angono</option>
+                    <option value="Antipolo">Antipolo</option>
+                    <option value="Morong">Morong</option>
+                    <option value="Binangonan">Binangonan</option>
                 </select>
                 
                 <select name="courseCode[]" id="2ndcampuscourse1stchoice" required>
@@ -158,6 +160,7 @@
                     <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                     @endforeach
                 </select>
+                <input type="hidden" name="priority[]" value="campus2_course1">
                 
                 <select name="courseCode[]" id="2ndcampuscourse2ndchoice" required>
                     <option value="" disabled selected>Select Course</option>
@@ -165,6 +168,7 @@
                     <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                     @endforeach
                 </select>
+                <input type="hidden" name="priority[]" value="campus2_course2">
             </div>
             
             <button type="submit">Submit</button>
@@ -179,8 +183,10 @@
 <script>
     const campus1 = document.getElementById("campus1stchoice");
     const campus2 = document.getElementById("campus2ndchoice");
+
     const course1a = document.getElementById("1stcampuscourse1stchoice");
     const course1b = document.getElementById("1stcampuscourse2ndchoice");
+
     const course2a = document.getElementById("2ndcampuscourse1stchoice");
     const course2b = document.getElementById("2ndcampuscourse2ndchoice");
 
@@ -191,6 +197,7 @@
         });
     }
 
+    // Prevent same course in campus 1
     function updateCourse1BOptions() {
         const selected = course1a.value;
         [...course1b.options].forEach(opt => {

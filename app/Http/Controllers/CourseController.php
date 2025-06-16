@@ -34,4 +34,3 @@ class CourseController extends Controller
         return redirect('/admin?table=course')->with('success', 'Course added successfully.');
     }
 }
-                  

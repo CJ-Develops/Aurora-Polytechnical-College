@@ -70,47 +70,46 @@ class UpdateController extends Controller
     public function intendedUpdate(Request $request)
     {
         $applicantID = $request->input('fk_applicantID');
-        $originalCampus = $request->input('original_campus');
         $newCampus = $request->input('campus');
         $courses = $request->input('courses', []);
+        $priorities = $request->input('priorities', []);
 
-        if (count($courses) > 2) {
-            return back()->with('error', 'Only two courses are allowed.');
+        // Validation: Two course choices and two priorities are required
+        if (count($courses) !== 2 || count($priorities) !== 2) {
+            return back()->with('error', 'Exactly two courses and two priorities are required.');
         }
 
-        foreach ($courses as $courseCode) {
-            $exists = DB::selectOne(
-                'SELECT 1 FROM applicantcoursecampus WHERE fk_applicantID = ? AND fk_courseCode = ? AND campus != ?',
-                [$applicantID, $courseCode, $originalCampus]
-            );
-
-            if ($exists) {
-                return back()->with('error', "Course $courseCode is already assigned to this applicant in another campus.");
-            }
+        // Validation: Cannot choose the same course twice in the same campus
+        if ($courses[0] === $courses[1]) {
+            return back()->with('error', 'Update not applied: You selected the same course twice for the same campus. Please choose two different courses.');
         }
 
+        // Delete existing selected priorities for update
         DB::delete(
-            'DELETE FROM applicantcoursecampus WHERE fk_applicantID = ? AND campus = ?',
-            [$applicantID, $originalCampus]
+            'DELETE FROM applicantcoursecampus 
+             WHERE fk_applicantID = ? 
+             AND (priority = ? OR priority = ?)',
+            [$applicantID, $priorities[0], $priorities[1]]
         );
 
-        foreach ($courses as $courseCode) {
+        // Insert new course selections
+        for ($i = 0; $i < 2; $i++) {
             DB::insert(
-                'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus) VALUES (?, ?, ?)',
-                [$applicantID, $courseCode, $newCampus]
+                'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus, priority) 
+                 VALUES (?, ?, ?, ?)',
+                [$applicantID, $courses[$i], $newCampus, $priorities[$i]]
             );
         }
 
         return redirect('/admin?table=intended')->with('success', 'Courses and campus updated successfully.');
     }
 
-
     public function courseUpdate(Request $request)
     {
         if ($request->courseCode !== $request->original_courseCode) {
             DB::insert(
                 'INSERT INTO course (courseCode, courseName, duration, department, totalUnits)
-             VALUES (?, ?, ?, ?, ?)',
+                 VALUES (?, ?, ?, ?, ?)',
                 [
                     $request->courseCode,
                     $request->courseName,
@@ -132,8 +131,8 @@ class UpdateController extends Controller
         } else {
             DB::update(
                 'UPDATE course 
-             SET courseName = ?, duration = ?, department = ?, totalUnits = ?
-             WHERE courseCode = ?',
+                 SET courseName = ?, duration = ?, department = ?, totalUnits = ?
+                 WHERE courseCode = ?',
                 [
                     $request->courseName,
                     $request->duration,

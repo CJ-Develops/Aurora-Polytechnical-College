@@ -33,6 +33,7 @@ class AdminController extends Controller
 
             case 'intended':
                 $intendeds = DB::select('SELECT * FROM applicantcoursecampus');
+                $coursesList = DB::select('SELECT courseCode, courseName FROM course');
                 $courses = DB::select('SELECT courseCode, courseName FROM course');
 
                 $usedCoursesPerApplicant = [];
@@ -57,6 +58,7 @@ class AdminController extends Controller
                 return view('admin', [
                     'table' => 'intended',
                     'intendeds' => $intendeds,
+                    'coursesList' => $coursesList,
                     'courses' => $courses,
                     'usedCoursesPerApplicant' => $usedCoursesPerApplicant,
                     'groupedIntendeds' => $groupedIntendeds,
