@@ -246,7 +246,7 @@ $editingCourse = request('editingCourse');
                     </tbody>
                 </table>
             </div>
-
+            
             @elseif ($table === 'intended')
             <h2>Applicant's Intended Courses</h2>
             <div style="overflow-x: auto;">
@@ -262,40 +262,42 @@ $editingCourse = request('editingCourse');
                     </thead>
                     <tbody>
                         @php
-                            $applicantCampusIndex = []; // Track which campus is first/second per applicant
+                        $applicantCampusIndex = [];
                         @endphp
 
                         @foreach ($groupedIntendeds as $key => $group)
-                            @php
-                                $applicantID = $group['fk_applicantID'];
-                                $campus = $group['campus'];
-                                $courses = $group['courses'];
-                                $isEditing = request('editingIntendedApplicant') == $applicantID && request('campus') == $campus;
+                        @php
+                        $applicantID = $group['fk_applicantID'];
+                        $campus = $group['campus'];
+                        $courses = $group['courses'];
+                        $isEditing = request('editingIntendedApplicant') == $applicantID && request('campus') == $campus;
+                        @endphp
 
-                                @foreach ($data['courses'] as $index => $selectedCourse)
-                                <td>
-                                    <select name="courses[{{ $index }}]" class="form-inline-input course-select"
-                                        data-campus="{{ $data['campus'] }}"
-                                        data-applicant="{{ $data['fk_applicantID'] }}"
-                                        data-index="{{ $index }}">
+                        @if ($isEditing)
+                        @foreach ($data['courses'] as $index => $selectedCourse)
+                        <td>
+                            <select name="courses[{{ $index }}]" class="form-inline-input course-select"
+                                data-campus="{{ $data['campus'] }}"
+                                data-applicant="{{ $data['fk_applicantID'] }}"
+                                data-index="{{ $index }}">
 
-                                        @foreach ($courses as $course)
-                                        @php
-                                        $courseCode = $course->courseCode;
-                                        $alreadyAssignedInOtherCampus = isset($assignedCourseCampus[$data['fk_applicantID']][$courseCode]) &&
-                                        $assignedCourseCampus[$data['fk_applicantID']][$courseCode] !== $data['campus'];
-                                        @endphp
-                                        <option value="{{ $courseCode }}"
-                                            {{ $courseCode === $selectedCourse ? 'selected' : '' }}
-                                            {{ $alreadyAssignedInOtherCampus ? 'disabled' : '' }}>
-                                            {{ $course->courseName }}
-                                        </option>
-
-                                        @endforeach
-                                    </select>
-                                </td>
+                                @foreach ($courses as $course)
+                                @php
+                                $courseCode = $course->courseCode;
+                                $alreadyAssignedInOtherCampus = isset($assignedCourseCampus[$data['fk_applicantID']][$courseCode]) &&
+                                $assignedCourseCampus[$data['fk_applicantID']][$courseCode] !== $data['campus'];
+                                @endphp
+                                <option value="{{ $courseCode }}"
+                                    {{ $courseCode === $selectedCourse ? 'selected' : '' }}
+                                    {{ $alreadyAssignedInOtherCampus ? 'disabled' : '' }}>
+                                    {{ $course->courseName }}
+                                </option>
                                 @endforeach
-                            @endif
+
+                            </select>
+                        </td>
+                        @endforeach
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
