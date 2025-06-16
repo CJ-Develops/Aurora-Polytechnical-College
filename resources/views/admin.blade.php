@@ -484,6 +484,8 @@ $editingCourse = request('editingCourse');
         }
     </script>
 
+   
+
 </body>
 
 </html>
