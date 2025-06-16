@@ -205,7 +205,6 @@
         });
     }
 
-    // Prevent same course in campus 2
     function updateCourse2BOptions() {
         const selected = course2a.value;
         [...course2b.options].forEach(opt => {
@@ -213,17 +212,32 @@
         });
     }
 
-    // Event listeners
-    campus1.addEventListener("change", updateCampus2Options);
+    function bindEvents() {
+        campus1.addEventListener("change", updateCampus2Options);
 
-    course1a.addEventListener("change", updateCourse1BOptions);
-    course1b.addEventListener("change", updateCourse1BOptions); // Optional, resets in case of reverse
+        course1a.addEventListener("change", () => {
+            updateCourse1BOptions();
+        });
 
-    course2a.addEventListener("change", updateCourse2BOptions);
-    course2b.addEventListener("change", updateCourse2BOptions); // Optional, resets in case of reverse
+        course1b.addEventListener("change", () => {
+            updateCourse1BOptions();
+        });
 
-    // Run on page load
-    updateCampus2Options();
-    updateCourse1BOptions();
-    updateCourse2BOptions();
+        course2a.addEventListener("change", () => {
+            updateCourse2BOptions();
+        });
+
+        course2b.addEventListener("change", () => {
+            updateCourse2BOptions();
+        });
+    }
+
+    function initialize() {
+        updateCampus2Options();
+        updateCourse1BOptions();
+        updateCourse2BOptions();
+    }
+
+    bindEvents();
+    initialize();
 </script>

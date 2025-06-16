@@ -262,119 +262,118 @@ $editingCourse = request('editingCourse');
                     </thead>
                     <tbody>
                         @php
-                            $applicantCampusIndex = []; // Track which campus is first/second per applicant
+                        $applicantCampusIndex = [];
                         @endphp
 
                         @foreach ($groupedIntendeds as $key => $group)
-                            @php
-                                $applicantID = $group['fk_applicantID'];
-                                $campus = $group['campus'];
-                                $courses = $group['courses'];
-                                $isEditing = request('editingIntendedApplicant') == $applicantID && request('campus') == $campus;
+                        @php
+                        $applicantID = $group['fk_applicantID'];
+                        $campus = $group['campus'];
+                        $courses = $group['courses'];
+                        $isEditing = request('editingIntendedApplicant') == $applicantID && request('campus') == $campus;
 
-                                if (!isset($applicantCampusIndex[$applicantID])) {
-                                    $applicantCampusIndex[$applicantID] = [];
-                                }
-                                if (!in_array($campus, $applicantCampusIndex[$applicantID])) {
-                                    $applicantCampusIndex[$applicantID][] = $campus;
-                                }
+                        if (!isset($applicantCampusIndex[$applicantID])) {
+                        $applicantCampusIndex[$applicantID] = [];
+                        }
+                        if (!in_array($campus, $applicantCampusIndex[$applicantID])) {
+                        $applicantCampusIndex[$applicantID][] = $campus;
+                        }
 
-                                $campusLabel = array_search($campus, $applicantCampusIndex[$applicantID]) === 0 ? 'campus1' : 'campus2';
-                            @endphp
+                        $campusLabel = array_search($campus, $applicantCampusIndex[$applicantID]) === 0 ? 'campus1' : 'campus2';
+                        @endphp
 
-                            @if ($isEditing)
-                                <form action="{{ route('intended.update.raw') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="fk_applicantID" value="{{ $applicantID }}">
-                                    <input type="hidden" name="original_campus" value="{{ $campus }}">
+                        @if ($isEditing)
+                        <form action="{{ route('intended.update.raw') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="fk_applicantID" value="{{ $applicantID }}">
+                            <input type="hidden" name="original_campus" value="{{ $campus }}">
 
-                                    @foreach ($courses as $i => $courseCode)
-                                        <tr>
-                                            <td>{{ $applicantID }}</td>
+                            @foreach ($courses as $i => $courseCode)
+                            <tr>
+                                <td>{{ $applicantID }}</td>
 
-                                            <td>
-                                                {{ $campusLabel }}_course{{ $i + 1 }}
-                                                <input type="hidden" name="priorities[{{ $loop->index }}]" value="{{ $campusLabel }}_course{{ $i + 1 }}">
-                                            </td>
+                                <td>
+                                    {{ $campusLabel }}_course{{ $i + 1 }}
+                                    <input type="hidden" name="priorities[{{ $loop->index }}]" value="{{ $campusLabel }}_course{{ $i + 1 }}">
+                                </td>
 
-                                            <td>
-                                                @if ($loop->first)
-                                                    @php
-                                                        $allCampuses = ['Cainta', 'Angono', 'Antipolo', 'Morong', 'Binangonan'];
+                                <td>
+                                    @if ($loop->first)
+                                    @php
+                                    $allCampuses = ['Cainta', 'Angono', 'Antipolo', 'Morong', 'Binangonan'];
 
-                                                        // Get the campus that is *not* currently being edited
-                                                        $otherCampus = null;
+                                    $otherCampus = null;
 
-                                                        if (isset($groupedIntendeds)) {
-                                                            foreach ($groupedIntendeds as $entry) {
-                                                                if (
-                                                                    $entry['fk_applicantID'] === $applicantID &&
-                                                                    $entry['campus'] !== $campus
-                                                                ) {
-                                                                    $otherCampus = $entry['campus'];
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                    @endphp
+                                    if (isset($groupedIntendeds)) {
+                                    foreach ($groupedIntendeds as $entry) {
+                                    if (
+                                    $entry['fk_applicantID'] === $applicantID &&
+                                    $entry['campus'] !== $campus
+                                    ) {
+                                    $otherCampus = $entry['campus'];
+                                    break;
+                                    }
+                                    }
+                                    }
+                                    @endphp
 
-                                                    <select name="campus" class="form-inline-input" required>
-                                                        @foreach ($allCampuses as $campusOption)
-                                                            <option value="{{ $campusOption }}"
-                                                                {{ $campusOption === $campus ? 'selected' : '' }}
-                                                                {{ $campusOption === $otherCampus ? 'disabled' : '' }}>
-                                                                {{ $campusOption }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                @else
-                                                    {{ $campus }}
-                                                @endif
-                                            </td>
-                                            
-                                            <td>
-                                                <select name="courses[{{ $loop->index }}]" class="form-inline-input">
-                                                    @php
-                                                        $alreadySelected = $courses;
-                                                    @endphp
+                                    <select name="campus" class="form-inline-input" required>
+                                        @foreach ($allCampuses as $campusOption)
+                                        <option value="{{ $campusOption }}"
+                                            {{ $campusOption === $campus ? 'selected' : '' }}
+                                            {{ $campusOption === $otherCampus ? 'disabled' : '' }}>
+                                            {{ $campusOption }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @else
+                                    {{ $campus }}
+                                    @endif
+                                </td>
 
-                                                    @foreach ($coursesList as $course)
-                                                        @php
-                                                            $isDuplicate = in_array($course->courseCode, $alreadySelected) && $course->courseCode !== $courseCode;
-                                                        @endphp
-                                                        <option value="{{ $course->courseCode }}" 
-                                                            {{ $course->courseCode === $courseCode ? 'selected' : '' }}
-                                                            {{ $isDuplicate ? 'disabled' : '' }}>
-                                                            {{ $course->courseName }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            
-                                            <td>
-                                                @if ($loop->first)
-                                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                                    <a href="{{ route('admin.dashboard', ['table' => 'intended']) }}" class="btn btn-sm btn-secondary">Cancel</a>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </form>
-                            @else
-                                @foreach ($courses as $i => $courseCode)
-                                    <tr>
-                                        <td>{{ $applicantID }}</td>
-                                        <td>{{ $campusLabel }}_course{{ $i + 1 }}</td>
-                                        <td>{{ $campus }}</td>
-                                        <td>{{ $courseCode }}</td>
-                                        <td>
-                                            @if ($loop->first)
-                                                <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $applicantID }}&campus={{ urlencode($campus) }}" class="btn btn-sm btn-warning">Update</a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
+                                <td>
+                                    <select name="courses[{{ $loop->index }}]" class="form-inline-input course-select">
+                                        @php
+                                        $alreadySelected = $courses;
+                                        @endphp
+
+                                        @foreach ($coursesList as $course)
+                                        @php
+                                        $isDuplicate = in_array($course->courseCode, $alreadySelected) && $course->courseCode !== $courseCode;
+                                        @endphp
+                                        <option value="{{ $course->courseCode }}"
+                                            {{ $course->courseCode === $courseCode ? 'selected' : '' }}
+                                            {{ $isDuplicate ? 'disabled' : '' }}>
+                                            {{ $course->courseName }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+
+                                <td>
+                                    @if ($loop->first)
+                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <a href="{{ route('admin.dashboard', ['table' => 'intended']) }}" class="btn btn-sm btn-secondary">Cancel</a>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </form>
+                        @else
+                        @foreach ($courses as $i => $courseCode)
+                        <tr>
+                            <td>{{ $applicantID }}</td>
+                            <td>{{ $campusLabel }}_course{{ $i + 1 }}</td>
+                            <td>{{ $campus }}</td>
+                            <td>{{ $courseCode }}</td>
+                            <td>
+                                @if ($loop->first)
+                                <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $applicantID }}&campus={{ urlencode($campus) }}" class="btn btn-sm btn-warning">Update</a>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
