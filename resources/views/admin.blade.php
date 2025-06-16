@@ -246,7 +246,7 @@ $editingCourse = request('editingCourse');
                     </tbody>
                 </table>
             </div>
-            
+
             @elseif ($table === 'intended')
             <h2>Applicant's Intended Courses</h2>
             <div style="overflow-x: auto;">
@@ -271,31 +271,107 @@ $editingCourse = request('editingCourse');
                         $campus = $group['campus'];
                         $courses = $group['courses'];
                         $isEditing = request('editingIntendedApplicant') == $applicantID && request('campus') == $campus;
+
+                        if (!isset($applicantCampusIndex[$applicantID])) {
+                        $applicantCampusIndex[$applicantID] = [];
+                        }
+                        if (!in_array($campus, $applicantCampusIndex[$applicantID])) {
+                        $applicantCampusIndex[$applicantID][] = $campus;
+                        }
+
+                        $campusLabel = array_search($campus, $applicantCampusIndex[$applicantID]) === 0 ? 'campus1' : 'campus2';
                         @endphp
 
                         @if ($isEditing)
-                        @foreach ($data['courses'] as $index => $selectedCourse)
-                        <td>
-                            <select name="courses[{{ $index }}]" class="form-inline-input course-select"
-                                data-campus="{{ $data['campus'] }}"
-                                data-applicant="{{ $data['fk_applicantID'] }}"
-                                data-index="{{ $index }}">
+                        <form action="{{ route('intended.update.raw') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="fk_applicantID" value="{{ $applicantID }}">
+                            <input type="hidden" name="original_campus" value="{{ $campus }}">
 
-                                @foreach ($courses as $course)
-                                @php
-                                $courseCode = $course->courseCode;
-                                $alreadyAssignedInOtherCampus = isset($assignedCourseCampus[$data['fk_applicantID']][$courseCode]) &&
-                                $assignedCourseCampus[$data['fk_applicantID']][$courseCode] !== $data['campus'];
-                                @endphp
-                                <option value="{{ $courseCode }}"
-                                    {{ $courseCode === $selectedCourse ? 'selected' : '' }}
-                                    {{ $alreadyAssignedInOtherCampus ? 'disabled' : '' }}>
-                                    {{ $course->courseName }}
-                                </option>
-                                @endforeach
+                            @foreach ($courses as $i => $courseCode)
+                            <tr>
+                                <td>{{ $applicantID }}</td>
 
-                            </select>
-                        </td>
+                                <td>
+                                    {{ $campusLabel }}_course{{ $i + 1 }}
+                                    <input type="hidden" name="priorities[{{ $loop->index }}]" value="{{ $campusLabel }}_course{{ $i + 1 }}">
+                                </td>
+
+                                <td>
+                                    @if ($loop->first)
+                                    @php
+                                    $allCampuses = ['Cainta', 'Angono', 'Antipolo', 'Morong', 'Binangonan'];
+
+                                    $otherCampus = null;
+
+                                    if (isset($groupedIntendeds)) {
+                                    foreach ($groupedIntendeds as $entry) {
+                                    if (
+                                    $entry['fk_applicantID'] === $applicantID &&
+                                    $entry['campus'] !== $campus
+                                    ) {
+                                    $otherCampus = $entry['campus'];
+                                    break;
+                                    }
+                                    }
+                                    }
+                                    @endphp
+
+                                    <select name="campus" class="form-inline-input" required>
+                                        @foreach ($allCampuses as $campusOption)
+                                        <option value="{{ $campusOption }}"
+                                            {{ $campusOption === $campus ? 'selected' : '' }}
+                                            {{ $campusOption === $otherCampus ? 'disabled' : '' }}>
+                                            {{ $campusOption }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @else
+                                    {{ $campus }}
+                                    @endif
+                                </td>
+
+                                <td>
+                                    <select name="courses[{{ $loop->index }}]" class="form-inline-input course-select">
+                                        @php
+                                        $alreadySelected = $courses;
+                                        @endphp
+
+                                        @foreach ($coursesList as $course)
+                                        @php
+                                        $isDuplicate = in_array($course->courseCode, $alreadySelected) && $course->courseCode !== $courseCode;
+                                        @endphp
+                                        <option value="{{ $course->courseCode }}"
+                                            {{ $course->courseCode === $courseCode ? 'selected' : '' }}
+                                            {{ $isDuplicate ? 'disabled' : '' }}>
+                                            {{ $course->courseName }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+
+                                <td>
+                                    @if ($loop->first)
+                                    <button type="submit" class="btn btn-sm btn-success">Save</button>
+                                    <a href="{{ route('admin.dashboard', ['table' => 'intended']) }}" class="btn btn-sm btn-secondary">Cancel</a>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </form>
+                        @else
+                        @foreach ($courses as $i => $courseCode)
+                        <tr>
+                            <td>{{ $applicantID }}</td>
+                            <td>{{ $campusLabel }}_course{{ $i + 1 }}</td>
+                            <td>{{ $campus }}</td>
+                            <td>{{ $courseCode }}</td>
+                            <td>
+                                @if ($loop->first)
+                                <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $applicantID }}&campus={{ urlencode($campus) }}" class="btn btn-sm btn-warning">Update</a>
+                                @endif
+                            </td>
+                        </tr>
                         @endforeach
                         @endif
                         @endforeach
@@ -407,24 +483,33 @@ $editingCourse = request('editingCourse');
         }
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selects = document.querySelectorAll('.course-select');
+
+            function updateDisabledOptions() {
+                const selectedValues = Array.from(selects).map(select => select.value);
+
+                selects.forEach(select => {
+                    const currentValue = select.value;
+
+                    Array.from(select.options).forEach(option => {
+                        if (option.value === "") return;
+
+                        option.disabled = selectedValues.includes(option.value) && option.value !== currentValue;
+                    });
+                });
+            }
+
+            selects.forEach(select => {
+                select.addEventListener('change', updateDisabledOptions);
+            });
+
+            updateDisabledOptions();
+        });
+    </script>
+
+
 </body>
 
 </html>
-
-<script>
-    document.querySelectorAll('.course-select').forEach(select => {
-        select.addEventListener('change', () => {
-            const selects = document.querySelectorAll(`.course-select[data-campus="${select.dataset.campus}"][data-applicant="${select.dataset.applicant}"]`);
-            const selectedValues = Array.from(selects).map(s => s.value);
-
-            selects.forEach(s => {
-                Array.from(s.options).forEach(opt => {
-                    opt.disabled = selectedValues.includes(opt.value) && opt.value !== s.value;
-                });
-            });
-        });
-    });
-
-    // Trigger on page load
-    document.querySelectorAll('.course-select').forEach(select => select.dispatchEvent(new Event('change')));
-</script>
