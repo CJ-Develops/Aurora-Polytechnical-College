@@ -14,57 +14,57 @@
 <body>
     <div class="outer_login">
 
-        {{-- Navbar --}}
-        <div class="nav_bar">
-            <div class="row">
-                <div class="col-6 animation_nav">
-                    <img src="image/logo_white.png" class="navbar_logo" />
-                </div>
-                <div class="col-6 btns_tabs animation_navTabs">
-                    <button class="btn_navbar unageo"><a href="/">HOME</a></button>
-                    <button class="btn_navbar unageo tab_active"><a href="/applicant_login">LOGIN</a></button>
-                    <button class="btn_navbar unageo"><a href="#">DEVS</a></button>
-                    <button class="btn_navbar unageo"><a href="/enroll">ENROLL NOW</a></button>
-                </div>
-            </div>
-        </div>
-        {{-- End of navbar --}}
-
-        {{-- Content --}}
-        <div class="content_style">
-            <div class="row">
-                {{-- <div class="cnt_tlt lemon">
-            AURORA POLYTECHNIC COLLEGE
-        </div>
-        <div class="cnt_dsk">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-            Zet dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat.
-        </div>
-        <div class="cnt_btnOuter">
-            <button class="cnt_btn unageo"><a href="/enroll">ENROLL</a></button>
-        </div> --}}
-                <div class="col-6">
-
-                </div>
-                <div class="col-6" style="align-content: center; padding: 0px 200px">
-                    <h1 style="text-align: center; color: white" class="lemon">Applicant Login</h1>
-
-                    <form action="/login" method="POST">
-                        @csrf
-
-                        <label style="color: white" for="">Applicant ID</label>
-                        <input style="margin-bottom: 20px" type="text" class="form-control" aria-label="Username" name="applicantID" placeholder="Applicant ID" required>
-
-                        <label style="color: white" for="">Password</label>
-                        <input name="password" class="form-control" type="password" placeholder="Password" minlength="8" required>
-
-                        <button style="margin-top: 20px" class="btn btn-primary" type="submit">Submit</button>
-                    </form>
-
-                    <div style="color: white">still not enrolled? <a href="/enroll">Enroll here</a></div>
+            {{-- Navbar --}}
+            <div class="nav_bar">
+                <div class="row">
+                    <div class="col-2 col-xl-6 col-md-5 col-sm-2 animation_nav">
+                        <img src="image/logo_white.png" class="navbar_logo" />
+                    </div>
+                    <div class="col-10 col-xl-6 col-md-7 col-sm-10 btns_tabs animation_navTabs">
+                        <button class="btn_navbar unageo"><a href="/">HOME</a></button>
+                        <button class="btn_navbar unageo tab_active"><a href="/applicant_login">LOGIN</a></button>
+                        <button class="btn_navbar unageo"><a href="/devs">DEVS</a></button>
+                        <button class="btn_navbar unageo"><a href="/enroll">ENROLL NOW</a></button>
+                    </div>
                 </div>
             </div>
+            {{-- End of navbar --}}
+
+            {{-- Content --}}
+            <div class="content_style">
+                <div class="row">
+                    {{-- <div class="cnt_tlt lemon">
+                AURORA POLYTECHNIC COLLEGE
+            </div>
+            <div class="cnt_dsk">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                Zet dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat.
+            </div>
+            <div class="cnt_btnOuter">
+                <button class="cnt_btn unageo"><a href="/enroll">ENROLL</a></button>
+            </div> --}}
+                    <div class="col-0 col-lx-8 col-lg-8 col-md-6">
+
+                    </div>
+                    <div class="col-12 col-lg-4 col-md-6 applt_container_inside">
+                        <h1 style="text-align: center; color: white" class="lemon">Applicant Login</h1>
+
+                        <form action="/login" method="POST">
+                            @csrf
+
+                            <label style="color: white" for="">Applicant ID</label>
+                            <input style="margin-bottom: 10px" type="text" class="form-control" aria-label="Username" name="applicantID" placeholder="Applicant ID" required>
+
+                            <label style="color: white" for="">Password</label>
+                            <input style="margin-bottom: 20px" name="password" class="form-control" type="password" placeholder="Password" minlength="8" required>
+
+                            <button style="margin-top: 20px; width: 100%" class="btn btn-primary" type="submit">Submit</button>
+                        </form>
+
+                        <div style="color: white; margin-top: 10px">Still not enrolled? <a href="/enroll">Enroll here</a></div>
+                    </div>
+                </div>
 
 
 
@@ -72,12 +72,13 @@
 
 
 
-            @if (session('error'))
-            <script>
-                alert("{{ session('error') }}");
-            </script>
-            @endif
-        </div>
+                @if (session('error'))
+                <script>
+                    alert("{{ session('error') }}");
+                </script>
+                @endif
+            </div>
+       
 </body>
 
 </html>
@@ -133,15 +134,15 @@
         animation: 1s ease-out 0s 1 slideInFromRight;
     }
 
-    .lemon {
-        font-family: 'Lemon Milk', sans-serif;
-    }
-
+    
 
     .outer_login {
         width: 100%;
         height: 100vh;
-        background-image: url("image/DSC_0323.jpg");
+        background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), 
+    url('image/OZM01939.jpg');
+        /* background-image: url("image/DSC_0323.jpg"); */
         background-position: center;
         background-size: cover;
         background-repeat: no-repeat;
@@ -149,7 +150,7 @@
 
     .content_style {
         animation: 1s ease-out 0s 1 slideInFromTop;
-        height: 70vh;
+        height: 80vh;
         align-content: center
     }
 
@@ -183,4 +184,33 @@
         text-decoration: none;
         font-size: 12px;
     }
+    .applt_container_inside {
+        align-content: center;
+        padding: 0px 200px;
+    }
+
+
+
+
+
+    @media (max-width: 2311px) {
+        .applt_container_inside {
+            align-content: center;
+            padding: 0px 100px;
+        }
+    }
+    @media (max-width: 1716px) {
+        .applt_container_inside {
+            align-content: center;
+            padding: 0px 50px;
+        }
+    }
+    @media (max-width: 767px) {
+        .applt_container_inside {
+            align-content: center;
+            padding: 0px 20px;
+        }
+    }
+
+    
 </style>
