@@ -60,7 +60,7 @@ Pull requests are encouraged, but for major changes, please open an issue first 
 ## 📢 Contact
 Got questions? Suggestions? Or just want to say hi? Feel free to reach out—we’d love to hear from you!
 
-Project Devs: zaxe, gelo, atega, ronjons, john
+Project Devs: [zaxe](https://github.com/zaxe17), [gelo](https://github.com/gelo-gels), [ atega](https://github.com/jinmuwoonz), ronjons, [john](https://github.com/CJ-Develops)
 
 Project Repository: https://github.com/CJ-Develops/Aurora-Polytechnical-College.git – Check out the code, report issues, or contribute!
 
