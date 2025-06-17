@@ -60,6 +60,8 @@ Pull requests are encouraged, but for major changes, please open an issue first 
 ## 📢 Contact
 Got questions? Suggestions? Or just want to say hi? Feel free to reach out—we’d love to hear from you!
 
-Project Devs: 
+Project Devs: zaxe, gelo, atega, ronjons, john
+
 Project Repository: https://github.com/CJ-Develops/Aurora-Polytechnical-College.git – Check out the code, report issues, or contribute!
+
 Live Website: [Aurora Polytechnic Enrollment](https://maroon-gnat-207518.hostingersite.com/) – See it in action!
