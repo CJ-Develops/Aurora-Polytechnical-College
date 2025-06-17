@@ -28,18 +28,31 @@ class DeleteController extends Controller
 
     public function deleteGuardian($id)
     {
+        $guardian = DB::selectOne('SELECT fk_applicantID FROM guardian WHERE guardianID = ?', [$id]);
+
+        if (!$guardian) {
+            return redirect()->back()->with('delete_error', 'Guardian not found.');
+        }
+
+        $count = DB::selectOne('SELECT COUNT(*) as total FROM guardian WHERE fk_applicantID = ?', [$guardian->fk_applicantID]);
+
+        if ($count->total <= 1) {
+            return redirect()->back()->with('delete_error', 'Cannot delete. Applicant must have at least one guardian.');
+        }
+
         DB::delete('DELETE FROM guardian WHERE guardianID = ?', [$id]);
 
         return redirect()->back()->with('success', 'Guardian deleted.');
     }
 
-    public function deleteIntendedCourse($fk_applicantID, $fk_courseCode)
+
+    /* public function deleteIntendedCourse($fk_applicantID, $fk_courseCode)
     {
         DB::delete('DELETE FROM applicantcoursecampus WHERE fk_applicantID = ? AND fk_courseCode = ?', [$fk_applicantID, $fk_courseCode]);
 
         return redirect()->back()->with('success', 'Applicant course campus record deleted.');
-    }
-
+    } */
+    
     public function deleteCourse($courseCode)
     {
         $courseCampusExists = DB::table('applicantcoursecampus')

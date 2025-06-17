@@ -18,21 +18,59 @@ class AdminController extends Controller
 
         switch ($table) {
             case 'guardian':
-                $guardians = DB::table('guardian')->get();
-                return view('admin', ['table' => 'guardian', 'guardians' => $guardians]);
+                $guardians = DB::select('SELECT * FROM guardian');
+                return view('admin', [
+                    'table' => 'guardian',
+                    'guardians' => $guardians
+                ]);
 
             case 'course':
-                $courses = DB::table('course')->get();
-                return view('admin', ['table' => 'course', 'courses' => $courses]);
+                $courses = DB::select('SELECT * FROM course');
+                return view('admin', [
+                    'table' => 'course',
+                    'courses' => $courses
+                ]);
 
             case 'intended':
-                $intendeds = DB::table('applicantcoursecampus')->get();
-                return view('admin', ['table' => 'intended', 'intendeds' => $intendeds]);
+                $intendeds = DB::select('SELECT * FROM applicantcoursecampus');
+                $courses = DB::select('SELECT courseCode, courseName FROM course');
+
+                $usedCoursesPerApplicant = [];
+                foreach ($intendeds as $row) {
+                    $usedCoursesPerApplicant[$row->fk_applicantID][] = $row->fk_courseCode;
+                }
+
+                $groupedIntendeds = [];
+                foreach ($intendeds as $row) {
+                    $key = $row->fk_applicantID . '|' . $row->campus;
+                    $groupedIntendeds[$key]['fk_applicantID'] = $row->fk_applicantID;
+                    $groupedIntendeds[$key]['campus'] = $row->campus;
+                    $groupedIntendeds[$key]['courses'][] = $row->fk_courseCode;
+                }
+
+                $allAssigned = DB::select('SELECT fk_applicantID, fk_courseCode, campus FROM applicantcoursecampus');
+                $assignedCourseCampus = [];
+                foreach ($allAssigned as $item) {
+                    $assignedCourseCampus[$item->fk_applicantID][$item->fk_courseCode] = $item->campus;
+                }
+
+                return view('admin', [
+                    'table' => 'intended',
+                    'intendeds' => $intendeds,
+                    'courses' => $courses,
+                    'usedCoursesPerApplicant' => $usedCoursesPerApplicant,
+                    'groupedIntendeds' => $groupedIntendeds,
+                    'assignedCourseCampus' => $assignedCourseCampus,
+                ]);
+
 
             case 'applicant':
             default:
-                $applicants = DB::table('applicant')->get();
-                return view('admin', ['table' => 'applicant', 'applicants' => $applicants]);
+                $applicants = DB::select('SELECT * FROM applicant');
+                return view('admin', [
+                    'table' => 'applicant',
+                    'applicants' => $applicants
+                ]);
         }
     }
 }

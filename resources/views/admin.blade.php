@@ -1,8 +1,11 @@
 @php
 $editingApplicantId = request('editingApplicant');
+
 $editingGuardianId = request('editingGuardian');
-$editingApplicantID = request('editingIntendedApplicant');
-$editingCourseCode = request('editingIntendedCourse');
+
+$editingIntendedApplicantID = request('editingIntendedApplicant');
+$editingIntendedCourseCode = request('editingIntendedCourse');
+
 $editingCourse = request('editingCourse');
 
 @endphp
@@ -51,6 +54,12 @@ $editingCourse = request('editingCourse');
             padding: 2rem;
             width: 100%;
             overflow-x: auto;
+        }
+
+        .form-inline-input {
+            border: none;
+            background: transparent;
+            width: 100%;
         }
     </style>
 </head>
@@ -104,7 +113,6 @@ $editingCourse = request('editingCourse');
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @foreach ($applicants as $applicant)
                         @if ($editingApplicantId == $applicant->applicantID)
@@ -115,12 +123,20 @@ $editingCourse = request('editingCourse');
                                 <td><input type="text" name="applicantName" value="{{ $applicant->applicantName }}" style="border: none; background: transparent; color: orange"></td>
                                 <td>
                                     <select class="form-control" name="gender" style="border: 1px solid orange; background: transparent; color: orange">
-                                        <option value="M" {{ $applicant->gender == 'Male' ? 'selected' : '' }}>Male</option>
-                                        <option value="F    " {{ $applicant->gender == 'Female' ? 'selected' : '' }}>Female</option>
+                                        <option value=" M" {{ $applicant->gender == 'M' ? 'selected' : '' }}>Male</option>
+                                    <option value="F" {{ $applicant->gender == 'F' ? 'selected' : '' }}>Female</option>
                                     </select>
                                 </td>
 
-                                <td><input class="form-control" type="text" name="religion" value="{{ $applicant->religion }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
+                                <td>
+                                <select class="form-control" name="civilStatus" style="border: 1px solid orange; background: transparent; color: orange">
+                                        <option value=" Single" {{ $applicant->civilStatus == 'Single' ? 'selected' : '' }}>Single</option>
+                                    <option value="Married" {{ $applicant->civilStatus == 'Married' ? 'selected' : '' }}>Married</option>
+                                    <option value="Divorced" {{ $applicant->civilStatus == 'Divorced' ? 'selected' : '' }}>Divorced</option>
+                                    <option value="Widowed" {{ $applicant->civilStatus == 'Widowed' ? 'selected' : '' }}>Widowed</option>
+                                    <option value="Separated" {{ $applicant->civilStatus == 'Separated' ? 'selected' : '' }}>Separated</option>
+                                    </select>
+                                </td>
                                 <td><input class="form-control" type="date" name="dateOfBirth" value="{{ $applicant->dateOfBirth }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="number" name="age" value="{{ $applicant->age }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="text" name="civilStatus" value="{{ $applicant->civilStatus }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
@@ -136,8 +152,8 @@ $editingCourse = request('editingCourse');
                                 <td><input class="form-control" type="number" name="yearOfCompletion" value="{{ $applicant->yearOfCompletion }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td>
                                     <button type="submit" class="btn btn-sm" style="color: green"><i class="bi bi-save"></i></button>
-                                    <a href="{{ url()->current() }}?table=applicant" class="btn btn-sm" style="color: red"><i class="bi bi-x-square"></i></a>
-                                </td>
+                                    <a href="{{ route('admin.dashboard', ['table' => 'applicant']) }}" class="btn btn-sm" style="color: red"><i class="bi bi-x-square"></i></a>
+
                             </tr>
                         </form>
                         @else
@@ -190,7 +206,7 @@ $editingCourse = request('editingCourse');
                     <tbody>
                         @foreach ($guardians as $guardian)
                         @if ($editingGuardianId == $guardian->guardianID)
-                        <form action="{{ route('guardian.update.raw', $guardian->guardianID) }}" method="POST">
+                        <form action="{{ route('guardian.update.raw', [$guardian->guardianID, $guardian->fk_applicantID]) }}" method="POST">
                             @csrf
                             <tr>
                                 <td>{{ $guardian->guardianID }}</td>
@@ -198,19 +214,29 @@ $editingCourse = request('editingCourse');
                                 <td>
                                     <select class="form-control" name="guardianType" style="border: 1px solid orange; background: transparent; color: orange">
                                         <option value="Father" {{ $guardian->guardianType == 'Father' ? 'selected' : '' }}>Father</option>
+
                                         <option value="Mother" {{ $guardian->guardianType == 'Mother' ? 'selected' : '' }}>Mother</option>
                                         <option value="Legal Guardian" {{ $guardian->guardianType == 'Legal Guardian' ? 'selected' : '' }}>Legal Guardian</option>
                                     </select>
                                 </td>
                                 <td><input class="form-control" type="text" name="guardianName" value="{{ $guardian->guardianName }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="text" name="citizenship" value="{{ $guardian->citizenship }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
-                                <td><input class="form-control" type="text" name="martialStatus" value="{{ $guardian->martialStatus }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
+                                 <td>
+                                <select class="form-control" name="martialStatus" style="border: 1px solid orange; background: transparent; color: orange">
+                                        <option value=" Single" {{ $guardian->martialStatus == 'Single' ? 'selected' : '' }}>Single</option>
+                                    <option value="Married" {{ $guardian->martialStatus == 'Married' ? 'selected' : '' }}>Married</option>
+                                    <option value="Divorced" {{ $guardian->martialStatus == 'Divorced' ? 'selected' : '' }}>Divorced</option>
+                                    <option value="Widowed" {{ $guardian->martialStatus == 'Widowed' ? 'selected' : '' }}>Widowed</option>
+                                    <option value="Separated" {{ $guardian->martialStatus == 'Separated' ? 'selected' : '' }}>Separated</option>
+                                    </select>
+                                </td>
                                 <td><input class="form-control" type="text" name="highestEducAttain" value="{{ $guardian->highestEducAttain }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="text" name="presentOccupation" value="{{ $guardian->presentOccupation }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="number" name="monthlyIncome" value="{{ $guardian->monthlyIncome }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td>
                                     <button type="submit" class="btn btn-sm" style="color: green"><i class="bi bi-save"></i></button>
-                                    <a href="{{ url()->current() }}?table=guardian" class="btn btn-sm" style="color: red"><i class="bi bi-x-square"></i></a>
+                                    <a href="{{ route('admin.dashboard', ['table' => 'guardian']) }}" class="btn btn-sm" style="color: red"><i class="bi bi-x-square"></i></a>
+
                                 </td>
                             </tr>
                         </form>
@@ -236,6 +262,7 @@ $editingCourse = request('editingCourse');
                     </tbody>
                 </table>
             </div>
+
             @elseif ($table === 'intended')
             <h2 class="lemon" style="color: white">Applicant's Intended Courses</h2>
             <div style="overflow-x: auto;" class="table-responsive">
@@ -243,39 +270,74 @@ $editingCourse = request('editingCourse');
                     <thead>
                         <tr>
                             <th>Applicant ID</th>
-                            <th>Course Code</th>
                             <th>Campus</th>
+                            <th>1st Course Code</th>
+                            <th>2nd Course Code</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($intendeds as $intended)
+                        @foreach ($groupedIntendeds as $key => $data)
+                        @php
+                        $isEditing = request('editingIntendedApplicant') == $data['fk_applicantID']
+                        && request('campus') == $data['campus'];
+                        @endphp
+
+                        @if ($isEditing)
                         <tr>
-                            @if ($editingApplicantID == $intended->fk_applicantID && $editingCourseCode == $intended->fk_courseCode)
-                            <form action="{{ route('intended.update.raw', ['applicantID' => $intended->fk_applicantID, 'courseCode' => $intended->fk_courseCode]) }}" method="POST">
+                            <form action="{{ route('intended.update.raw') }}" method="POST">
                                 @csrf
-                                <td>{{ $intended->fk_applicantID }}</td>
-                                <td>{{ $intended->fk_courseCode }}</td>
-                                <td><input class="form-control" type="text" name="campus" value="{{ $intended->campus }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
+
+                                <input type="hidden" name="fk_applicantID" value="{{ $data['fk_applicantID'] }}">
+                                <input type="hidden" name="original_campus" value="{{ $data['campus'] }}">
+                                <<td>{{ $data['fk_applicantID'] }}</td>
+                                <td>
+                                    <input type="text" name="campus" class="form-inline-input" value="{{ $data['campus'] }}">
+                                </td>
+                                
+                                @foreach ($data['courses'] as $index => $selectedCourse)
+                                <td>
+                                    <select name="courses[{{ $index }}]" class="form-inline-input">
+                                        @foreach ($courses as $course)
+                                        @php
+                                        $courseCode = $course->courseCode;
+                                        $alreadyAssignedInOtherCampus = isset($assignedCourseCampus[$data['fk_applicantID']][$courseCode]) &&
+                                        $assignedCourseCampus[$data['fk_applicantID']][$courseCode] !== $data['campus'];
+                                        @endphp
+                                        <option value="{{ $courseCode }}"
+                                            {{ $courseCode === $selectedCourse ? 'selected' : '' }}
+                                            {{ $alreadyAssignedInOtherCampus ? 'disabled' : '' }}>
+                                            {{ $course->courseName }} {{ $alreadyAssignedInOtherCampus ? '(Taken in another campus)' : '' }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                @endforeach
+                                
                                 <td>
                                     <button type="submit" class="btn btn-sm" style="color: green"><i class="bi bi-save"></i></button>
-                                    <a href="{{ url()->current() }}?table=intended" class="btn btn-sm" style="color: red"><i class="bi bi-x-square"></i></a>
+                                    <a href="{{ route('admin.dashboard', ['table' => 'intended']) }" class="btn btn-sm" style="color: red"><i class="bi bi-x-square"></i></a>
                                 </td>
                             </form>
-                            @else
-                            <td>{{ $intended->fk_applicantID }}</td>
-                            <td>{{ $intended->fk_courseCode }}</td>
-                            <td>{{ $intended->campus }}</td>
+                        </tr>
+                        @else
+                        <tr>
+                            <td>{{ $data['fk_applicantID'] }}</td>
+                            <td>{{ $data['campus'] }}</td>
+                            <td>{{ $data['courses'][0] ?? '-' }}</td>
+                            <td>{{ $data['courses'][1] ?? '-' }}</td>
                             <td>
                                 <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $intended->fk_applicantID }}&editingIntendedCourse={{ $intended->fk_courseCode }}" class="btn btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                <a href="{{ route('intended.delete', [$intended->fk_applicantID, $intended->fk_courseCode]) }}" class="btn btn-sm"><i class="bi bi-trash"></i></a>
+                                <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $data['fk_applicantID'] }}&campus={{ urlencode($data['campus']) }}" class="btn btn-sm"><i class="bi bi-trash"></i></a>
+
                             </td>
-                            @endif
                         </tr>
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
             @elseif ($table === 'course')
             <h2 class="lemon" style="color: white">List of Course</h2>
             <div style="overflow-x: auto;" class="table-responsive">
@@ -290,23 +352,26 @@ $editingCourse = request('editingCourse');
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="courseTableBody">
                         @foreach ($courses as $course)
+                        @if ($editingCourse == $course->courseCode)
                         <tr>
-                            @if ($editingCourse == $course->courseCode)
                             <form action="{{ route('course.update.raw', ['courseCode' => $course->courseCode]) }}" method="POST">
                                 @csrf
-                                <td>{{ $course->courseCode }}</td>
+                                <input type="hidden" name="original_courseCode" value="{{ $course->courseCode }}">
+                                <td><input class="form-control" type="text" name="courseCode" value="{{ $course->courseCode }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="text" name="courseName" value="{{ $course->courseName }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="number" name="duration" value="{{ $course->duration }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="text" name="department" value="{{ $course->department }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td><input class="form-control" type="number" name="totalUnits" value="{{ $course->totalUnits }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                 <td>
                                     <button type="submit" class="btn btn-sm"><i class="bi bi-save" style="color: green"></i></button>
-                                    <a href="{{ url()->current() }}?table=course" class="btn btn-sm " style="color: red"><i class="bi bi-x-square"></i></a>
+                                    <a href="{{ route('admin.dashboard', ['table' => 'course']) }}" class="btn btn-sm " style="color: red"><i class="bi bi-x-square"></i></a>
                                 </td>
                             </form>
-                            @else
+                        </tr>
+                        @else
+                        <tr>
                             <td>{{ $course->courseCode }}</td>
                             <td>{{ $course->courseName }}</td>
                             <td>{{ $course->duration }}</td>
@@ -317,14 +382,23 @@ $editingCourse = request('editingCourse');
 
                                 <a href="{{ route('course.delete', $course->courseCode) }}" class="btn btn-sm"><i class="bi bi-trash"></i></a>
                             </td>
-                            @endif
                         </tr>
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
             </div>
             </div>
+            <div style="margin-top: 1rem;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="addNewCourseRow()">Add New Course</button>
+            </div>
+
+            <!-- Hidden Add Form -->
+            <form id="addCourseForm" action="{{ route('course.add') }}" method="POST">
+                @csrf
+            </form>
             @endif
         </div>
     </div>
@@ -336,6 +410,39 @@ $editingCourse = request('editingCourse');
         });
     </script>
     @endif
+
+    @if(session('delete_error'))
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            alert("{{ session('delete_error') }}");
+        });
+    </script>
+    @endif
+
+    <script>
+        function addNewCourseRow() {
+            const tbody = document.getElementById('courseTableBody');
+
+            if (tbody.querySelector('.new-course-row')) return;
+
+            const tr = document.createElement('tr');
+            tr.classList.add('new-course-row');
+
+            tr.innerHTML = `
+            <td><input type="text" name="courseCode" form="addCourseForm" class="form-inline-input" required></td>
+            <td><input type="text" name="courseName" form="addCourseForm" class="form-inline-input" required></td>
+            <td><input type="number" name="duration" form="addCourseForm" class="form-inline-input" required></td>
+            <td><input type="text" name="department" form="addCourseForm" class="form-inline-input" required></td>
+            <td><input type="number" name="totalUnits" form="addCourseForm" class="form-inline-input" required></td>
+            <td>
+                <button type="submit" form="addCourseForm" class="btn btn-sm btn-success">Add</button>
+                <button type="button" class="btn btn-sm btn-secondary" onclick="this.closest('tr').remove()">Cancel</button>
+            </td>
+        `;
+
+            tbody.appendChild(tr);
+        }
+    </script>
 
 </body>
 
