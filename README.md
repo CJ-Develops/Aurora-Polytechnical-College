@@ -49,7 +49,7 @@ Admin | admin@17 | 12345678
 
 
 ## 🌟 Contributing
-We welcome contributions to improve the Aurora Polytechnical College Enrollment Website! If you'd like to contribute, follow these steps:
+Contributions to the Aurora Polytechnical College Enrollment Website are highly appreciated. To ensure a smooth contribution process, please follow these steps:
 1. Fork the repository.
 2. Create a new branch (git checkout -b feature/your-feature).
 3. Commit your changes (git commit -m 'Add your feature').
