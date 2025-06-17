@@ -46,3 +46,25 @@ body {
 .tab_active {
     border-bottom: 1px solid white;
 }
+
+.lemon {
+        font-family: 'Lemon Milk', sans-serif;
+    }
+
+    @media (max-width: 1031px) {
+        .btn_navbar {
+            margin: 0px 10px
+        }
+    }
+
+    @media (max-width: 667px) {
+        .btn_navbar {
+            margin: 0px 0px
+        }
+    }
+
+    @media (max-width: 667px) {
+        .btn_navbar:nth-child(4) {
+            margin: 10px 0px 0px 0px
+        }
+    }
