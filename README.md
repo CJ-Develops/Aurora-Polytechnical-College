@@ -1,11 +1,12 @@
 # AURORA POLYTECHNIC COLLEGE
-Aurora Polytechnical College Enrollment Website is a web-based platform built with PHP Laravel and MySQL to streamline the student enrollment process. It enables prospective students to register, select courses, submit required documents, and track their application status. Administrators can manage student records, course offerings, and enrollment approvals through a secure dashboard. [Click here to see the website](https://maroon-gnat-207518.hostingersite.com/)
+Aurora Polytechnical College Enrollment Website is a web-based platform built with PHP Laravel and MySQL to streamline the student enrollment process. It enables prospective students to register, select courses, submit required documents, and track their application status. Administrators can manage student records, course offerings, and enrollment approvals through a secure dashboard. [See the website here! ](https://maroon-gnat-207518.hostingersite.com/)
 
-- Key features:
-Student registration and authentication system
-Course catalog and enrollment interface
-Admin dashboard for managing applications and records
-Responsive design for accessibility across devices
+
+Key features:
+- Student registration and authentication system
+- Course catalog and enrollment interface
+- Admin dashboard for managing applications and records
+- Responsive design for accessibility across devices
 
 ## 🛠️ Technologies Used
 This project is powered by a solid tech stack to keep everything running smoothly:
