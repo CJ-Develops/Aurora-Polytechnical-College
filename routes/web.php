@@ -6,6 +6,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeleteController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UpdateController;
 
 
@@ -75,3 +76,7 @@ Route::post('/update-raw', [UpdateController::class, 'courseUpdate'])->name('cou
 /* INSERT */
 Route::post('/addFullEnrollment', [EnrollmentController::class, 'addFullEnrollment']);
 Route::post('/course/add', [CourseController::class, 'addCourse'])->name('course.add');
+
+
+/* SEARCH */
+Route::get('/search', [SearchController::class, 'handle'])->name('search.handle');

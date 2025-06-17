@@ -44,4 +44,7 @@ class ApplicantController extends Controller
 
         return $newApplicantID;
     }
+
+
+    
 }

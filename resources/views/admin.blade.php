@@ -72,6 +72,24 @@ $editingCourse = request('editingCourse');
             <h5 class="lemon" style="color: white; margin-bottom: 20px">Admin Dashboard</h5>
             <a href="/logout" class="btn btn-danger btn-sm unageo" style="width: 100%; margin-bottom: 50px">Logout</a>
 
+            <form method="GET" action="{{ route('search.handle') }}" class="d-flex align-items-center mb-3" style="gap: 10px;">
+                <input type="hidden" name="table" value="{{ $table }}">
+
+                <label for="search" class="visually-hidden">Search {{ ucfirst($table) }} ID</label>
+                <input
+                    type="text"
+                    id="search"
+                    name="search"
+                    class="form-control"
+                    placeholder="Search {{ ucfirst($table) }} ID..."
+                    value="{{ request('search') }}"
+                    style="max-width: 250px;">
+
+                <button type="submit" class="btn btn-outline-light">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+
             <div class="d-grid gap-2">
                 <a href="{{ url('/admin?table=applicant') }}" class="btn unageo btn__tabs {{ $table === 'applicant' ? 'btn__active' : 'btn-outline-secondary' }}">Applicant Table</a>
                 <a href="{{ url('/admin?table=guardian') }}" class="btn unageo btn__tabs {{ $table === 'guardian' ? 'btn__active' : 'btn-outline-secondary' }}">Guardian Table</a>
@@ -114,6 +132,11 @@ $editingCourse = request('editingCourse');
                                 </tr>
                             </thead>
                             <tbody>
+                                @if (count($applicants) === 0)
+                                <tr>
+                                    <td colspan="18" class="text-center text-warning">No applicants found.</td>
+                                </tr>
+                                @else
                                 @foreach ($applicants as $applicant)
                                 @if ($editingApplicantId == $applicant->applicantID)
                                 <form action="{{ route('applicant.update.raw', $applicant->applicantID) }}" method="POST">
@@ -123,18 +146,16 @@ $editingCourse = request('editingCourse');
                                         <td><input type="text" name="applicantName" value="{{ $applicant->applicantName }}" style="border: none; background: transparent; color: orange"></td>
                                         <td>
                                             <select class="form-control" name="gender" style="border: 1px solid orange; background: transparent; color: orange">
-                                                <option value=" M" {{ $applicant->gender == 'M' ? 'selected' : '' }}>Male</option>
+                                                <option value="M" {{ $applicant->gender == 'M' ? 'selected' : '' }}>Male</option>
                                                 <option value="F" {{ $applicant->gender == 'F' ? 'selected' : '' }}>Female</option>
                                             </select>
                                         </td>
-                                        <td>
-                                            <input class="form-control" type="text" name="religion" value="{{ $applicant->religion }}" style="border: 1px solid orange; background: transparent; color: orange">
-                                        </td>
+                                        <td><input class="form-control" type="text" name="religion" value="{{ $applicant->religion }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="date" name="dateOfBirth" value="{{ $applicant->dateOfBirth }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="number" name="age" value="{{ $applicant->age }}" style="border: 1px solid orange; background: transparent; color: orange;"></td>
                                         <td>
                                             <select class="form-control" name="civilStatus" style="border: 1px solid orange; background: transparent; color: orange">
-                                                <option value=" Single" {{ $applicant->civilStatus == 'Single' ? 'selected' : '' }}>Single</option>
+                                                <option value="Single" {{ $applicant->civilStatus == 'Single' ? 'selected' : '' }}>Single</option>
                                                 <option value="Married" {{ $applicant->civilStatus == 'Married' ? 'selected' : '' }}>Married</option>
                                                 <option value="Divorced" {{ $applicant->civilStatus == 'Divorced' ? 'selected' : '' }}>Divorced</option>
                                                 <option value="Widowed" {{ $applicant->civilStatus == 'Widowed' ? 'selected' : '' }}>Widowed</option>
@@ -186,6 +207,7 @@ $editingCourse = request('editingCourse');
                                 </tr>
                                 @endif
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -209,6 +231,11 @@ $editingCourse = request('editingCourse');
                                 </tr>
                             </thead>
                             <tbody>
+                                @if (count($guardians) === 0)
+                                <tr>
+                                    <td colspan="10" class="text-center text-warning">No guardians found for this applicant.</td>
+                                </tr>
+                                @else
                                 @foreach ($guardians as $guardian)
                                 @if ($editingGuardianId == $guardian->guardianID)
                                 <form action="{{ route('guardian.update.raw', [$guardian->guardianID, $guardian->fk_applicantID]) }}" method="POST">
@@ -219,7 +246,6 @@ $editingCourse = request('editingCourse');
                                         <td>
                                             <select class="form-control" name="guardianType" style="border: 1px solid orange; background: transparent; color: orange">
                                                 <option value="Father" {{ $guardian->guardianType == 'Father' ? 'selected' : '' }}>Father</option>
-
                                                 <option value="Mother" {{ $guardian->guardianType == 'Mother' ? 'selected' : '' }}>Mother</option>
                                                 <option value="Legal Guardian" {{ $guardian->guardianType == 'Legal Guardian' ? 'selected' : '' }}>Legal Guardian</option>
                                             </select>
@@ -241,7 +267,6 @@ $editingCourse = request('editingCourse');
                                         <td>
                                             <button type="submit" class="btn btn-sm" style="color: green"><i class="bi bi-save"></i></button>
                                             <a href="{{ route('admin.dashboard', ['table' => 'guardian']) }}" class="btn btn-sm" style="color: red"><i class="bi bi-x-square"></i></a>
-
                                         </td>
                                     </tr>
                                 </form>
@@ -258,7 +283,6 @@ $editingCourse = request('editingCourse');
                                     <td>{{ $guardian->monthlyIncome }}</td>
                                     <td>
                                         <a href="{{ url()->current() }}?table=guardian&editingGuardian={{ $guardian->guardianID }}" class="btn btn-sm"><i class="bi bi-pencil-square"></i></a>
-
                                         <form action="{{ route('guardian.delete', $guardian->guardianID) }}" method="POST" style="display: inline;" onsubmit="return confirmDeleteGuardian('{{ $guardian->guardianID }}', '{{ $guardian->fk_applicantID }}')">
                                             @csrf
                                             <button type="submit" class="btn btn-sm"><i class="bi bi-trash"></i></button>
@@ -267,6 +291,7 @@ $editingCourse = request('editingCourse');
                                 </tr>
                                 @endif
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -285,6 +310,11 @@ $editingCourse = request('editingCourse');
                                 </tr>
                             </thead>
                             <tbody>
+                                @if (count($groupedIntendeds) === 0)
+                                <tr>
+                                    <td colspan="5" class="text-center text-warning">No intended courses found.</td>
+                                </tr>
+                                @else
                                 @php
                                 $applicantCampusIndex = [];
                                 @endphp
@@ -315,26 +345,19 @@ $editingCourse = request('editingCourse');
                                     @foreach ($courses as $i => $courseCode)
                                     <tr>
                                         <td>{{ $applicantID }}</td>
-
                                         <td>
                                             {{ $campusLabel }}_course{{ $i + 1 }}
                                             <input type="hidden" name="priorities[{{ $loop->index }}]" value="{{ $campusLabel }}_course{{ $i + 1 }}">
                                         </td>
-
                                         <td>
                                             @if ($loop->first)
                                             @php
                                             $allCampuses = ['Cainta', 'Angono', 'Antipolo', 'Morong', 'Binangonan'];
                                             $otherCampus = null;
-                                            if (isset($groupedIntendeds)) {
                                             foreach ($groupedIntendeds as $entry) {
-                                            if (
-                                            $entry['fk_applicantID'] === $applicantID &&
-                                            $entry['campus'] !== $campus
-                                            ) {
+                                            if ($entry['fk_applicantID'] === $applicantID && $entry['campus'] !== $campus) {
                                             $otherCampus = $entry['campus'];
                                             break;
-                                            }
                                             }
                                             }
                                             @endphp
@@ -353,13 +376,11 @@ $editingCourse = request('editingCourse');
                                             <input type="hidden" name="campus" value="{{ $campus }}">
                                             @endif
                                         </td>
-
                                         <td>
                                             <select name="courses[{{ $loop->index }}]" class="form-inline-input course-select">
                                                 @php
                                                 $alreadySelected = $courses;
                                                 @endphp
-
                                                 @foreach ($coursesList as $course)
                                                 @php
                                                 $isDuplicate = in_array($course->courseCode, $alreadySelected) && $course->courseCode !== $courseCode;
@@ -372,7 +393,6 @@ $editingCourse = request('editingCourse');
                                                 @endforeach
                                             </select>
                                         </td>
-
                                         @if ($loop->first)
                                         <td rowspan="{{ count($courses) }}">
                                             <button type="submit" class="btn btn-sm" style="color: green">
@@ -386,7 +406,6 @@ $editingCourse = request('editingCourse');
                                     </tr>
                                     @endforeach
                                 </form>
-
                                 @else
                                 @foreach ($courses as $i => $courseCode)
                                 <tr>
@@ -403,146 +422,151 @@ $editingCourse = request('editingCourse');
                                 @endforeach
                                 @endif
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
 
-
-
                     @elseif ($table === 'course')
-<h2 class="lemon" style="color: white">List of Course</h2>
+                    <h2 class="lemon" style="color: white">List of Course</h2>
 
-<div style="overflow-x: auto;" class="table-responsive">
-    <table class="table table-striped custom-table" style="min-width: 800px;">
-        <thead>
-            <tr>
-                <th>Code</th>
-                <th>Course</th>
-                <th>Duration</th>
-                <th>Department</th>
-                <th>Total Units</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="courseTableBody">
-            @foreach ($courses as $course)
-                @if ($editingCourse == $course->courseCode)
-                <tr>
-                    <form action="{{ route('course.update.raw', ['courseCode' => $course->courseCode]) }}" method="POST">
+                    <div style="overflow-x: auto;" class="table-responsive">
+                        <table class="table table-striped custom-table" style="min-width: 800px;">
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Course</th>
+                                    <th>Duration</th>
+                                    <th>Department</th>
+                                    <th>Total Units</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="courseTableBody">
+                                @if (count($courses) === 0)
+                                <tr>
+                                    <td colspan="6" class="text-center text-warning">No courses found.</td>
+                                </tr>
+                                @else
+                                @foreach ($courses as $course)
+                                @if ($editingCourse == $course->courseCode)
+                                <tr>
+                                    <form action="{{ route('course.update.raw', ['courseCode' => $course->courseCode]) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="original_courseCode" value="{{ $course->courseCode }}">
+                                        <td>
+                                            <input class="form-control" type="text" name="courseCode" value="{{ $course->courseCode }}" style="border: 1px solid orange; background: transparent; color: orange">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" name="courseName" value="{{ $course->courseName }}" style="border: 1px solid orange; background: transparent; color: orange">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="number" name="duration" value="{{ $course->duration }}" style="border: 1px solid orange; background: transparent; color: orange">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" name="department" value="{{ $course->department }}" style="border: 1px solid orange; background: transparent; color: orange">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="number" name="totalUnits" value="{{ $course->totalUnits }}" style="border: 1px solid orange; background: transparent; color: orange">
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-sm"><i class="bi bi-save" style="color: green"></i></button>
+                                            <a href="{{ route('admin.dashboard', ['table' => 'course']) }}" class="btn btn-sm" style="color: red">
+                                                <i class="bi bi-x-square"></i>
+                                            </a>
+                                        </td>
+                                    </form>
+                                </tr>
+                                @else
+                                <tr>
+                                    <td>{{ $course->courseCode }}</td>
+                                    <td>{{ $course->courseName }}</td>
+                                    <td>{{ $course->duration }}</td>
+                                    <td>{{ $course->department }}</td>
+                                    <td>{{ $course->totalUnits }}</td>
+                                    <td>
+                                        <a href="{{ url()->current() }}?table=course&editingCourse={{ $course->courseCode }}" class="btn btn-sm">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <form action="{{ route('course.delete', $course->courseCode) }}" method="POST" style="display: inline;" onsubmit="return confirmDeleteCourse('{{ $course->courseCode }}')">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm"><i class="bi bi-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                @endif
+                                @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="addNewCourseRow()">Add New Course</button>
+                    </div>
+
+                    <!-- Hidden Add Form -->
+                    <form id="addCourseForm" action="{{ route('course.add') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="original_courseCode" value="{{ $course->courseCode }}">
-                        <td>
-                            <input class="form-control" type="text" name="courseCode" value="{{ $course->courseCode }}" style="border: 1px solid orange; background: transparent; color: orange">
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" name="courseName" value="{{ $course->courseName }}" style="border: 1px solid orange; background: transparent; color: orange">
-                        </td>
-                        <td>
-                            <input class="form-control" type="number" name="duration" value="{{ $course->duration }}" style="border: 1px solid orange; background: transparent; color: orange">
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" name="department" value="{{ $course->department }}" style="border: 1px solid orange; background: transparent; color: orange">
-                        </td>
-                        <td>
-                            <input class="form-control" type="number" name="totalUnits" value="{{ $course->totalUnits }}" style="border: 1px solid orange; background: transparent; color: orange">
-                        </td>
-                        <td>
-                            <button type="submit" class="btn btn-sm"><i class="bi bi-save" style="color: green"></i></button>
-                            <a href="{{ route('admin.dashboard', ['table' => 'course']) }}" class="btn btn-sm" style="color: red">
-                                <i class="bi bi-x-square"></i>
-                            </a>
-                        </td>
                     </form>
-                </tr>
-                @else
-                <tr>
-                    <td>{{ $course->courseCode }}</td>
-                    <td>{{ $course->courseName }}</td>
-                    <td>{{ $course->duration }}</td>
-                    <td>{{ $course->department }}</td>
-                    <td>{{ $course->totalUnits }}</td>
-                    <td>
-                        <a href="{{ url()->current() }}?table=course&editingCourse={{ $course->courseCode }}" class="btn btn-sm">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
-                        <form action="{{ route('course.delete', $course->courseCode) }}" method="POST" style="display: inline;" onsubmit="return confirmDeleteCourse('{{ $course->courseCode }}')">
-                            @csrf
-                            <button type="submit" class="btn btn-sm"><i class="bi bi-trash"></i></button>
-                        </form>
-                    </td>
-                </tr>
-                @endif
-            @endforeach
-        </tbody>
-    </table>
-</div>
+                    @endif
 
-<div style="margin-top: 1rem;">
-    <button type="button" class="btn btn-primary btn-sm" onclick="addNewCourseRow()">Add New Course</button>
-</div>
+                </div>
+            </div>
 
-<!-- Hidden Add Form -->
-<form id="addCourseForm" action="{{ route('course.add') }}" method="POST">
-    @csrf
-</form>
-@endif
+            @if($errors->has('delete_error'))
+            <script>
+                window.addEventListener('DOMContentLoaded', function() {
+                    alert("{!! addslashes($errors->first('delete_error')) !!}");
+                });
+            </script>
+            @endif
 
-        </div>
-    </div>
+            @if(session('delete_error'))
+            <script>
+                window.addEventListener('DOMContentLoaded', function() {
+                    alert("{{ session('delete_error') }}");
+                });
+            </script>
+            @endif
 
-    @if($errors->has('delete_error'))
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            alert("{!! addslashes($errors->first('delete_error')) !!}");
-        });
-    </script>
-    @endif
+            @if(session('success'))
+            <script>
+                alert("{{ session('success') }}");
+            </script>
+            @endif
 
-    @if(session('delete_error'))
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            alert("{{ session('delete_error') }}");
-        });
-    </script>
-    @endif
+            <script>
+                function confirmDeleteApplicant(applicantID) {
+                    return confirm(`Are you sure you want to delete ApplicantID ${applicantID}?`);
+                }
 
-    @if(session('success'))
-    <script>
-        alert("{{ session('success') }}");
-    </script>
-    @endif
+                function confirmDeleteGuardian(guardianID, applicantID) {
+                    return confirm(`Are you sure you want to delete GuardianID ${guardianID} from ApplicantID ${applicantID}?`);
+                }
 
-    <script>
-        function confirmDeleteApplicant(applicantID) {
-            return confirm(`Are you sure you want to delete ApplicantID ${applicantID}?`);
-        }
-
-        function confirmDeleteGuardian(guardianID, applicantID) {
-            return confirm(`Are you sure you want to delete GuardianID ${guardianID} from ApplicantID ${applicantID}?`);
-        }
-
-        function confirmDeleteCourse(courseCode) {
-            return confirm(`Are you sure you want to delete ${courseCode}?`);
-        }
-    </script>
+                function confirmDeleteCourse(courseCode) {
+                    return confirm(`Are you sure you want to delete ${courseCode}?`);
+                }
+            </script>
 
 
-    @if(session('delete'))
-    <script>
-        alert("{{ session('delete') }}");
-    </script>
-    @endif
+            @if(session('delete'))
+            <script>
+                alert("{{ session('delete') }}");
+            </script>
+            @endif
 
-    <script>
-        function addNewCourseRow() {
-            const tbody = document.getElementById('courseTableBody');
+            <script>
+                function addNewCourseRow() {
+                    const tbody = document.getElementById('courseTableBody');
 
-            if (tbody.querySelector('.new-course-row')) return;
+                    if (tbody.querySelector('.new-course-row')) return;
 
-            const tr = document.createElement('tr');
-            tr.classList.add('new-course-row');
+                    const tr = document.createElement('tr');
+                    tr.classList.add('new-course-row');
 
-            tr.innerHTML = `
+                    tr.innerHTML = `
             <td><input type="text" name="courseCode" form="addCourseForm" class="form-inline-input" required></td>
             <td><input type="text" name="courseName" form="addCourseForm" class="form-inline-input" required></td>
             <td><input type="number" name="duration" form="addCourseForm" class="form-inline-input" required></td>
@@ -554,35 +578,35 @@ $editingCourse = request('editingCourse');
             </td>
         `;
 
-            tbody.appendChild(tr);
-        }
-    </script>
+                    tbody.appendChild(tr);
+                }
+            </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const selects = document.querySelectorAll('.course-select');
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const selects = document.querySelectorAll('.course-select');
 
-            function updateDisabledOptions() {
-                const selectedValues = Array.from(selects).map(select => select.value);
+                    function updateDisabledOptions() {
+                        const selectedValues = Array.from(selects).map(select => select.value);
 
-                selects.forEach(select => {
-                    const currentValue = select.value;
+                        selects.forEach(select => {
+                            const currentValue = select.value;
 
-                    Array.from(select.options).forEach(option => {
-                        if (option.value === "") return;
+                            Array.from(select.options).forEach(option => {
+                                if (option.value === "") return;
 
-                        option.disabled = selectedValues.includes(option.value) && option.value !== currentValue;
+                                option.disabled = selectedValues.includes(option.value) && option.value !== currentValue;
+                            });
+                        });
+                    }
+
+                    selects.forEach(select => {
+                        select.addEventListener('change', updateDisabledOptions);
                     });
+
+                    updateDisabledOptions();
                 });
-            }
-
-            selects.forEach(select => {
-                select.addEventListener('change', updateDisabledOptions);
-            });
-
-            updateDisabledOptions();
-        });
-    </script>
+            </script>
 
 
 </body>

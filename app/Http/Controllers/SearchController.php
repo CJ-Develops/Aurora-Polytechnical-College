@@ -4,33 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
-class AdminController extends Controller
+class SearchController extends Controller
 {
-    public function index(Request $request)
+    public function handle(Request $request)
     {
-        if (!Session::get('is_admin')) {
-            return redirect('/applicant_login')->with('error', 'Unauthorized access.');
-        }
-
-        $table = $request->query('table', 'applicant');
+        $table = $request->query('table');
+        $search = $request->query('search');
 
         switch ($table) {
             case 'guardian':
-                $guardians = DB::select('SELECT * FROM guardian');
+                $guardians = DB::select('SELECT * FROM guardian WHERE guardianID LIKE ? OR fk_applicantID LIKE ?', ["%$search%", "%$search%"]);
 
+                // Rebuild guardianTypesPerApplicant for display
                 $guardianTypesPerApplicant = [];
-
                 foreach ($guardians as $g) {
                     $applicantId = $g->fk_applicantID;
-                    $type = trim($g->guardianType); // remove extra whitespace
-
+                    $type = trim($g->guardianType);
                     if (!isset($guardianTypesPerApplicant[$applicantId])) {
                         $guardianTypesPerApplicant[$applicantId] = [];
                     }
-
-                    // Collect types per applicant, allow multiple if needed
                     if (!in_array($type, $guardianTypesPerApplicant[$applicantId])) {
                         $guardianTypesPerApplicant[$applicantId][] = $type;
                     }
@@ -43,16 +36,16 @@ class AdminController extends Controller
                     'isAdmin' => true
                 ]);
 
-
             case 'course':
-                $courses = DB::select('SELECT * FROM course');
+                $courses = DB::select('SELECT * FROM course WHERE courseCode LIKE ?', ["%$search%"]);
                 return view('admin', [
                     'table' => 'course',
                     'courses' => $courses
                 ]);
 
             case 'intended':
-                $intendeds = DB::select('SELECT * FROM applicantcoursecampus');
+                $intendeds = DB::select('SELECT * FROM applicantcoursecampus WHERE fk_applicantID LIKE ?', ["%$search%"]);
+
                 $coursesList = DB::select('SELECT courseCode, courseName FROM course');
                 $courses = DB::select('SELECT courseCode, courseName FROM course');
 
@@ -82,13 +75,12 @@ class AdminController extends Controller
                     'courses' => $courses,
                     'usedCoursesPerApplicant' => $usedCoursesPerApplicant,
                     'groupedIntendeds' => $groupedIntendeds,
-                    'assignedCourseCampus' => $assignedCourseCampus,
+                    'assignedCourseCampus' => $assignedCourseCampus
                 ]);
-
 
             case 'applicant':
             default:
-                $applicants = DB::select('SELECT * FROM applicant');
+                $applicants = DB::select('SELECT * FROM applicant WHERE applicantID LIKE ?', ["%$search%"]);
                 return view('admin', [
                     'table' => 'applicant',
                     'applicants' => $applicants
