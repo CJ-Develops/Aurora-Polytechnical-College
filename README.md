@@ -1,4 +1,5 @@
-# Aurora Polytechnical College
+# AURORA POLYTECHNIC COLLEGE
+
 
 ## Table of Contents 
 
