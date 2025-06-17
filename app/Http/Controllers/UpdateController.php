@@ -64,44 +64,79 @@ class UpdateController extends Controller
             ]
         );
 
-        return redirect('/admin?table=guardian')->with('success', 'Guardian updated successfully!');
+        return redirect('/admin?table=guardian')->with('success', "GuardianID $id, ApplicantID {$request->fk_applicantID} already updated.");
     }
 
     public function intendedUpdate(Request $request)
     {
         $applicantID = $request->input('fk_applicantID');
-        $originalCampus = $request->input('original_campus');
         $newCampus = $request->input('campus');
         $courses = $request->input('courses', []);
+        $priorities = $request->input('priorities', []);
 
-        if (count($courses) > 2) {
-            return back()->with('error', 'Only two courses are allowed.');
+        // Validation: Two course choices and two priorities are required
+        if (count($courses) !== 2 || count($priorities) !== 2) {
+            return back()->with('error', 'Exactly two courses and two priorities are required.');
         }
 
-        foreach ($courses as $courseCode) {
-            $exists = DB::selectOne(
-                'SELECT 1 FROM applicantcoursecampus WHERE fk_applicantID = ? AND fk_courseCode = ? AND campus != ?',
-                [$applicantID, $courseCode, $originalCampus]
-            );
-
-            if ($exists) {
-                return back()->with('error', "Course $courseCode is already assigned to this applicant in another campus.");
-            }
+        // Validation: Cannot choose the same course twice in the same campus
+        if ($courses[0] === $courses[1]) {
+            return back()->with('error', 'Update not applied: You selected the same course twice for the same campus. Please choose two different courses.');
         }
 
-        DB::delete(
-            'DELETE FROM applicantcoursecampus WHERE fk_applicantID = ? AND campus = ?',
-            [$applicantID, $originalCampus]
+        // Fetch current course & campus data
+        $existing = DB::select(
+            'SELECT fk_courseCode, campus FROM applicantcoursecampus 
+         WHERE fk_applicantID = ? ORDER BY priority ASC',
+            [$applicantID]
         );
 
-        foreach ($courses as $courseCode) {
+        $oldCourses = array_column($existing, 'fk_courseCode');
+        $oldCampus = $existing[0]->campus ?? null;
+
+        // Delete existing selected priorities for update
+        DB::delete(
+            'DELETE FROM applicantcoursecampus 
+         WHERE fk_applicantID = ? 
+         AND (priority = ? OR priority = ?)',
+            [$applicantID, $priorities[0], $priorities[1]]
+        );
+
+        // Insert new course selections
+        for ($i = 0; $i < 2; $i++) {
             DB::insert(
-                'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus) VALUES (?, ?, ?)',
-                [$applicantID, $courseCode, $newCampus]
+                'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus, priority) 
+             VALUES (?, ?, ?, ?)',
+                [$applicantID, $courses[$i], $newCampus, $priorities[$i]]
             );
         }
 
-        return redirect('/admin?table=intended')->with('success', 'Courses and campus updated successfully.');
+        // Compare changes
+        $oldCoursesSorted = $oldCourses;
+        $newCoursesSorted = $courses;
+        sort($oldCoursesSorted);
+        sort($newCoursesSorted);
+
+        $courseChanged = $oldCoursesSorted !== $newCoursesSorted;
+        $campusChanged = $newCampus !== $oldCampus;
+
+        // Build message
+        $messageParts = [];
+
+        if ($courseChanged && !$campusChanged) {
+            $messageParts[] = "courses (" . implode(', ', $courses) . ")";
+        } elseif ($campusChanged && !$courseChanged) {
+            $messageParts[] = "campus ($newCampus)";
+        } elseif ($courseChanged && $campusChanged) {
+            $messageParts[] = "courses (" . implode(', ', $courses) . ")";
+            $messageParts[] = "campus ($newCampus)";
+        }
+
+        $message = empty($messageParts)
+            ? "No changes made for $applicantID."
+            : "$applicantID updated: " . implode(' and ', $messageParts) . ".";
+
+        return redirect('/admin?table=intended')->with('success', $message);
     }
 
 
@@ -110,7 +145,7 @@ class UpdateController extends Controller
         if ($request->courseCode !== $request->original_courseCode) {
             DB::insert(
                 'INSERT INTO course (courseCode, courseName, duration, department, totalUnits)
-             VALUES (?, ?, ?, ?, ?)',
+                 VALUES (?, ?, ?, ?, ?)',
                 [
                     $request->courseCode,
                     $request->courseName,
@@ -132,8 +167,8 @@ class UpdateController extends Controller
         } else {
             DB::update(
                 'UPDATE course 
-             SET courseName = ?, duration = ?, department = ?, totalUnits = ?
-             WHERE courseCode = ?',
+                 SET courseName = ?, duration = ?, department = ?, totalUnits = ?
+                 WHERE courseCode = ?',
                 [
                     $request->courseName,
                     $request->duration,
@@ -144,6 +179,6 @@ class UpdateController extends Controller
             );
         }
 
-        return redirect('/admin?table=course')->with('success', 'Course updated successfully.');
+        return redirect('/admin?table=course')->with('success', "$request->courseCode updated successfully.");
     }
 }

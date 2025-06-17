@@ -288,11 +288,11 @@
                         <label for="campus1stchoice_inpt" class="form-label unageo" style="color: white">Select 1st Campus choice</label>
                         <select name="campus[]" class="form-control unageo" id="campus1stchoice campus1stchoice_inpt" required>
                             <option value="" disabled selected>Select Course</option>
-                            <option value="cainta">Cainta</option>
-                            <option value="angono">Angono</option>
-                            <option value="antipolo">Antipolo</option>
-                            <option value="morong">Morong</option>
-                            <option value="binangonan">Binangonan</option>
+                            <option value="Cainta">Cainta</option>
+                            <option value="Angono">Angono</option>
+                            <option value="Antipolo">Antipolo</option>
+                            <option value="Morong">Morong</option>
+                            <option value="Binangonan">Binangonan</option>
                         </select>
                 </div>
 
@@ -304,6 +304,7 @@
                             <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                             @endforeach
                         </select>
+                <input type="hidden" name="priority[]" value="campus1_course1">
                 </div>
 
                 <div class="col-auto">
@@ -314,6 +315,7 @@
                             <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                             @endforeach
                         </select>
+                <input type="hidden" name="priority[]" value="campus1_course2">
                 </div>
 
             </div>
@@ -323,11 +325,11 @@
                         <label for="campus2ndchoice_inpt" class="form-label unageo" style="color: white">Select 2nd Campus choice</label>
                         <select name="campus[]" class="form-control unageo" id="campus2ndchoice campus2ndchoice_inpt" required>
                             <option value="" disabled selected>Select Course</option>
-                            <option value="cainta">Cainta</option>
-                            <option value="angono">Angono</option>
-                            <option value="antipolo">Antipolo</option>
-                            <option value="morong">Morong</option>
-                            <option value="binangonan">Binangonan</option>
+                            <option value="Cainta">Cainta</option>
+                            <option value="Angono">Angono</option>
+                            <option value="Antipolo">Antipolo</option>
+                            <option value="Morong">Morong</option>
+                            <option value="Binangonan">Binangonan</option>
                         </select>
                 </div>
 
@@ -339,6 +341,7 @@
                             <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                             @endforeach
                         </select>
+                <input type="hidden" name="priority[]" value="campus2_course1">
                 </div>
 
                 <div class="col-auto">
@@ -349,6 +352,7 @@
                             <option value="{{ $course->courseCode }}">{{ $course->courseName }}</option>
                             @endforeach
                         </select>
+                <input type="hidden" name="priority[]" value="campus2_course2">
                 </div>
 
             </div>
@@ -366,8 +370,10 @@
 <script>
     const campus1 = document.getElementById("campus1stchoice");
     const campus2 = document.getElementById("campus2ndchoice");
+
     const course1a = document.getElementById("1stcampuscourse1stchoice");
     const course1b = document.getElementById("1stcampuscourse2ndchoice");
+
     const course2a = document.getElementById("2ndcampuscourse1stchoice");
     const course2b = document.getElementById("2ndcampuscourse2ndchoice");
 
@@ -378,6 +384,7 @@
         });
     }
 
+    // Prevent same course in campus 1
     function updateCourse1BOptions() {
         const selected = course1a.value;
         [...course1b.options].forEach(opt => {
@@ -385,52 +392,41 @@
         });
     }
 
-    function updateCourse2Options() {
-        const selected1 = course1a.value;
-        const selected2 = course1b.value;
-        [...course2a.options].forEach(opt => {
-            opt.disabled = (opt.value === selected1 || opt.value === selected2);
-        });
-        [...course2b.options].forEach(opt => {
-            opt.disabled = (opt.value === selected1 || opt.value === selected2);
-        });
-    }
-
-    campus1.addEventListener("change", () => {
-        updateCampus2Options();
-    });
-
-    course1a.addEventListener("change", () => {
-        updateCourse1BOptions();
-        updateCourse2Options();
-    });
-
-    course1b.addEventListener("change", () => {
-        updateCourse2Options();
-    });
-
     function updateCourse2BOptions() {
         const selected = course2a.value;
         [...course2b.options].forEach(opt => {
-            opt.disabled = opt.value === selected || course1a.value === opt.value || course1b.value === opt.value;
+            opt.disabled = opt.value === selected;
         });
     }
 
-    course2a.addEventListener("change", () => {
+    function bindEvents() {
+        campus1.addEventListener("change", updateCampus2Options);
+
+        course1a.addEventListener("change", () => {
+            updateCourse1BOptions();
+        });
+
+        course1b.addEventListener("change", () => {
+            updateCourse1BOptions();
+        });
+
+        course2a.addEventListener("change", () => {
+            updateCourse2BOptions();
+        });
+
+        course2b.addEventListener("change", () => {
+            updateCourse2BOptions();
+        });
+    }
+
+    function initialize() {
+        updateCampus2Options();
+        updateCourse1BOptions();
         updateCourse2BOptions();
-    });
+    }
 
-    course1a.addEventListener("change", updateCourse2BOptions);
-    course1b.addEventListener("change", updateCourse2BOptions);
-
-    // On load
-    updateCourse2BOptions();
-
-
-    // Run on page load
-    updateCampus2Options();
-    updateCourse1BOptions();
-    updateCourse2Options();
+    bindEvents();
+    initialize();
 </script>
 
 <style>

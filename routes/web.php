@@ -53,13 +53,13 @@ Route::get('/logout', function () {
 
 
 /* DELETE */
-Route::get('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
+Route::post('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
 
-Route::get('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])->name('guardian.delete');
+Route::post('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])->name('guardian.delete');
 
-Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
+// Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
 
-Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
+Route::post('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
 
 
 /* UPDATE */
