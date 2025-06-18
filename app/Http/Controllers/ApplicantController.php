@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 class ApplicantController extends Controller
 {
@@ -43,5 +44,22 @@ class ApplicantController extends Controller
         );
 
         return $newApplicantID;
+    }
+
+    public function dashboard()
+    {
+        if (!Session::has('applicantID')) {
+            return redirect('/applicant_login')->with('error', 'Unauthorized access.');
+        }
+
+        $applicantID = Session::get('applicantID');
+
+        $user = DB::select('SELECT * FROM applicant WHERE applicantID = ?', [$applicantID]);
+
+        if (empty($user)) {
+            return redirect('/applicant_login')->with('error', 'Applicant not found.');
+        }
+
+        return view('dashboard', ['applicant' => $user[0]]);
     }
 }
