@@ -43,7 +43,29 @@ class ApplicantController extends Controller
             ]
         );
 
-        return $newApplicantID;
+        DB::insert(
+        "INSERT INTO guardian(fk_applicantID, guardianType, guardianName, citizenship, martialStatus, highestEducAttain, presentOccupation, monthlyIncome)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+                $newApplicantID,
+                $request->input('guardianType'),
+                $request->input('guardianName'),
+                $request->input('citizenship'),
+                $request->input('martialStatus'),
+                $request->input('highestEducAttain'),
+                $request->input('presentOccupation'),
+                $request->input('monthlyIncome')
+            ]
+        );
+
+        // Store applicantID in session
+        Session::put('applicantID', $newApplicantID);
+
+        // Redirect to dashboard
+        return redirect('/dashboard')->with('success', 'Account created successfully.');
+
+        // return $newApplicantID;
+
     }
 
     public function dashboard()
