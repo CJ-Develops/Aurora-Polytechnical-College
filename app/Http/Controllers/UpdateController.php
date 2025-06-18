@@ -64,7 +64,7 @@ class UpdateController extends Controller
             ]
         );
 
-        return redirect('/admin?table=guardian')->with('success', 'Guardian updated successfully!');
+        return redirect('/admin?table=guardian')->with('success', "GuardianID $id, ApplicantID {$request->fk_applicantID} already updated.");
     }
 
     public function intendedUpdate(Request $request)
@@ -84,11 +84,21 @@ class UpdateController extends Controller
             return back()->with('error', 'Update not applied: You selected the same course twice for the same campus. Please choose two different courses.');
         }
 
+        // Fetch current course & campus data
+        $existing = DB::select(
+            'SELECT fk_courseCode, campus FROM applicantcoursecampus 
+         WHERE fk_applicantID = ? ORDER BY priority ASC',
+            [$applicantID]
+        );
+
+        $oldCourses = array_column($existing, 'fk_courseCode');
+        $oldCampus = $existing[0]->campus ?? null;
+
         // Delete existing selected priorities for update
         DB::delete(
             'DELETE FROM applicantcoursecampus 
-             WHERE fk_applicantID = ? 
-             AND (priority = ? OR priority = ?)',
+         WHERE fk_applicantID = ? 
+         AND (priority = ? OR priority = ?)',
             [$applicantID, $priorities[0], $priorities[1]]
         );
 
@@ -96,13 +106,39 @@ class UpdateController extends Controller
         for ($i = 0; $i < 2; $i++) {
             DB::insert(
                 'INSERT INTO applicantcoursecampus (fk_applicantID, fk_courseCode, campus, priority) 
-                 VALUES (?, ?, ?, ?)',
+             VALUES (?, ?, ?, ?)',
                 [$applicantID, $courses[$i], $newCampus, $priorities[$i]]
             );
         }
 
-        return redirect('/admin?table=intended')->with('success', 'Courses and campus updated successfully.');
+        // Compare changes
+        $oldCoursesSorted = $oldCourses;
+        $newCoursesSorted = $courses;
+        sort($oldCoursesSorted);
+        sort($newCoursesSorted);
+
+        $courseChanged = $oldCoursesSorted !== $newCoursesSorted;
+        $campusChanged = $newCampus !== $oldCampus;
+
+        // Build message
+        $messageParts = [];
+
+        if ($courseChanged && !$campusChanged) {
+            $messageParts[] = "courses (" . implode(', ', $courses) . ")";
+        } elseif ($campusChanged && !$courseChanged) {
+            $messageParts[] = "campus ($newCampus)";
+        } elseif ($courseChanged && $campusChanged) {
+            $messageParts[] = "courses (" . implode(', ', $courses) . ")";
+            $messageParts[] = "campus ($newCampus)";
+        }
+
+        $message = empty($messageParts)
+            ? "No changes made for $applicantID."
+            : "$applicantID updated: " . implode(' and ', $messageParts) . ".";
+
+        return redirect('/admin?table=intended')->with('success', $message);
     }
+
 
     public function courseUpdate(Request $request)
     {
@@ -143,6 +179,6 @@ class UpdateController extends Controller
             );
         }
 
-        return redirect('/admin?table=course')->with('success', 'Course updated successfully.');
+        return redirect('/admin?table=course')->with('success', "$request->courseCode updated successfully.");
     }
 }

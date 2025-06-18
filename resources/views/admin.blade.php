@@ -163,7 +163,10 @@ $editingCourse = request('editingCourse');
                             <td>{{ $applicant->yearOfCompletion }}</td>
                             <td>
                                 <a href="{{ url()->current() . '?editingApplicant=' . $applicant->applicantID }}" class="btn btn-sm btn-warning">Update</a>
-                                <a href="{{ route('applicant.delete', $applicant->applicantID) }}" class="btn btn-sm btn-danger">Delete</a>
+                                <form action="{{ route('applicant.delete', $applicant->applicantID) }}" method="POST" style="display:inline;" onsubmit="return confirmDeleteApplicant('{{ $applicant->applicantID }}')">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                         @endif
@@ -198,10 +201,23 @@ $editingCourse = request('editingCourse');
                                 <td>{{ $guardian->guardianID }}</td>
                                 <td>{{ $guardian->fk_applicantID }}</td>
                                 <td>
-                                    <select name="guardianType" class="form-inline-input"">
-                                        <option value=" Father" {{ $guardian->guardianType == 'Father' ? 'selected' : '' }}>Father</option>
-                                        <option value="Mother" {{ $guardian->guardianType == 'Mother' ? 'selected' : '' }}>Mother</option>
-                                        <option value="Legal Guardian" {{ $guardian->guardianType == 'Legal Guardian' ? 'selected' : '' }}>Legal Guardian</option>
+                                    <select name="guardianType" class="form-inline-input">
+                                        @php
+                                        $usedTypes = $guardianTypesPerApplicant[$guardian->fk_applicantID] ?? [];
+                                        $currentType = trim($guardian->guardianType);
+                                        @endphp
+
+                                        @foreach (['Father', 'Mother', 'Legal Guardian'] as $type)
+                                        @php
+                                        $isUsedByOthers = in_array($type, $usedTypes) && $currentType !== $type;
+                                        @endphp
+
+                                        @if (!$isUsedByOthers)
+                                        <option value="{{ $type }}" {{ $currentType === $type ? 'selected' : '' }}>
+                                            {{ $type }}
+                                        </option>
+                                        @endif
+                                        @endforeach
                                     </select>
                                 </td>
                                 <td><input type="text" name="guardianName" value="{{ $guardian->guardianName }}" class="form-inline-input""></td>
@@ -238,7 +254,11 @@ $editingCourse = request('editingCourse');
                             <td>
                                 <a href="{{ url()->current() }}?table=guardian&editingGuardian={{ $guardian->guardianID }}" class="btn btn-sm btn-warning">Update</a>
 
-                                <a href="{{ route('guardian.delete', $guardian->guardianID) }}" class="btn btn-sm btn-danger">Delete</a>
+                                <form action="{{ route('guardian.delete', $guardian->guardianID) }}" method="POST" style="display: inline;" onsubmit="return confirmDeleteGuardian('{{ $guardian->guardianID }}', '{{ $guardian->fk_applicantID }}')">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+
                             </td>
                         </tr>
                         @endif
@@ -420,7 +440,10 @@ $editingCourse = request('editingCourse');
                             <td>{{ $course->totalUnits }}</td>
                             <td>
                                 <a href="{{ url()->current() }}?table=course&editingCourse={{ $course->courseCode }}" class="btn btn-sm btn-warning">Update</a>
-                                <a href="{{ route('course.delete', $course->courseCode) }}" class="btn btn-sm btn-danger">Delete</a>
+                                <form action="{{ route('course.delete', $course->courseCode) }}" method="POST" style="display: inline;" onsubmit="return confirmDeleteCourse('{{ $course->courseCode }}')">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                         @endif
@@ -455,6 +478,34 @@ $editingCourse = request('editingCourse');
         window.addEventListener('DOMContentLoaded', function() {
             alert("{{ session('delete_error') }}");
         });
+    </script>
+    @endif
+
+    @if(session('success'))
+    <script>
+        alert("{{ session('success') }}");
+    </script>
+    @endif
+
+    <script>
+        
+        function confirmDeleteApplicant(applicantID) {
+            return confirm(`Are you sure you want to delete ApplicantID ${applicantID}?`);
+        }
+
+        function confirmDeleteGuardian(guardianID, applicantID) {
+            return confirm(`Are you sure you want to delete GuardianID ${guardianID} from ApplicantID ${applicantID}?`);
+        }
+
+        function confirmDeleteCourse(courseCode) {
+            return confirm(`Are you sure you want to delete ${courseCode}?`);
+        }
+    </script>
+
+
+    @if(session('delete'))
+    <script>
+        alert("{{ session('delete') }}");
     </script>
     @endif
 

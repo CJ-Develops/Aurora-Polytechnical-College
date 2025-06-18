@@ -22,7 +22,7 @@ class DeleteController extends Controller
 
         DB::commit();
 
-        return redirect()->back()->with('success', 'Applicant deleted.');
+        return redirect()->back()->with('delete', 'Applicant deleted.');
     }
 
 
@@ -42,7 +42,8 @@ class DeleteController extends Controller
 
         DB::delete('DELETE FROM guardian WHERE guardianID = ?', [$id]);
 
-        return redirect()->back()->with('success', 'Guardian deleted.');
+        return redirect()->back()->with('delete', 'Guardian deleted.');
+        // do you want to delete guardianID in applicantID
     }
 
 
@@ -50,7 +51,7 @@ class DeleteController extends Controller
     {
         DB::delete('DELETE FROM applicantcoursecampus WHERE fk_applicantID = ? AND fk_courseCode = ?', [$fk_applicantID, $fk_courseCode]);
 
-        return redirect()->back()->with('success', 'Applicant course campus record deleted.');
+        return redirect()->back()->with('delete', 'Applicant course campus record deleted.');
     } */
     
     public function deleteCourse($courseCode)
@@ -67,7 +68,7 @@ class DeleteController extends Controller
 
         DB::delete('DELETE FROM course WHERE courseCode = ?', [$courseCode]);
 
-        return redirect()->back()->with('success', 'Course deleted.');
+        return redirect()->back()->with('delete', 'Course deleted.');
     }
 
 }
