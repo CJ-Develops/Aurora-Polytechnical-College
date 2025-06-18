@@ -96,5 +96,5 @@ Route::post('/course/add', [CourseController::class, 'addCourse'])->name('course
 Route::get('/search', [SearchController::class, 'handle'])->name('search.handle');
 
 
-/* SHOWP ASSWORD */
+/* SHOWPASSWORD */
 Route::get('/show-password', [ApplicantController::class, 'showPassword']);
