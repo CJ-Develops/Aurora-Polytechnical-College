@@ -14,8 +14,9 @@
 
     <div style="text-align: center">
         <h2 class="lemon">Applicant Dashboard</h2>
-        <p>Hello, <strong>{{ $applicant->applicantName }}</strong>. This is your password:
-            <strong>{{ $applicant->password }}</strong>. Please keep it secured.
+        <p>Hello, <strong>{{ $applicant->applicantName }}</strong>. Your password is shown below. Please keep it secured.
+        </p>
+        <p>Your Applicant ID is, <strong>{{ $applicant->applicantID }}</strong>
         </p>
 
         <div class="row" style="margin: 0 auto">
