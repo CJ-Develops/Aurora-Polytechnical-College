@@ -62,4 +62,25 @@ class ApplicantController extends Controller
 
         return view('dashboard', ['applicant' => $user[0]]);
     }
+
+    public function showPassword(Request $request)
+    {
+        $applicantID = $request->input('applicantID');
+        $email = $request->input('emailAddress');
+
+        if (!$applicantID || !$email) {
+            return redirect('/applicant_login')->with('error', 'Applicant ID and Email are required.');
+        }
+
+        $user = DB::select(
+            'SELECT applicantName, password FROM applicant WHERE applicantID = ? AND emailAddress = ?',
+            [$applicantID, $email]
+        );
+
+        if (empty($user)) {
+            return redirect('/applicant_login')->with('error', 'Invalid Applicant ID or Email.');
+        }
+
+        return view('getpassword', ['applicant' => $user[0]]);
+    }
 }

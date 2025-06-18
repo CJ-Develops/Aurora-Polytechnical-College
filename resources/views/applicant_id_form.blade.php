@@ -75,9 +75,6 @@
                         <button style="margin-top: 20px; width: 100%" class="btn btn-primary" type="submit">Submit</button>
                     </form>
 
-                        <div style="color: white; margin-top: 10px">Still not enrolled? <a href="/enroll">Enroll here</a></div>
-                        <div style="color: white; margin-top: 10px">Get your password <a href="/get-password">Here</a></div>
-                    </div>
                     <div style="color: white; margin-top: 10px">Still not enrolled? <a href="/enroll">Enroll here</a></div>
                     <div style="color: white; margin-top: 10px">Already have the password? <a href="/applicant_login">Login here</a></div>
                 </div>

@@ -35,7 +35,11 @@ class EnrollmentController extends Controller
             $this->applicantCourseController->storeApplicantCourseCampus($newApplicantID, $request);
 
             DB::commit();
-            return redirect()->back()->with('success', 'Saved successfully.');
+
+            $applicant = DB::selectOne("SELECT * FROM applicant WHERE applicantID = ?", [$newApplicantID]);
+
+
+            return view('getpassword', ['applicant' => $applicant]);
         } catch (QueryException $e) {
             DB::rollBack();
 

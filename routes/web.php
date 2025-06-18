@@ -22,14 +22,23 @@ Route::get('/devs', function () {
     return view('devs');
 });
 
+Route::get('/get-password', function () {
+    return view('applicant_id_form');
+});
+
 Route::view('/applicant_login', 'applicant_login');
 Route::view('/enroll', 'enroll');
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/dashboard', [LoginController::class, 'login']);
 
+
+
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/dashboard', [ApplicantController::class, 'dashboard'])->name('applicant.dashboard');
+
+Route::post('/get-password', [ApplicantController::class, 'showPassword']);
+
 
 
 
@@ -55,6 +64,7 @@ Route::get('/logout', function () {
     session()->flush();
     return redirect('/applicant_login')->with('success', 'Logged out successfully.');
 });
+
 
 
 /* DELETE */
@@ -84,3 +94,7 @@ Route::post('/course/add', [CourseController::class, 'addCourse'])->name('course
 
 /* SEARCH */
 Route::get('/search', [SearchController::class, 'handle'])->name('search.handle');
+
+
+/* SHOWPASSWORD */
+Route::get('/show-password', [ApplicantController::class, 'showPassword']);
