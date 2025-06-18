@@ -1,12 +1,15 @@
 services:
   - type: web
-    name: aurora-laravel
-    env: php
+    name: laravel-app
+    runtime: php
     plan: free
-    rootDir: aurora-backend
-    buildCommand: |
-      composer install --no-dev --prefer-dist --optimize-autoloader
-      cp .env.example .env
-      php artisan key:generate
-      php artisan config:cache
-    startCommand: php artisan serve --host 0.0.0.0 --port 10000
+    region: singapore
+    buildCommand: "composer install --no-dev && php artisan config:cache"
+    startCommand: "php artisan serve --host 0.0.0.0 --port 10000"
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: false

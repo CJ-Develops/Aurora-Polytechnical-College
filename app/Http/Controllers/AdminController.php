@@ -20,28 +20,28 @@ class AdminController extends Controller
             case 'guardian':
                 $guardians = DB::select('SELECT * FROM guardian');
 
-$guardianTypesPerApplicant = [];
+                $guardianTypesPerApplicant = [];
 
-foreach ($guardians as $g) {
-    $applicantId = $g->fk_applicantID;
-    $type = trim($g->guardianType); // remove extra whitespace
+                foreach ($guardians as $g) {
+                    $applicantId = $g->fk_applicantID;
+                    $type = trim($g->guardianType); // remove extra whitespace
 
-    if (!isset($guardianTypesPerApplicant[$applicantId])) {
-        $guardianTypesPerApplicant[$applicantId] = [];
-    }
+                    if (!isset($guardianTypesPerApplicant[$applicantId])) {
+                        $guardianTypesPerApplicant[$applicantId] = [];
+                    }
 
-    // Collect types per applicant, allow multiple if needed
-    if (!in_array($type, $guardianTypesPerApplicant[$applicantId])) {
-        $guardianTypesPerApplicant[$applicantId][] = $type;
-    }
-}
+                    // Collect types per applicant, allow multiple if needed
+                    if (!in_array($type, $guardianTypesPerApplicant[$applicantId])) {
+                        $guardianTypesPerApplicant[$applicantId][] = $type;
+                    }
+                }
 
-return view('admin', [
-    'table' => 'guardian',
-    'guardians' => $guardians,
-    'guardianTypesPerApplicant' => $guardianTypesPerApplicant,
-    'isAdmin' => true
-]);
+                return view('admin', [
+                    'table' => 'guardian',
+                    'guardians' => $guardians,
+                    'guardianTypesPerApplicant' => $guardianTypesPerApplicant,
+                    'isAdmin' => true
+                ]);
 
 
             case 'course':
