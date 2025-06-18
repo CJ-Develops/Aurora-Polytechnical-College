@@ -32,7 +32,7 @@
             <div class="container unageo">
                 <div>
                     <div class="content">
-                    <h5>John Mark</h5>
+                    <h5>Jan Marc</h5>
                     <span>DB Connection, File Routes</span>
                     </div>
                 </div>
