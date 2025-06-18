@@ -12,12 +12,12 @@
         Applicant Dashboard
     </div>
     <div>
-        hello, {{ $name }} your application is still pending please login frequently to see your status.
+        hello, {{ $applicant->applicantName }} your application is still pending please login frequently to see your status.
     </div>
 </div>
 
 <div>
-    Hello, {{ $name }} this is your student dashboard.
+    Hello, {{ $applicant->applicantName }} this is your student dashboard.
 </div>
 
 <!-- approved, pending, declined -->

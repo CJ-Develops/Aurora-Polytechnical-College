@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UpdateController;
+use App\Http\Controllers\ApplicantController;
 
 
 
@@ -25,8 +26,11 @@ Route::view('/applicant_login', 'applicant_login');
 Route::view('/enroll', 'enroll');
 
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/dashboard', [LoginController::class, 'dashboard']);
+Route::get('/dashboard', [LoginController::class, 'login']);
+
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+Route::get('/dashboard', [ApplicantController::class, 'dashboard'])->name('applicant.dashboard');
+
 
 
 
