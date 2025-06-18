@@ -1,3 +1,23 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Get Applicant Password</title>
+</head>
+<body>
+    <h2>Enter Your Applicant ID</h2>
+    <form action="/get-password" method="POST">
+        @csrf
+        <input type="text" name="applicantID" placeholder="Enter Applicant ID" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    @if (session('error'))
+        <p style="color:red">{{ session('error') }}</p>
+    @endif
+</body>
+</html>
+ -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +28,7 @@
     <link href="https://fonts.cdnfonts.com/css/lemon-milk" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/global.css') }}">
 
-    <title>Applicant Login</title>
+    <title>Get Applicant Password</title>
 </head>
 
 <body>
@@ -33,51 +53,35 @@
             {{-- Content --}}
             <div class="content_style">
                 <div class="row">
-                    {{-- <div class="cnt_tlt lemon">
-                AURORA POLYTECHNIC COLLEGE
-            </div>
-            <div class="cnt_dsk">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                Zet dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
-            </div>
-            <div class="cnt_btnOuter">
-                <button class="cnt_btn unageo"><a href="/enroll">ENROLL</a></button>
-            </div> --}}
                     <div class="col-0 col-lx-8 col-lg-8 col-md-6">
 
                     </div>
                     <div class="col-12 col-lg-4 col-md-6 applt_container_inside">
-                        <h1 style="text-align: center; color: white" class="lemon">Applicant Login</h1>
+                        <h1 style="text-align: center; color: white" class="lemon">Get Password</h1>
 
-                        <form action="/login" method="POST">
+                        <form action="/get-password" method="POST">
                             @csrf
 
                             <label style="color: white" for="">Applicant ID</label>
-                            <input style="margin-bottom: 10px" type="text" class="form-control" aria-label="Username" name="applicantID" placeholder="Applicant ID" required>
+                            <input style="margin-bottom: 10px" class="form-control" aria-label="Enter Applicant ID" name="applicantID" placeholder="Enter Applicant ID" required>
 
-                            <label style="color: white" for="">Password</label>
-                            <input style="margin-bottom: 20px" name="password" class="form-control" type="password" placeholder="Password" minlength="8" required>
+                            <label style="color: white" for="">Email Address</label>
+                            <input tyle="margin-bottom: 10px" class="form-control"  aria-label="Email"  type="email" name="emailAddress" placeholder="Enter Email" required><br><br>
+
+                            @if (session('error'))
+                                <p style="color: red">{{ session('error') }}</p>
+                            @endif
 
                             <button style="margin-top: 20px; width: 100%" class="btn btn-primary" type="submit">Submit</button>
                         </form>
 
                         <div style="color: white; margin-top: 10px">Still not enrolled? <a href="/enroll">Enroll here</a></div>
-                        <div style="color: white; margin-top: 10px">Get your password <a href="/get-password">Here</a></div>
+                        <div style="color: white; margin-top: 10px">Already have the password? <a href="/login">Login here</a></div>
                     </div>
                 </div>
 
 
 
-
-
-
-
-                @if (session('error'))
-                <script>
-                    alert("{{ session('error') }}");
-                </script>
-                @endif
             </div>
        
 </body>
