@@ -337,22 +337,92 @@ document.addEventListener("DOMContentLoaded", () => {
             resetOptions(course1);
             updateCourseOptions(course2, course1);
         });
-
-        course2a.addEventListener("change", () => {
-            updateCourse2BOptions();
-        });
-
-        course2b.addEventListener("change", () => {
-            updateCourse2BOptions();
-        });
-    }
-
-    function initialize() {
-        updateCampus2Options();
-        updateCourse1BOptions();
-        updateCourse2BOptions();
-    }
-
-    bindEvents();
-    initialize();
+    });
+});
 </script>
+
+<script>
+    document.getElementById('addGuardianBtn').addEventListener('click', function() {
+        const container = document.getElementById('guardianContainer');
+        const guardianEntries = container.querySelectorAll('.guardian-entry');
+
+        if (guardianEntries.length >= 3) {
+            alert('You can only add up to 3 guardians.');
+            return;
+        }
+
+        // Validate all current fields are filled
+        for (const entry of guardianEntries) {
+            const inputs = entry.querySelectorAll('input, select');
+            for (const input of inputs) {
+                if (!input.value || input.value === 'Guardian Type') {
+                    alert('Please complete all fields before adding another guardian.');
+                    return;
+                }
+            }
+        }
+
+        // Get selected guardian types
+        const selectedTypes = Array.from(document.querySelectorAll('.guardian-type')).map(sel => sel.value);
+        const availableTypes = ['Father', 'Mother', 'Legal Guardian'].filter(type => !selectedTypes.includes(type));
+
+        if (availableTypes.length === 0) {
+            alert('All guardian types have already been used.');
+            return;
+        }
+
+        // Clone and reset values
+        const firstEntry = guardianEntries[0];
+        const newEntry = firstEntry.cloneNode(true);
+
+        newEntry.querySelectorAll('input').forEach(input => input.value = '');
+        newEntry.querySelectorAll('select').forEach(select => {
+            if (select.classList.contains('guardian-type')) {
+                select.innerHTML = '<option value="" disabled selected>Guardian Type</option>';
+                availableTypes.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type;
+                    option.textContent = type;
+                    select.appendChild(option);
+                });
+            } else {
+                select.selectedIndex = 0;
+            }
+        });
+
+        container.appendChild(newEntry);
+    });
+</script>
+
+
+<style>
+    .outer_login {
+        width: 100%;
+        height: 100%;
+        background-image:
+            linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 1)),
+            url('image/OZM01931.jpg');
+        /* background-image: url("image/DSC_0323.jpg"); */
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .container_enrollment {
+        padding: 100px
+    }
+
+
+    @media (max-width: 1181px) {
+        .container_enrollment {
+            padding: 40px
+        }
+
+    }
+
+    @media (max-width: 521px) {
+        .col-auto {
+            width: 100%;
+        }
+    }
+</style>
