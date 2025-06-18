@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="col-auto">
-                            <label for="date" class="form-label unageo" style="color: white">Gender</label>
+                            <label for="date" class="form-label unageo" style="color: white">Birth Date</label>
                             <input style="margin-bottom: 10px" id="gender" class="form-control unageo" name="dateOfBirth" type="date" placeholder="Date of birth" required/>
                         </div>
 
@@ -116,11 +116,6 @@
                         <div class="col-auto">
                             <label for="hsName" class="form-label unageo" style="color: white">High school name</label>
                             <input style="margin-bottom: 10px" id="hsName" class="form-control unageo" name="hsName" type="text" placeholder="High school name" required/>
-                        </div>
-
-                        <div class="col-auto">
-                            <label for="hsAddress" class="form-label unageo" style="color: white">High school address</label>
-                            <input style="margin-bottom: 10px" id="hsAddress" class="form-control unageo" name="hsAddress" type="text" placeholder="High school address" required/>
                         </div>
 
                         <div class="col-auto">
