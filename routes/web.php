@@ -6,15 +6,11 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DeleteController;
-<<<<<<< HEAD
-use App\Http\Controllers\UpdateController;
-=======
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\ApplicantController;
 
 
->>>>>>> cfb6dbe58256e22c034f8837077bf8351ec1d615
 
 
 Route::get('/', function () {
@@ -62,21 +58,11 @@ Route::get('/logout', function () {
 
 
 /* DELETE */
-<<<<<<< HEAD
-Route::get('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
-=======
 Route::post('/applicant/delete/{id}', [DeleteController::class, 'deleteApplicant'])->name('applicant.delete');
->>>>>>> cfb6dbe58256e22c034f8837077bf8351ec1d615
 
 Route::post('/guardian/delete/{id}', [DeleteController::class, 'deleteGuardian'])->name('guardian.delete');
 
-<<<<<<< HEAD
-Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
-
-Route::get('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
-=======
 // Route::get('/intended/delete/{fk_applicantID}/{fk_courseCode}', [DeleteController::class, 'deleteIntendedCourse'])->name('intended.delete');
->>>>>>> cfb6dbe58256e22c034f8837077bf8351ec1d615
 
 Route::post('/course/delete/{courseCode}', [DeleteController::class, 'deleteCourse'])->name('course.delete');
 
@@ -88,9 +74,6 @@ Route::post('/update-raw/{guardianID}/{fk_applicantID}', [UpdateController::clas
 
 Route::post('/intended/update-raw', [UpdateController::class, 'intendedUpdate'])->name('intended.update.raw');
 
-<<<<<<< HEAD
-Route::post('/update-raw', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
-=======
 Route::post('/update-raw', [UpdateController::class, 'courseUpdate'])->name('course.update.raw');
 
 
@@ -101,4 +84,3 @@ Route::post('/course/add', [CourseController::class, 'addCourse'])->name('course
 
 /* SEARCH */
 Route::get('/search', [SearchController::class, 'handle'])->name('search.handle');
->>>>>>> cfb6dbe58256e22c034f8837077bf8351ec1d615
