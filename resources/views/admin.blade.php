@@ -145,16 +145,16 @@ $editingCourse = request('editingCourse');
                                         <td>{{ $applicant->applicantID }}</td>
                                         <td><input type="text" name="applicantName" value="{{ $applicant->applicantName }}" style="border: none; background: transparent; color: orange"></td>
                                         <td>
-                                            <select class="form-control" name="gender" style="border: 1px solid orange; background: transparent; color: orange">
+                                            <select class="form-control" name="gender" style="width: 60px; border: 1px solid orange; background: transparent; color: orange">
                                                 <option value="M" {{ $applicant->gender == 'M' ? 'selected' : '' }}>Male</option>
                                                 <option value="F" {{ $applicant->gender == 'F' ? 'selected' : '' }}>Female</option>
                                             </select>
                                         </td>
-                                        <td><input class="form-control" type="text" name="religion" value="{{ $applicant->religion }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
+                                        <td><input class="form-control" type="text" name="religion" value="{{ $applicant->religion }}" style="width: 100px; border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="date" name="dateOfBirth" value="{{ $applicant->dateOfBirth }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
-                                        <td><input class="form-control" type="number" name="age" value="{{ $applicant->age }}" style="border: 1px solid orange; background: transparent; color: orange;"></td>
+                                        <td><input class="form-control" type="number" name="age" value="{{ $applicant->age }}" style="width: 70px; border: 1px solid orange; background: transparent; color: orange;"></td>
                                         <td>
-                                            <select class="form-control" name="civilStatus" style="border: 1px solid orange; background: transparent; color: orange">
+                                            <select class="form-control" name="civilStatus" style="width: 70px; border: 1px solid orange; background: transparent; color: orange">
                                                 <option value="Single" {{ $applicant->civilStatus == 'Single' ? 'selected' : '' }}>Single</option>
                                                 <option value="Married" {{ $applicant->civilStatus == 'Married' ? 'selected' : '' }}>Married</option>
                                                 <option value="Divorced" {{ $applicant->civilStatus == 'Divorced' ? 'selected' : '' }}>Divorced</option>
@@ -163,14 +163,14 @@ $editingCourse = request('editingCourse');
                                             </select>
                                         </td>
                                         <td><input class="form-control" type="text" name="placeOfBirth" value="{{ $applicant->placeOfBirth }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
-                                        <td><input class="form-control" type="text" name="applicantCitizenship" value="{{ $applicant->applicantCitizenship }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
+                                        <td><input class="form-control" type="text" name="applicantCitizenship" value="{{ $applicant->applicantCitizenship }}" style="width: 60px; border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="text" name="permanentAddress" value="{{ $applicant->permanentAddress }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
-                                        <td><input class="form-control" type="text" name="telephone" value="{{ $applicant->telephone }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
+                                        <td><input class="form-control" type="text" name="telephone" value="{{ $applicant->telephone }}" style="width: 130px; border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="email" name="emailAddress" value="{{ $applicant->emailAddress }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="text" name="fbAccount" value="{{ $applicant->fbAccount }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="text" name="hsName" value="{{ $applicant->hsName }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="text" name="hsAddress" value="{{ $applicant->hsAddress }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
-                                        <td><input class="form-control" type="number" name="generalAverage" value="{{ $applicant->generalAverage }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
+                                        <td><input class="form-control" type="number" name="generalAverage" value="{{ $applicant->generalAverage }}" style="width: 70px; border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td><input class="form-control" type="number" name="yearOfCompletion" value="{{ $applicant->yearOfCompletion }}" style="border: 1px solid orange; background: transparent; color: orange"></td>
                                         <td>
                                             <button type="submit" class="btn btn-sm" style="color: green"><i class="bi bi-save"></i></button>
