@@ -43,29 +43,7 @@ class ApplicantController extends Controller
             ]
         );
 
-        DB::insert(
-        "INSERT INTO guardian(fk_applicantID, guardianType, guardianName, citizenship, martialStatus, highestEducAttain, presentOccupation, monthlyIncome)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            [
-                $newApplicantID,
-                $request->input('guardianType'),
-                $request->input('guardianName'),
-                $request->input('citizenship'),
-                $request->input('martialStatus'),
-                $request->input('highestEducAttain'),
-                $request->input('presentOccupation'),
-                $request->input('monthlyIncome')
-            ]
-        );
-
-        // Store applicantID in session
-        Session::put('applicantID', $newApplicantID);
-
-        // Redirect to dashboard
-        return redirect('/dashboard')->with('success', 'Account created successfully.');
-
-        // return $newApplicantID;
-
+        return $newApplicantID;
     }
 
     public function dashboard()
@@ -83,5 +61,26 @@ class ApplicantController extends Controller
         }
 
         return view('dashboard', ['applicant' => $user[0]]);
+    }
+
+    public function showPassword(Request $request)
+    {
+        $applicantID = $request->input('applicantID');
+        $email = $request->input('emailAddress');
+
+        if (!$applicantID || !$email) {
+            return redirect('/applicant_login')->with('error', 'Applicant ID and Email are required.');
+        }
+
+        $user = DB::select(
+            'SELECT applicantName, password FROM applicant WHERE applicantID = ? AND emailAddress = ?',
+            [$applicantID, $email]
+        );
+
+        if (empty($user)) {
+            return redirect('/applicant_login')->with('error', 'Invalid Applicant ID or Email.');
+        }
+
+        return view('getpassword', ['applicant' => $user[0]]);
     }
 }
