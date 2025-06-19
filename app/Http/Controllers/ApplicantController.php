@@ -72,15 +72,15 @@ class ApplicantController extends Controller
             return redirect('/applicant_login')->with('error', 'Applicant ID and Email are required.');
         }
 
-        $user = DB::select(
-            'SELECT applicantName, password FROM applicant WHERE applicantID = ? AND emailAddress = ?',
+        $applicant = DB::selectOne(
+            'SELECT applicantID, applicantName, password FROM applicant WHERE applicantID = ? AND emailAddress = ?',
             [$applicantID, $email]
         );
 
-        if (empty($user)) {
+        if (!$applicant) {
             return redirect('/applicant_login')->with('error', 'Invalid Applicant ID or Email.');
         }
 
-        return view('getpassword', ['applicant' => $user[0]]);
+        return view('getpassword', ['applicant' => $applicant]);
     }
 }
