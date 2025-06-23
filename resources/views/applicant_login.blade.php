@@ -18,10 +18,11 @@
             <div class="nav_bar">
                 <div class="row">
                     <div class="col-2 col-xl-6 col-md-5 col-sm-2 animation_nav">
-                        <img src="image/logo_white.png" class="navbar_logo" />
+                        <a href="/">
+                            <img src="image/logo_white.png" class="navbar_logo" />
+                        </a>
                     </div>
                     <div class="col-10 col-xl-6 col-md-7 col-sm-10 btns_tabs animation_navTabs">
-                        <button class="btn_navbar unageo"><a href="/">HOME</a></button>
                         <button class="btn_navbar unageo tab_active"><a href="/applicant_login">LOGIN</a></button>
                         <button class="btn_navbar unageo"><a href="/devs">DEVS</a></button>
                         <button class="btn_navbar unageo"><a href="/enroll">ENROLL NOW</a></button>

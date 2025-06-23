@@ -19,10 +19,11 @@
             <div class="nav_bar">
                 <div class="row">
                     <div class="col-2 col-xl-6 col-md-5 col-sm-2 animation_nav">
-                        <img src="image/logo_white.png" class="navbar_logo" />
+                        <a href="/">
+                            <img src="image/logo_white.png" class="navbar_logo" />
+                        </a>
                     </div>
                     <div class="col-10 col-xl-6 col-md-7 col-sm-10 btns_tabs animation_navTabs">
-                        <button class="btn_navbar unageo tab_active"><a href="/">HOME</a></button>
                         <button class="btn_navbar unageo "><a href="/applicant_login">LOGIN</a></button>
                         <button class="btn_navbar unageo"><a href="/devs">DEVS</a></button>
                         <button class="btn_navbar unageo"><a href="/enroll">ENROLL NOW</a></button>
@@ -38,9 +39,10 @@
                 AURORA POLYTECHNIC COLLEGE
             </div>
             <div class="cnt_dsk">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                Zet dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                Aurora Polytechnic College is a dynamic web application developed by Group 2 using the Laravel framework. 
+                It was designed to streamline the management of student records, enrollment, and academic processes. 
+                Built in a Laravel environment, the project showcases the group’s skills in web development, 
+                including backend logic, routing, database integration, and user-friendly interface design.
             </div>
             <div class="cnt_btnOuter">
                 <button class="cnt_btn unageo"><a href="/enroll">ENROLL</a></button>
