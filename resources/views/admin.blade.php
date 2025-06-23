@@ -201,7 +201,7 @@ $editingCourse = request('editingCourse');
                                         <a href="{{ url()->current() . '?editingApplicant=' . $applicant->applicantID }}" class="btn btn-sm"><i class="bi bi-pencil-square"></i></a>
                                         <form action="{{ route('applicant.delete', $applicant->applicantID) }}" method="POST" style="display:inline;" onsubmit="return confirmDeleteApplicant('{{ $applicant->applicantID }}')">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm"><i class="bi bi-trash"></i></button>
+                                            <button type="submit" class="btn btn-sm"><i style="color: rgba(255, 255, 255, 0.3);" class="bi bi-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -285,7 +285,7 @@ $editingCourse = request('editingCourse');
                                         <a href="{{ url()->current() }}?table=guardian&editingGuardian={{ $guardian->guardianID }}" class="btn btn-sm"><i class="bi bi-pencil-square"></i></a>
                                         <form action="{{ route('guardian.delete', $guardian->guardianID) }}" method="POST" style="display: inline;" onsubmit="return confirmDeleteGuardian('{{ $guardian->guardianID }}', '{{ $guardian->fk_applicantID }}')">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm"><i class="bi bi-trash"></i></button>
+                                            <button type="submit" class="btn btn-sm"><i style="color: rgba(255, 255, 255, 0.3);" class="bi bi-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -362,7 +362,7 @@ $editingCourse = request('editingCourse');
                                             }
                                             @endphp
 
-                                            <select name="campus" class="form-inline-input" required>
+                                            <select name="campus" class="form-control" required>
                                                 @foreach ($allCampuses as $campusOption)
                                                 <option value="{{ $campusOption }}"
                                                     {{ $campusOption === $campus ? 'selected' : '' }}
@@ -377,7 +377,7 @@ $editingCourse = request('editingCourse');
                                             @endif
                                         </td>
                                         <td>
-                                            <select name="courses[{{ $loop->index }}]" class="form-inline-input course-select">
+                                            <select name="courses[{{ $loop->index }}]" class="form-control course-select">
                                                 @php
                                                 $alreadySelected = $courses;
                                                 @endphp
@@ -415,7 +415,7 @@ $editingCourse = request('editingCourse');
                                     <td>{{ $courseCode }}</td>
                                     <td>
                                         <a href="{{ url()->current() }}?table=intended&editingIntendedApplicant={{ $applicantID }}&campus={{ urlencode($campus) }}" class="btn btn-sm btn-warning">
-                                            <i class="bi bi-pencil-square"></i>
+                                            <i style="color: black" class="bi bi-pencil-square"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -490,7 +490,7 @@ $editingCourse = request('editingCourse');
                                         </a>
                                         <form action="{{ route('course.delete', $course->courseCode) }}" method="POST" style="display: inline;" onsubmit="return confirmDeleteCourse('{{ $course->courseCode }}')">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm"><i class="bi bi-trash"></i></button>
+                                            <button type="submit" class="btn btn-sm"><i style="color: rgba(255, 255, 255, 0.3);" class="bi bi-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -567,11 +567,11 @@ $editingCourse = request('editingCourse');
                     tr.classList.add('new-course-row');
 
                     tr.innerHTML = `
-            <td><input type="text" name="courseCode" form="addCourseForm" class="form-inline-input" required></td>
-            <td><input type="text" name="courseName" form="addCourseForm" class="form-inline-input" required></td>
-            <td><input type="number" name="duration" form="addCourseForm" class="form-inline-input" required></td>
-            <td><input type="text" name="department" form="addCourseForm" class="form-inline-input" required></td>
-            <td><input type="number" name="totalUnits" form="addCourseForm" class="form-inline-input" required></td>
+             <td><input type="text" name="courseCode" form="addCourseForm" class="form-control edit__courseTable" placeholder="Course Code" style="border: 1px solid orange; background: transparent; color: orange" required></td>
+            <td><input type="text" name="courseName" form="addCourseForm" class="form-control edit__courseTable" placeholder="Course Name" style="border: 1px solid orange; background: transparent; color: orange" required></td>
+            <td><input type="number" name="duration" form="addCourseForm" class="form-control edit__courseTable"  placeholder="Duration" style="border: 1px solid orange; background: transparent; color: orange" required></td>
+            <td><input type="text" name="department" form="addCourseForm" class="form-control edit__courseTable"  placeholder="Department" style="border: 1px solid orange; background: transparent; color: orange" required></td>
+            <td><input type="number" name="totalUnits" form="addCourseForm" class="form-control edit__courseTable"  placeholder="Total Units" style="border: 1px solid orange; background: transparent; color: orange" required></td>
             <td>
                 <button type="submit" form="addCourseForm" class="btn btn-sm btn-success">Add</button>
                 <button type="button" class="btn btn-sm btn-secondary" onclick="this.closest('tr').remove()">Cancel</button>
@@ -712,4 +712,10 @@ $editingCourse = request('editingCourse');
     .btn__active {
         background: rgb(19, 188, 255);
     }
+
+
+.edit__courseTable::placeholder {
+  color: orange !important;
+  opacity: 1 !important;
+}
 </style>
