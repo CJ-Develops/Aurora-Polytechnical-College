@@ -165,7 +165,7 @@
 
                             <div class="col-auto">
                                 <label for="martialStatus" class="form-label unageo" style="color: white">Marital Status</label>
-                                <select name="martialStatus[]" class="form-control unageo martial-status" id="martialStatus" required/>
+                                <select name="martialStatus[]" class="form-control unageo martial-status" id="martialStatus" required>
                                     <option value="" disabled selected>Civil Status</option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
